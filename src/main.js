@@ -92,17 +92,17 @@ app.innerHTML = `
     </header>
 
     <div class="dashboard-layout">
-      <!-- Left Panel: Song Info -->
-      <div class="panel song-info-panel">
-        <div class="album-art" id="albumArt">💿</div>
-        <h2 id="songTitle">Select a Song</h2>
-        <h3 id="songArtist">-</h3>
-        <p id="songDesc" class="song-desc">Click on a radar chart to view detailed NeuroWav trends.</p>
-      </div>
-
-      <!-- Right Panel: Radar Grid -->
+      <!-- Left Panel: Radar Grid + Song Info Merged -->
       <div class="panel radar-grid-panel">
-        <div class="radar-grid" id="radarGrid"></div>
+        <div class="radar-grid" id="radarGrid">
+          <div class="song-info-inline">
+            <div class="album-art" id="albumArt">💿</div>
+            <h2 id="songTitle">Select a Song</h2>
+            <h3 id="songArtist">-</h3>
+            <p id="songDesc" class="song-desc">Click on a radar chart</p>
+          </div>
+          <!-- Radar items injected here -->
+        </div>
       </div>
 
       <!-- Bottom Panel: Detailed Line Chart -->
@@ -215,12 +215,8 @@ let lineChartInstance = null;
 
 // DOM Elements
 const userSelect = document.getElementById('userSelect');
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
 const loadingOverlay = document.getElementById('loadingOverlay');
-const errorMessage = document.getElementById('errorMessage');
 
-const currentUserDisplay = document.getElementById('currentUserDisplay');
 const albumArt = document.getElementById('albumArt');
 const songTitle = document.getElementById('songTitle');
 const songArtist = document.getElementById('songArtist');
@@ -233,93 +229,6 @@ userSelect.addEventListener('change', (e) => {
   currentUserId = e.target.value;
   loadDashboard();
 });
-
-// File Upload Logic
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-  dropZone.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
-});
-['dragenter', 'dragover'].forEach(eventName => {
-  dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
-});
-['dragleave', 'drop'].forEach(eventName => {
-  dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
-});
-
-dropZone.addEventListener('drop', (e) => {
-  const files = e.dataTransfer.files;
-  if (files.length > 0) handleFiles(Array.from(files));
-});
-dropZone.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', (e) => {
-  const files = e.target.files;
-  if (files.length > 0) handleFiles(Array.from(files));
-});
-
-function showError(msg) {
-  errorMessage.textContent = msg;
-  errorMessage.style.display = 'block';
-  loadingOverlay.style.display = 'none';
-}
-
-function extractNumber(filename) {
-  const match = filename.match(/\d+/);
-  return match ? parseInt(match[0], 10) : 9999;
-}
-
-async function handleFiles(fileArray) {
-  if (!fileArray || fileArray.length === 0) return;
-  errorMessage.style.display = 'none';
-  loadingOverlay.style.display = 'flex';
-  
-  fileArray.sort((a, b) => extractNumber(a.name) - extractNumber(b.name));
-  const results = [];
-  
-  try {
-    for (let i = 0; i < fileArray.length; i++) {
-      const file = fileArray[i];
-      const data = await readFile(file);
-      const parsedData = processExcelData(data);
-      const stats = calculateStats(parsedData, file.name, i + 1);
-      if (stats) results.push(stats);
-    }
-    
-    if (results.length === 0) {
-      showError('No valid data found in the uploaded files.');
-      return;
-    }
-    
-    localStorage.setItem(`brainwaveData_${currentUserId}`, JSON.stringify(results));
-    switchScreen('dashboardScreen');
-    
-  } catch (err) {
-    console.error(err);
-    showError('Error processing files.');
-  } finally {
-    loadingOverlay.style.display = 'none';
-  }
-}
-
-function readFile(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => resolve(e.target.result);
-    reader.onerror = (e) => reject(e);
-    reader.readAsArrayBuffer(file);
-  });
-}
-
-function processExcelData(arrayBuffer) {
-  const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-  let allRows = [];
-  workbook.SheetNames.forEach(sheetName => {
-    const worksheet = workbook.Sheets[sheetName];
-    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null });
-    if (rows && rows.length > 0) {
-      allRows = allRows.concat(rows);
-    }
-  });
-  return allRows;
-}
 
 function normalizeKey(key) {
   return typeof key === 'string' ? key.toLowerCase().trim() : '';
@@ -391,6 +300,7 @@ function calculateStats(rows, fileName, songNumber) {
     });
   }
   
+  // File upload logic removed as data is preloaded.
   const totalValidData = Object.values(counts).reduce((acc, c) => acc + c, 0);
   if (totalValidData === 0) return null;
   
@@ -418,7 +328,9 @@ function loadDashboard() {
 }
 
 function renderRadarGrid() {
-  radarGrid.innerHTML = '';
+  // Clear previous radar items but keep the song-info block
+  document.querySelectorAll('.radar-item').forEach(el => el.remove());
+  
   userData.forEach((song, index) => {
     const metaIndex = Math.min(index, SONG_METADATA.length - 1);
     const meta = SONG_METADATA[metaIndex];
@@ -539,7 +451,16 @@ function loadTeamComparison() {
   teamGrid.innerHTML = '';
   
   const teamStats = {};
+  const songStats = {};
   let hasData = false;
+  
+  // Initialize songStats
+  for (let i = 1; i <= 13; i++) {
+    songStats[i] = {};
+    TARGET_COLUMNS.forEach(col => {
+      songStats[i][col] = { sum: 0, count: 0 };
+    });
+  }
   
   // Calculate each member's overall stats for each metric
   Object.keys(MEMBERS).forEach(memberKey => {
@@ -555,12 +476,17 @@ function loadTeamComparison() {
         let sumVal = 0;
         
         parsed.forEach(song => {
+          const sIdx = song.songNumber;
           if (song.rawData && song.rawData[col]) {
             song.rawData[col].forEach(val => {
               if (val > maxVal) maxVal = val;
               if (val < minVal) minVal = val;
               sumVal += val;
             });
+          }
+          if (song.averages && song.averages[col] !== undefined && songStats[sIdx]) {
+            songStats[sIdx][col].sum += song.averages[col];
+            songStats[sIdx][col].count++;
           }
         });
         
@@ -648,6 +574,61 @@ function loadTeamComparison() {
 
     htmlContent += `</div></div>`;
   });
+  
+  htmlContent += `<hr style="border-color: rgba(255,255,255,0.1); margin: 4rem 0;">`;
+  htmlContent += `<h1 style="margin-bottom: 3rem; color: #fff; text-align: center; font-size: 2.2rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎵 노래별 감정 시상식 (Song Awards)</h1>`;
+  
+  EMOTIONS.forEach(emotion => {
+    htmlContent += `<div style="width: 100%; margin-bottom: 3rem;">
+      <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
+        ${emotion.emoji} 최고의 ${emotion.title} 곡
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">`;
+
+    const songResults = [];
+    Object.keys(songStats).forEach(sIdx => {
+      const stats = songStats[sIdx][emotion.col];
+      if (stats.count > 0) {
+        songResults.push({
+          sIdx: parseInt(sIdx),
+          avg: stats.sum / stats.count
+        });
+      }
+    });
+    
+    songResults.sort((a, b) => b.avg - a.avg);
+    
+    const medals = ['🥇', '🥈', '🥉'];
+    let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+    
+    songResults.slice(0, 3).forEach((r, idx) => {
+      const meta = SONG_METADATA[r.sIdx - 1]; 
+      top3Html += `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+          <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+            <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+            <span style="display: inline-block;">${meta ? meta.title : 'Unknown'}</span>
+          </span>
+          <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+            ${r.avg.toLocaleString(undefined, {maximumFractionDigits: 2})}
+          </span>
+        </div>`;
+    });
+    
+    top3Html = top3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+    top3Html += '</div>';
+
+    htmlContent += `
+      <div class="king-card" style="padding: 1.5rem;">
+        <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">${emotion.title} 우수 곡 Top 3</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">조원 전체 평균 수치 기준</div>
+        ${top3Html}
+      </div>
+    `;
+
+    htmlContent += `</div></div>`;
+  });
+
 
   teamGrid.innerHTML = htmlContent;
 }
