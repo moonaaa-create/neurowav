@@ -340,7 +340,7 @@ function renderRadarGrid() {
     div.id = `radar-item-${index}`;
     div.innerHTML = `
       <div class="radar-wrapper"><canvas id="radar-${currentUserId}-${index}"></canvas></div>
-      <div class="radar-title">${meta.title}</div>
+      <div class="radar-title">${index + 1}. ${meta.title}</div>
     `;
     div.addEventListener('click', () => selectSong(index));
     radarGrid.appendChild(div);
@@ -458,7 +458,7 @@ function loadTeamComparison() {
   for (let i = 1; i <= 13; i++) {
     songStats[i] = {};
     TARGET_COLUMNS.forEach(col => {
-      songStats[i][col] = { sum: 0, count: 0 };
+      songStats[i][col] = { sum: 0, count: 0, max: -Infinity };
     });
   }
   
@@ -482,6 +482,10 @@ function loadTeamComparison() {
               if (val > maxVal) maxVal = val;
               if (val < minVal) minVal = val;
               sumVal += val;
+              
+              if (songStats[sIdx] && val > songStats[sIdx][col].max) {
+                songStats[sIdx][col].max = val;
+              }
             });
           }
           if (song.averages && song.averages[col] !== undefined && songStats[sIdx]) {
@@ -579,7 +583,7 @@ function loadTeamComparison() {
   htmlContent += `<h1 style="margin-bottom: 3rem; color: #fff; text-align: center; font-size: 2.2rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎵 노래별 감정 시상식 (Song Awards)</h1>`;
   
   EMOTIONS.forEach(emotion => {
-    htmlContent += `<div style="width: 100%; margin-bottom: 3rem;">
+    htmlContent += `<div style="width: 100%; margin-bottom: 4rem;">
       <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
         ${emotion.emoji} 최고의 ${emotion.title} 곡
       </h2>
@@ -591,42 +595,83 @@ function loadTeamComparison() {
       if (stats.count > 0) {
         songResults.push({
           sIdx: parseInt(sIdx),
-          avg: stats.sum / stats.count
+          avg: stats.sum / stats.count,
+          max: stats.max !== -Infinity ? stats.max : 0
         });
       }
     });
     
-    songResults.sort((a, b) => b.avg - a.avg);
-    
     const medals = ['🥇', '🥈', '🥉'];
-    let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
     
-    songResults.slice(0, 3).forEach((r, idx) => {
+    // Sort for Average
+    const avgSorted = [...songResults].sort((a, b) => b.avg - a.avg);
+    let avgTop3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+    avgSorted.slice(0, 3).forEach((r, idx) => {
       const meta = SONG_METADATA[r.sIdx - 1]; 
-      top3Html += `
+      avgTop3Html += `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
           <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
             <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
-            <span style="display: inline-block;">${meta ? meta.title : 'Unknown'}</span>
+            <span style="display: inline-block;">${r.sIdx}. ${meta ? meta.title : 'Unknown'}</span>
           </span>
           <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
             ${r.avg.toLocaleString(undefined, {maximumFractionDigits: 2})}
           </span>
         </div>`;
     });
-    
-    top3Html = top3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
-    top3Html += '</div>';
+    avgTop3Html = avgTop3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+    avgTop3Html += '</div>';
+
+    // Sort for Peak (Max)
+    const maxSorted = [...songResults].sort((a, b) => b.max - a.max);
+    let maxTop3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+    maxSorted.slice(0, 3).forEach((r, idx) => {
+      const meta = SONG_METADATA[r.sIdx - 1]; 
+      maxTop3Html += `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+          <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+            <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+            <span style="display: inline-block;">${r.sIdx}. ${meta ? meta.title : 'Unknown'}</span>
+          </span>
+          <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+            ${r.max.toLocaleString(undefined, {maximumFractionDigits: 2})}
+          </span>
+        </div>`;
+    });
+    maxTop3Html = maxTop3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+    maxTop3Html += '</div>';
 
     htmlContent += `
       <div class="king-card" style="padding: 1.5rem;">
-        <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">${emotion.title} 우수 곡 Top 3</div>
-        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">조원 전체 평균 수치 기준</div>
-        ${top3Html}
+        <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">평균 수치 최고 (Average)</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">노래 재생 내내 꾸준히 높았던 곡</div>
+        ${avgTop3Html}
+      </div>
+      <div class="king-card" style="padding: 1.5rem;">
+        <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">순간 최고치 (Peak)</div>
+        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">특정 순간 엄청난 폭발력을 보여준 곡</div>
+        ${maxTop3Html}
       </div>
     `;
 
-    htmlContent += `</div></div>`;
+    htmlContent += `</div>`;
+    
+    // AI Insight
+    const topAvgSong = SONG_METADATA[avgSorted[0].sIdx - 1]?.title;
+    const topMaxSong = SONG_METADATA[maxSorted[0].sIdx - 1]?.title;
+    
+    let insightText = '';
+    if (topAvgSong === topMaxSong) {
+      insightText = `💡 <strong>NeuroWav Insight:</strong> 역시 <strong>${topAvgSong}</strong>! 꾸준히 높은 수치를 유지하면서 순간 최고치까지 1위를 차지했습니다. 우리 팀에게 완벽하게 통하는 마성의 곡이네요! 👑`;
+    } else {
+      insightText = `💡 <strong>NeuroWav Insight:</strong> <strong>${topAvgSong}</strong>이(가) 곡 전체에 걸쳐 잔잔한 여운을 남겼다면, <strong>${topMaxSong}</strong>은(는) 뇌리를 스치는 강력한 킬링 파트가 있는 폭발적인 곡입니다! 🔥`;
+    }
+    
+    htmlContent += `
+      <div style="width: 100%; margin-top: 1rem; padding: 1.2rem; background: rgba(10,132,255,0.1); border-left: 4px solid var(--accent-color); border-radius: 8px; color: #fff; font-size: 0.95rem; line-height: 1.5;">
+        ${insightText}
+      </div>
+    </div>`;
   });
 
 
