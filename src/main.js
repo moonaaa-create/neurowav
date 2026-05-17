@@ -1,6 +1,12 @@
 import './style.css';
 import * as XLSX from 'xlsx';
 import Chart from 'chart.js/auto';
+import preloadedData from './preloadedData.json';
+
+// Initialize data instantly
+Object.keys(preloadedData).forEach(key => {
+  localStorage.setItem(`brainwaveData_${key}`, JSON.stringify(preloadedData[key]));
+});
 
 // Hardcoded Team Members
 const MEMBERS = {
@@ -34,36 +40,23 @@ const SHORT_LABELS = ['En', 'In', 'Ex', 'St', 'Re'];
 const app = document.querySelector('#app');
 
 app.innerHTML = `
-  <div id="setupScreen" class="screen active">
+  <div id="setupScreen" class="screen">
     <header>
-      <h1>NeuroWav Dashboard</h1>
-      <p class="subtitle">Upload brainwave data (Excel/CSV) for your team member</p>
+      <h1>NeuroWav Upload</h1>
+      <p class="subtitle">Manual upload is currently hidden as data is preloaded</p>
     </header>
-    
-    <div class="user-selector">
-      <label>Select Team Member:</label>
-      <select id="userSelect">
-        <option value="member1">조원 1: ${MEMBERS.member1}</option>
-        <option value="member2">조원 2: ${MEMBERS.member2}</option>
-        <option value="member3">조원 3: ${MEMBERS.member3}</option>
-        <option value="member4">조원 4: ${MEMBERS.member4}</option>
-      </select>
-    </div>
-
-    <div class="upload-section" id="uploadSection">
-      <div class="upload-box" id="dropZone">
-        <div class="upload-icon">📁</div>
-        <div class="upload-text">Drag & Drop all 13 song data files</div>
-        <div class="upload-subtext">Will be automatically sorted 1 to 13</div>
-        <input type="file" id="fileInput" multiple accept=".csv, .xlsx" style="display: none;">
-      </div>
-      <div class="error-message" id="errorMessage"></div>
-    </div>
   </div>
 
-  <div id="dashboardScreen" class="screen">
+  <div id="dashboardScreen" class="screen active">
     <header class="dash-header">
-      <div class="user-info">Viewing: <span><span id="currentUserDisplay"></span>'s Dashboard</span></div>
+      <div class="user-info">
+        <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-right: 0.5rem;">
+          <option value="member1">김한주's Dashboard</option>
+          <option value="member2">김용석's Dashboard</option>
+          <option value="member3">문경수's Dashboard</option>
+          <option value="member4">홍수민's Dashboard</option>
+        </select>
+      </div>
     </header>
 
     <div class="dashboard-layout">
@@ -115,10 +108,8 @@ app.innerHTML = `
 `;
 
 // Navigation Setup
-const navUpload = document.getElementById('navUpload');
 const navDashboard = document.getElementById('navDashboard');
 const navTeam = document.getElementById('navTeam');
-const setupScreen = document.getElementById('setupScreen');
 const dashboardScreen = document.getElementById('dashboardScreen');
 const teamScreen = document.getElementById('teamScreen');
 
@@ -126,12 +117,10 @@ function switchScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
   
-  if (screenId === 'setupScreen') { navUpload.classList.add('active'); setupScreen.classList.add('active'); }
   if (screenId === 'dashboardScreen') { navDashboard.classList.add('active'); loadDashboard(); }
   if (screenId === 'teamScreen') { navTeam.classList.add('active'); loadTeamComparison(); }
 }
 
-navUpload.addEventListener('click', () => switchScreen('setupScreen'));
 navDashboard.addEventListener('click', () => switchScreen('dashboardScreen'));
 navTeam.addEventListener('click', () => switchScreen('teamScreen'));
 
@@ -158,6 +147,7 @@ const teamGrid = document.getElementById('teamGrid');
 
 userSelect.addEventListener('change', (e) => {
   currentUserId = e.target.value;
+  loadDashboard();
 });
 
 // File Upload Logic
@@ -331,15 +321,11 @@ function calculateStats(rows, fileName, songNumber) {
 // Personal Dashboard Logic
 function loadDashboard() {
   const savedData = localStorage.getItem(`brainwaveData_${currentUserId}`);
-  if (!savedData) {
-    alert('No data uploaded yet for ' + MEMBERS[currentUserId] + '. Please upload files first.');
-    switchScreen('setupScreen');
-    return;
-  }
+  if (!savedData) return;
   
   dashboardScreen.classList.add('active');
   userData = JSON.parse(savedData);
-  currentUserDisplay.textContent = MEMBERS[currentUserId];
+  // currentUserDisplay is now a select dropdown, so we don't need to textContent it.
   
   renderRadarGrid();
   renderRankings();
@@ -566,3 +552,6 @@ function loadTeamComparison() {
 
   teamGrid.innerHTML = htmlContent;
 }
+
+// Initialize application on load
+loadDashboard();
