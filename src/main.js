@@ -63,24 +63,28 @@ app.innerHTML = `
           <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">멤버별 대시보드 보기</h3>
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
             <!-- 문경수 -->
-            <div id="btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile1.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">문경수 님</span>
+            <div id="btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile1.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">문경수 님</span>
+              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">휴먼AI공학전공<br>21학번</span>
             </div>
             <!-- 김한주 -->
-            <div id="btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile2.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">김한주 님</span>
+            <div id="btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile2.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">김한주 님</span>
+              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">음악학과 작곡과<br>21학번</span>
             </div>
             <!-- 김용석 -->
-            <div id="btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile3.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">김용석 님</span>
+            <div id="btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile3.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">김용석 님</span>
+              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">자유전공학부 인문<br>26학번</span>
             </div>
             <!-- 홍수민 -->
-            <div id="btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile4.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">홍수민 님</span>
+            <div id="btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile4.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">홍수민 님</span>
+              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">조형예술학과<br>25학번</span>
             </div>
           </div>
         </div>
@@ -102,12 +106,13 @@ app.innerHTML = `
     <header class="dash-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
       <img id="headerProfileImg" src="/profile1.png" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
       <div class="user-info">
-        <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none;">
+        <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
           <option value="member3">문경수's Dashboard</option>
           <option value="member1">김한주's Dashboard</option>
           <option value="member2">김용석's Dashboard</option>
           <option value="member4">홍수민's Dashboard</option>
         </select>
+        <div id="headerMemberInfo" style="font-size: 0.82rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
       </div>
     </header>
 
@@ -351,11 +356,21 @@ function loadDashboard() {
   userData = JSON.parse(savedData);
   
   const headerProfileImg = document.getElementById('headerProfileImg');
-  if (headerProfileImg) {
-    if (currentUserId === 'member3') headerProfileImg.src = '/profile1.png';
-    else if (currentUserId === 'member1') headerProfileImg.src = '/profile2.png';
-    else if (currentUserId === 'member2') headerProfileImg.src = '/profile3.png';
-    else if (currentUserId === 'member4') headerProfileImg.src = '/profile4.png';
+  const headerMemberInfo = document.getElementById('headerMemberInfo');
+  
+  const memberDetails = {
+    member3: { img: '/profile1.png', info: '휴먼AI공학전공 | 21학번' },
+    member1: { img: '/profile2.png', info: '음악학과 작곡과 | 21학번' },
+    member2: { img: '/profile3.png', info: '자유전공학부 인문 | 26학번' },
+    member4: { img: '/profile4.png', info: '조형예술학과 | 25학번' }
+  };
+  
+  if (headerProfileImg && headerMemberInfo) {
+    const detail = memberDetails[currentUserId];
+    if (detail) {
+      headerProfileImg.src = detail.img;
+      headerMemberInfo.textContent = detail.info;
+    }
   }
   
   renderRadarGrid();
