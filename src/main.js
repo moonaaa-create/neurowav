@@ -409,6 +409,8 @@ function renderRadarGrid() {
 function renderRankings() {
   rankingContainer.innerHTML = '';
   
+  const medals = ['🥇', '🥈', '🥉'];
+  
   TARGET_COLUMNS.forEach((col, idx) => {
     // Sort songs by average descending
     const sorted = [...userData].sort((a, b) => b.averages[col] - a.averages[col]);
@@ -418,7 +420,8 @@ function renderRankings() {
     top3.forEach((song, i) => {
       const metaIndex = Math.min(song.songNumber - 1, SONG_METADATA.length - 1);
       const meta = SONG_METADATA[metaIndex];
-      listHtml += `<li><span>${i+1}. ${meta.title}</span><span>${song.averages[col].toFixed(2)}</span></li>`;
+      const medal = medals[i] || '🏅';
+      listHtml += `<li><span style="display: flex; align-items: center; gap: 6px;"><span>${medal}</span> <span>${song.songNumber}. ${meta.title}</span></span><span>${song.averages[col].toFixed(2)}</span></li>`;
     });
     
     rankingContainer.innerHTML += `
