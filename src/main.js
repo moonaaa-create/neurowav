@@ -40,14 +40,37 @@ const SHORT_LABELS = ['En', 'In', 'Ex', 'St', 'Re'];
 const app = document.querySelector('#app');
 
 app.innerHTML = `
-  <div id="setupScreen" class="screen">
-    <header>
-      <h1>NeuroWav Upload</h1>
-      <p class="subtitle">Manual upload is currently hidden as data is preloaded</p>
-    </header>
+  <div id="homeScreen" class="screen active">
+    <div class="hero-section" style="text-align: center; padding: 6rem 1rem; animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1);">
+      <h1 style="font-size: 5rem; margin-bottom: 1.5rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NeuroWav</h1>
+      <p class="subtitle" style="font-size: 1.3rem; max-width: 600px; margin: 0 auto 3.5rem auto; line-height: 1.8;">
+        <strong>2026학년도 1학기 자료시각화 과제</strong><br>
+        13곡의 음악 장르, 4명의 사용자.<br>
+        뇌파 분석을 통한 음악 취향 알아내기!
+      </p>
+      
+      <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+        <div>
+          <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">멤버별 대시보드 보기</h3>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+            <button id="btn-member1" class="hero-btn">김한주 님</button>
+            <button id="btn-member2" class="hero-btn">김용석 님</button>
+            <button id="btn-member3" class="hero-btn">문경수 님</button>
+            <button id="btn-member4" class="hero-btn">홍수민 님</button>
+          </div>
+        </div>
+        
+        <div style="width: 100%; max-width: 400px; height: 1px; background: rgba(255,255,255,0.1); margin: 1rem 0;"></div>
+        
+        <div>
+          <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">종합 비교 및 시상식</h3>
+          <button id="btn-awards" class="hero-btn" style="background: linear-gradient(135deg, #ff9f0a, #ff375f); font-size: 1.1rem; padding: 0.8rem 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 55, 95, 0.3);">🏆 NeuroWav Awards</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="dashboardScreen" class="screen active">
+  <div id="dashboardScreen" class="screen">
     <header class="dash-header">
       <div class="user-info">
         <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-right: 0.5rem;">
@@ -107,9 +130,9 @@ app.innerHTML = `
   </div>
 `;
 
-// Navigation Setup
 const navDashboard = document.getElementById('navDashboard');
 const navTeam = document.getElementById('navTeam');
+const homeScreen = document.getElementById('homeScreen');
 const dashboardScreen = document.getElementById('dashboardScreen');
 const teamScreen = document.getElementById('teamScreen');
 
@@ -117,12 +140,28 @@ function switchScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
   
+  if (screenId === 'homeScreen') { homeScreen.classList.add('active'); }
   if (screenId === 'dashboardScreen') { navDashboard.classList.add('active'); loadDashboard(); }
   if (screenId === 'teamScreen') { navTeam.classList.add('active'); loadTeamComparison(); }
 }
 
 navDashboard.addEventListener('click', () => switchScreen('dashboardScreen'));
 navTeam.addEventListener('click', () => switchScreen('teamScreen'));
+
+// Nav Logo click to home
+document.querySelector('.nav-logo').style.cursor = 'pointer';
+document.querySelector('.nav-logo').addEventListener('click', () => switchScreen('homeScreen'));
+
+// Home screen button listeners
+['member1', 'member2', 'member3', 'member4'].forEach(memberId => {
+  document.getElementById(`btn-${memberId}`).addEventListener('click', () => {
+    currentUserId = memberId;
+    document.getElementById('userSelect').value = memberId;
+    switchScreen('dashboardScreen');
+  });
+});
+
+document.getElementById('btn-awards').addEventListener('click', () => switchScreen('teamScreen'));
 
 // Global State
 let currentUserId = 'member1';
@@ -567,5 +606,5 @@ function loadTeamComparison() {
   teamGrid.innerHTML = htmlContent;
 }
 
-// Initialize application on load
-loadDashboard();
+// Initially show home screen
+switchScreen('homeScreen');
