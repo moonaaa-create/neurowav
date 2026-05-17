@@ -73,7 +73,10 @@ app.innerHTML = `
         
         <div>
           <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">종합 비교 및 시상식</h3>
-          <button id="btn-awards" class="hero-btn" style="background: linear-gradient(135deg, #ff9f0a, #ff375f); font-size: 1.1rem; padding: 0.8rem 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 55, 95, 0.3);">🏆 NeuroWav Awards</button>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+            <button id="btn-awards-emotiv" class="hero-btn" style="background: linear-gradient(135deg, #ff9f0a, #ff375f); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 55, 95, 0.3);">🧠 Awards - Emotiv</button>
+            <button id="btn-awards-music" class="hero-btn" style="background: linear-gradient(135deg, #0a84ff, #30d158); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(48, 209, 88, 0.3);">🎵 Awards - Music</button>
+          </div>
         </div>
       </div>
     </div>
@@ -130,9 +133,9 @@ app.innerHTML = `
   </div>
 
   <div id="teamScreen" class="screen">
-    <header>
-      <h1>Team Comparison: NeuroWav Awards</h1>
-      <p class="subtitle">Peak and Total Mass Analysis across all team members</p>
+    <header class="team-header">
+      <h1 id="awardsHeaderTitle">🏆 NeuroWav Awards</h1>
+      <p id="awardsHeaderSubtitle" class="subtitle">Peak and Total Mass Analysis across all team members</p>
     </header>
     <div class="team-awards-container" id="teamGrid" style="display: flex; flex-direction: column; gap: 2rem;">
       <!-- Award sections injected here -->
@@ -146,7 +149,8 @@ app.innerHTML = `
 `;
 
 const navDashboard = document.getElementById('navDashboard');
-const navTeam = document.getElementById('navTeam');
+const navTeamEmotiv = document.getElementById('navTeamEmotiv');
+const navTeamMusic = document.getElementById('navTeamMusic');
 const homeScreen = document.getElementById('homeScreen');
 const dashboardScreen = document.getElementById('dashboardScreen');
 const teamScreen = document.getElementById('teamScreen');
@@ -157,11 +161,13 @@ function switchScreen(screenId) {
   
   if (screenId === 'homeScreen') { homeScreen.classList.add('active'); }
   if (screenId === 'dashboardScreen') { navDashboard.classList.add('active'); loadDashboard(); }
-  if (screenId === 'teamScreen') { navTeam.classList.add('active'); loadTeamComparison(); }
+  if (screenId === 'emotivAwards') { navTeamEmotiv.classList.add('active'); loadTeamComparison('emotiv'); }
+  if (screenId === 'musicAwards') { navTeamMusic.classList.add('active'); loadTeamComparison('music'); }
 }
 
 navDashboard.addEventListener('click', () => switchScreen('dashboardScreen'));
-navTeam.addEventListener('click', () => switchScreen('teamScreen'));
+navTeamEmotiv.addEventListener('click', () => switchScreen('emotivAwards'));
+navTeamMusic.addEventListener('click', () => switchScreen('musicAwards'));
 
 // Nav Logo click to home
 document.querySelector('.nav-logo').style.cursor = 'pointer';
@@ -176,7 +182,8 @@ document.querySelector('.nav-logo').addEventListener('click', () => switchScreen
   });
 });
 
-document.getElementById('btn-awards').addEventListener('click', () => switchScreen('teamScreen'));
+document.getElementById('btn-awards-emotiv').addEventListener('click', () => switchScreen('emotivAwards'));
+document.getElementById('btn-awards-music').addEventListener('click', () => switchScreen('musicAwards'));
 
 // Emoji Dragging Logic
 let activeEmoji = null;
@@ -453,20 +460,23 @@ function renderLineChart(song) {
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'top', labels: { color: '#f8fafc', font: { family: '-apple-system' } } } },
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-        y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
-      }
-    }
-  });
-}
-
-// Team Comparison Logic
-function loadTeamComparison() {
+      plugins: {// Team Comparison Logic
+function loadTeamComparison(type) {
   teamScreen.classList.add('active');
   teamGrid.innerHTML = '';
   
+  const awardsHeaderTitle = document.getElementById('awardsHeaderTitle');
+  const awardsHeaderSubtitle = document.getElementById('awardsHeaderSubtitle');
+
+  // Change headers dynamically based on type
+  if (type === 'emotiv') {
+    awardsHeaderTitle.innerHTML = '🧠 NeuroWav Awards - Emotiv';
+    awardsHeaderSubtitle.textContent = '조원들의 EEG 뇌파 수치를 바탕으로 한 멤버 시상식';
+  } else {
+    awardsHeaderTitle.innerHTML = '🎵 NeuroWav Awards - Music';
+    awardsHeaderSubtitle.textContent = '조원 전체의 뇌파 평균치를 바탕으로 한 최고의 곡 시상식';
+  }
+
   const teamStats = {};
   const songStats = {};
   let hasData = false;
@@ -542,155 +552,151 @@ function loadTeamComparison() {
 
   let htmlContent = '';
 
-  EMOTIONS.forEach(emotion => {
-    htmlContent += `<div style="width: 100%; margin-bottom: 3rem;">
-      <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
-        ${emotion.emoji} ${emotion.title} 시상식
-      </h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">`;
+  if (type === 'emotiv') {
+    EMOTIONS.forEach(emotion => {
+      htmlContent += `<div style="width: 100%; margin-bottom: 3rem;">
+        <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
+          ${emotion.emoji} ${emotion.title} 시상식
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">`;
 
-    AWARDS.forEach(award => {
-      const results = [];
-      
-      Object.keys(teamStats).forEach(mKey => {
-        const val = teamStats[mKey][emotion.col][award.key];
-        results.push({ mKey, val });
+      AWARDS.forEach(award => {
+        const results = [];
+        
+        Object.keys(teamStats).forEach(mKey => {
+          const val = teamStats[mKey][emotion.col][award.key];
+          results.push({ mKey, val });
+        });
+
+        if (award.findMax) {
+          results.sort((a, b) => b.val - a.val);
+        } else {
+          results.sort((a, b) => a.val - b.val);
+        }
+
+        const medals = ['🥇', '🥈', '🥉', '🏅'];
+        
+        let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+        results.forEach((r, idx) => {
+          top3Html += `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+              <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+                <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+                <span style="display: inline-block;">${MEMBERS[r.mKey]}</span>
+              </span>
+              <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+                ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
+              </span>
+            </div>`;
+        });
+        // Remove last margin/border for clean UI
+        top3Html = top3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+        top3Html += '</div>';
+
+        htmlContent += `
+          <div class="king-card" style="padding: 1.5rem;">
+            <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">${award.label}</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">${award.desc}</div>
+            ${top3Html}
+          </div>
+        `;
       });
 
-      if (award.findMax) {
-        results.sort((a, b) => b.val - a.val);
-      } else {
-        results.sort((a, b) => a.val - b.val);
-      }
+      htmlContent += `</div></div>`;
+    });
+  } else if (type === 'music') {
+    EMOTIONS.forEach(emotion => {
+      htmlContent += `<div style="width: 100%; margin-bottom: 4rem;">
+        <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
+          ${emotion.emoji} 최고의 ${emotion.title} 곡
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">`;
 
-      const medals = ['🥇', '🥈', '🥉', '🏅'];
+      const songResults = [];
+      Object.keys(songStats).forEach(sIdx => {
+        const stats = songStats[sIdx][emotion.col];
+        if (stats.count > 0) {
+          songResults.push({
+            sIdx: parseInt(sIdx),
+            avg: stats.sum / stats.count,
+            max: stats.max !== -Infinity ? stats.max : 0
+          });
+        }
+      });
       
-      let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
-      results.forEach((r, idx) => {
-        top3Html += `
+      const medals = ['🥇', '🥈', '🥉'];
+      
+      // Sort for Average
+      const avgSorted = [...songResults].sort((a, b) => b.avg - a.avg);
+      let avgTop3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+      avgSorted.slice(0, 3).forEach((r, idx) => {
+        const meta = SONG_METADATA[r.sIdx - 1]; 
+        avgTop3Html += `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
             <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
               <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
-              <span style="display: inline-block;">${MEMBERS[r.mKey]}</span>
+              <span style="display: inline-block;">${r.sIdx}. ${meta ? meta.title : 'Unknown'}</span>
             </span>
             <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
-              ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
+              ${r.avg.toLocaleString(undefined, {maximumFractionDigits: 2})}
             </span>
           </div>`;
       });
-      // Remove last margin/border for clean UI
-      top3Html = top3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
-      top3Html += '</div>';
+      avgTop3Html = avgTop3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+      avgTop3Html += '</div>';
 
-      const winner = results[0];
+      // Sort for Peak (Max)
+      const maxSorted = [...songResults].sort((a, b) => b.max - a.max);
+      let maxTop3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+      maxSorted.slice(0, 3).forEach((r, idx) => {
+        const meta = SONG_METADATA[r.sIdx - 1]; 
+        maxTop3Html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+            <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+              <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+              <span style="display: inline-block;">${r.sIdx}. ${meta ? meta.title : 'Unknown'}</span>
+            </span>
+            <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+              ${r.max.toLocaleString(undefined, {maximumFractionDigits: 2})}
+            </span>
+          </div>`;
+      });
+      maxTop3Html = maxTop3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+      maxTop3Html += '</div>';
 
       htmlContent += `
         <div class="king-card" style="padding: 1.5rem;">
-          <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">${award.label}</div>
-          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">${award.desc}</div>
-          ${top3Html}
+          <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">평균 수치 최고 (Average)</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">노래 재생 내내 꾸준히 높았던 곡</div>
+          ${avgTop3Html}
+        </div>
+        <div class="king-card" style="padding: 1.5rem;">
+          <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">순간 최고치 (Peak)</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">특정 순간 엄청난 폭발력을 보여준 곡</div>
+          ${maxTop3Html}
         </div>
       `;
-    });
 
-    htmlContent += `</div></div>`;
-  });
-  
-  htmlContent += `<hr style="border-color: rgba(255,255,255,0.1); margin: 4rem 0;">`;
-  htmlContent += `<h1 style="margin-bottom: 3rem; color: #fff; text-align: center; font-size: 2.2rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎵 노래별 감정 시상식 (Song Awards)</h1>`;
-  
-  EMOTIONS.forEach(emotion => {
-    htmlContent += `<div style="width: 100%; margin-bottom: 4rem;">
-      <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
-        ${emotion.emoji} 최고의 ${emotion.title} 곡
-      </h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">`;
-
-    const songResults = [];
-    Object.keys(songStats).forEach(sIdx => {
-      const stats = songStats[sIdx][emotion.col];
-      if (stats.count > 0) {
-        songResults.push({
-          sIdx: parseInt(sIdx),
-          avg: stats.sum / stats.count,
-          max: stats.max !== -Infinity ? stats.max : 0
-        });
+      htmlContent += `</div>`;
+      
+      // AI Insight
+      const topAvgSong = SONG_METADATA[avgSorted[0].sIdx - 1]?.title;
+      const topMaxSong = SONG_METADATA[maxSorted[0].sIdx - 1]?.title;
+      
+      let insightText = '';
+      if (topAvgSong === topMaxSong) {
+        insightText = `💡 <strong>NeuroWav Insight:</strong> 역시 <strong>${topAvgSong}</strong>! 꾸준히 높은 수치를 유지하면서 순간 최고치까지 1위를 차지했습니다. 우리 팀에게 완벽하게 통하는 마성의 곡이네요! 👑`;
+      } else {
+        insightText = `💡 <strong>NeuroWav Insight:</strong> <strong>${topAvgSong}</strong>이(가) 곡 전체에 걸쳐 잔잔한 여운을 남겼다면, <strong>${topMaxSong}</strong>은(는) 뇌리를 스치는 강력한 킬링 파트가 있는 폭발적인 곡입니다! 🔥`;
       }
+      
+      htmlContent += `
+        <div style="width: 100%; margin-top: 1rem; padding: 1.2rem; background: rgba(10,132,255,0.1); border-left: 4px solid var(--accent-color); border-radius: 8px; color: #fff; font-size: 0.95rem; line-height: 1.5;">
+          ${insightText}
+        </div>
+      </div>`;
     });
-    
-    const medals = ['🥇', '🥈', '🥉'];
-    
-    // Sort for Average
-    const avgSorted = [...songResults].sort((a, b) => b.avg - a.avg);
-    let avgTop3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
-    avgSorted.slice(0, 3).forEach((r, idx) => {
-      const meta = SONG_METADATA[r.sIdx - 1]; 
-      avgTop3Html += `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
-          <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
-            <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
-            <span style="display: inline-block;">${r.sIdx}. ${meta ? meta.title : 'Unknown'}</span>
-          </span>
-          <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
-            ${r.avg.toLocaleString(undefined, {maximumFractionDigits: 2})}
-          </span>
-        </div>`;
-    });
-    avgTop3Html = avgTop3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
-    avgTop3Html += '</div>';
-
-    // Sort for Peak (Max)
-    const maxSorted = [...songResults].sort((a, b) => b.max - a.max);
-    let maxTop3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
-    maxSorted.slice(0, 3).forEach((r, idx) => {
-      const meta = SONG_METADATA[r.sIdx - 1]; 
-      maxTop3Html += `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
-          <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
-            <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
-            <span style="display: inline-block;">${r.sIdx}. ${meta ? meta.title : 'Unknown'}</span>
-          </span>
-          <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
-            ${r.max.toLocaleString(undefined, {maximumFractionDigits: 2})}
-          </span>
-        </div>`;
-    });
-    maxTop3Html = maxTop3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
-    maxTop3Html += '</div>';
-
-    htmlContent += `
-      <div class="king-card" style="padding: 1.5rem;">
-        <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">평균 수치 최고 (Average)</div>
-        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">노래 재생 내내 꾸준히 높았던 곡</div>
-        ${avgTop3Html}
-      </div>
-      <div class="king-card" style="padding: 1.5rem;">
-        <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">순간 최고치 (Peak)</div>
-        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">특정 순간 엄청난 폭발력을 보여준 곡</div>
-        ${maxTop3Html}
-      </div>
-    `;
-
-    htmlContent += `</div>`;
-    
-    // AI Insight
-    const topAvgSong = SONG_METADATA[avgSorted[0].sIdx - 1]?.title;
-    const topMaxSong = SONG_METADATA[maxSorted[0].sIdx - 1]?.title;
-    
-    let insightText = '';
-    if (topAvgSong === topMaxSong) {
-      insightText = `💡 <strong>NeuroWav Insight:</strong> 역시 <strong>${topAvgSong}</strong>! 꾸준히 높은 수치를 유지하면서 순간 최고치까지 1위를 차지했습니다. 우리 팀에게 완벽하게 통하는 마성의 곡이네요! 👑`;
-    } else {
-      insightText = `💡 <strong>NeuroWav Insight:</strong> <strong>${topAvgSong}</strong>이(가) 곡 전체에 걸쳐 잔잔한 여운을 남겼다면, <strong>${topMaxSong}</strong>은(는) 뇌리를 스치는 강력한 킬링 파트가 있는 폭발적인 곡입니다! 🔥`;
-    }
-    
-    htmlContent += `
-      <div style="width: 100%; margin-top: 1rem; padding: 1.2rem; background: rgba(10,132,255,0.1); border-left: 4px solid var(--accent-color); border-radius: 8px; color: #fff; font-size: 0.95rem; line-height: 1.5;">
-        ${insightText}
-      </div>
-    </div>`;
-  });
-
+  }
 
   teamGrid.innerHTML = htmlContent;
 }
