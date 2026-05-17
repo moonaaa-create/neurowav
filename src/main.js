@@ -472,7 +472,16 @@ function renderLineChart(song) {
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
-      plugins: {// Team Comparison Logic
+      plugins: { legend: { position: 'top', labels: { color: '#f8fafc', font: { family: '-apple-system' } } } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+      }
+    }
+  });
+}
+
+// Team Comparison Logic
 function loadTeamComparison(type) {
   teamScreen.classList.add('active');
   teamGrid.innerHTML = '';
