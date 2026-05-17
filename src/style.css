@@ -276,28 +276,30 @@ button:hover { background: var(--accent-hover); transform: scale(0.98); }
 .song-info-inline {
   grid-column: span 2;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
-  text-align: center;
+  text-align: left;
   background: rgba(255,255,255,0.02);
   border: 1px dashed rgba(255,255,255,0.1);
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 1rem 1.5rem;
+  gap: 1.5rem;
 }
 
 .album-art {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 20px;
   background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 0;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   border: 0.5px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
 }
 
 #songTitle { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--text-primary); letter-spacing: -0.5px; }
@@ -307,6 +309,7 @@ button:hover { background: var(--accent-hover); transform: scale(0.98); }
 .radar-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 1fr;
   gap: 0.5rem;
 }
 

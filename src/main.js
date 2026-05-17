@@ -97,9 +97,11 @@ app.innerHTML = `
         <div class="radar-grid" id="radarGrid">
           <div class="song-info-inline">
             <div class="album-art" id="albumArt">💿</div>
-            <h2 id="songTitle">Select a Song</h2>
-            <h3 id="songArtist">-</h3>
-            <p id="songDesc" class="song-desc">Click on a radar chart</p>
+            <div style="flex-grow: 1;">
+              <h2 id="songTitle">Select a Song</h2>
+              <h3 id="songArtist">-</h3>
+              <p id="songDesc" class="song-desc">Click on a radar chart</p>
+            </div>
           </div>
           <!-- Radar items injected here -->
         </div>
@@ -319,7 +321,6 @@ function loadDashboard() {
   
   dashboardScreen.classList.add('active');
   userData = JSON.parse(savedData);
-  // currentUserDisplay is now a select dropdown, so we don't need to textContent it.
   
   renderRadarGrid();
   renderRankings();
@@ -331,6 +332,15 @@ function renderRadarGrid() {
   // Clear previous radar items but keep the song-info block
   document.querySelectorAll('.radar-item').forEach(el => el.remove());
   
+  // Calculate global max for scale uniformity
+  let maxGlobal = 0;
+  userData.forEach(song => {
+    TARGET_COLUMNS.forEach(col => {
+      if (song.averages[col] > maxGlobal) maxGlobal = song.averages[col];
+    });
+  });
+  if (maxGlobal === 0) maxGlobal = 1;
+
   userData.forEach((song, index) => {
     const metaIndex = Math.min(index, SONG_METADATA.length - 1);
     const meta = SONG_METADATA[metaIndex];
@@ -366,6 +376,8 @@ function renderRadarGrid() {
         plugins: { legend: { display: false }, tooltip: { enabled: false } },
         scales: {
           r: {
+            min: 0,
+            max: maxGlobal * 1.1,
             angleLines: { color: 'rgba(255,255,255,0.1)' }, grid: { color: 'rgba(255,255,255,0.1)' },
             pointLabels: { display: true, color: 'rgba(255,255,255,0.7)', font: { size: 9, family: '-apple-system' } },
             ticks: { display: false }
