@@ -672,12 +672,18 @@ function loadTeamComparison(type) {
             detailText = `최소 기여 곡: ${r.detail.worstSong}`;
           }
 
-          const rowId = `award-row-${emotion.col}-${award.type}-${r.mKey}`;
-          const canvasId = `award-canvas-${emotion.col}-${award.type}-${r.mKey}`;
-          const containerId = `chart-container-${rowId}`;
+          const isClickable = award.type === 'max' || award.type === 'min';
+          const rowId = isClickable ? `award-row-${emotion.col}-${award.type}-${r.mKey}` : '';
+          const clickTip = isClickable ? `<span style="font-size: 0.65rem; color: var(--accent-color); margin-left: 4px;">(클릭 시 분석 차트 보기 📈)</span>` : '';
+          const rowStyle = isClickable 
+            ? 'cursor: pointer; padding: 0.4rem; border-radius: 6px; transition: background-color 0.2s;' 
+            : 'padding: 0.4rem; border-radius: 6px;';
+          const hoverAttr = isClickable 
+            ? `onmouseover="this.style.backgroundColor='rgba(255,255,255,0.03)'" onmouseout="this.style.backgroundColor='transparent'"` 
+            : '';
 
           top3Html += `
-            <div id="${rowId}" style="display: flex; flex-direction: column; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem; cursor: pointer; padding: 0.4rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.03)'" onmouseout="this.style.backgroundColor='transparent'">
+            <div id="${rowId}" style="display: flex; flex-direction: column; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem; ${rowStyle}" ${hoverAttr}>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
                   <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
@@ -689,10 +695,7 @@ function loadTeamComparison(type) {
               </div>
               <div style="font-size: 0.78rem; color: #8a99ad; margin-left: 28px; margin-top: 0.15rem; font-weight: 400; display: flex; align-items: center; gap: 4px;">
                 <span>${detailText}</span>
-                <span style="font-size: 0.65rem; color: var(--accent-color); margin-left: 4px;">(클릭 시 차트 보기 📈)</span>
-              </div>
-              <div id="${containerId}" style="display: none; height: 120px; margin-top: 0.6rem; padding: 0.4rem; background: rgba(0,0,0,0.4); border-radius: 6px; position: relative;">
-                <canvas id="${canvasId}"></canvas>
+                ${clickTip}
               </div>
             </div>`;
         });
@@ -709,7 +712,17 @@ function loadTeamComparison(type) {
         `;
       });
 
-      htmlContent += `</div></div>`;
+      htmlContent += `</div>`; // close grid
+      
+      // Shared wide chart container below the grid!
+      htmlContent += `
+        <div id="section-chart-container-${emotion.col}" style="display: none; width: 100%; height: 280px; margin-top: 1.5rem; padding: 1.2rem; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); position: relative;">
+          <h3 id="section-chart-title-${emotion.col}" style="font-size: 0.95rem; color: #fff; margin-bottom: 0.8rem; font-weight: 600; text-align: left;"></h3>
+          <div style="height: calc(100% - 2.5rem); position: relative;">
+            <canvas id="section-chart-canvas-${emotion.col}"></canvas>
+          </div>
+        </div>
+      </div>`; // close emotion section block
     });
   } else if (type === 'music') {
     EMOTIONS.forEach(emotion => {
@@ -809,83 +822,114 @@ function loadTeamComparison(type) {
 
   if (type === 'emotiv') {
     EMOTIONS.forEach(emotion => {
+      let activeTarget = null; // Track active row { awardType, mKey }
+      
       AWARDS.forEach(award => {
+        if (award.type !== 'max' && award.type !== 'min') return;
+        
         Object.keys(teamStats).forEach(mKey => {
           const detail = teamStats[mKey][emotion.col];
           const rowId = `award-row-${emotion.col}-${award.type}-${mKey}`;
-          const canvasId = `award-canvas-${emotion.col}-${award.type}-${mKey}`;
-          const containerId = `chart-container-${rowId}`;
           
           const rowEl = document.getElementById(rowId);
           if (rowEl) {
-            rowEl.addEventListener('click', (e) => {
-              if (e.target.tagName.toLowerCase() === 'canvas') return;
-
-              const container = document.getElementById(containerId);
-              if (container.style.display === 'block') {
+            rowEl.addEventListener('click', () => {
+              const container = document.getElementById(`section-chart-container-${emotion.col}`);
+              const titleEl = document.getElementById(`section-chart-title-${emotion.col}`);
+              const canvas = document.getElementById(`section-chart-canvas-${emotion.col}`);
+              
+              if (activeTarget && activeTarget.awardType === award.type && activeTarget.mKey === mKey) {
                 container.style.display = 'none';
-              } else {
-                container.style.display = 'block';
-                const canvas = document.getElementById(canvasId);
-                if (!canvas.chartInstance) {
-                  const savedData = localStorage.getItem(`brainwaveData_${mKey}`);
-                  if (savedData) {
-                    const parsed = JSON.parse(savedData);
-                    let songIdx = 1;
-                    if (award.type === 'max') songIdx = detail.maxSongIdx;
-                    else if (award.type === 'min') songIdx = detail.minSongIdx;
-                    else if (award.type === 'sum_high') songIdx = detail.bestSongIdx;
-                    else if (award.type === 'sum_low') songIdx = detail.worstSongIdx;
-                    
-                    const songObj = parsed.find(s => s.songNumber === songIdx);
-                    if (songObj && songObj.rawData && songObj.rawData[emotion.col]) {
-                      const rawTimeline = songObj.rawData[emotion.col];
-                      const labels = rawTimeline.map((_, i) => `${i}초`);
-                      const ctx = canvas.getContext('2d');
+                activeTarget = null;
+                return;
+              }
+              
+              const savedData = localStorage.getItem(`brainwaveData_${mKey}`);
+              if (!savedData) return;
+              
+              const parsed = JSON.parse(savedData);
+              const songIdx = (award.type === 'max') ? detail.maxSongIdx : detail.minSongIdx;
+              const songObj = parsed.find(s => s.songNumber === songIdx);
+              if (!songObj) return;
+              
+              container.style.display = 'block';
+              activeTarget = { awardType: award.type, mKey };
+              
+              const songTitle = (award.type === 'max') ? detail.maxSong : detail.minSong;
+              const emotionTitle = (award.type === 'max') ? 'Highest Peak' : 'Lowest Peak';
+              titleEl.innerHTML = `📊 <strong>${MEMBERS[mKey]}</strong> 님의 <span style="color: var(--accent-color);">${songTitle}</span> 전체 감정 분석 타임라인 <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: normal; margin-left: 0.5rem;">(기준 지표: ${emotion.title} - ${emotionTitle})</span>`;
+              
+              if (canvas.chartInstance) {
+                canvas.chartInstance.destroy();
+              }
+              
+              const labels = songObj.rawData.engagement.map((_, i) => `${i}초`);
+              const ctx = canvas.getContext('2d');
+              const highlightSec = (award.type === 'max') ? detail.maxTime : detail.minTime;
+              const colors = ['#3b82f6', '#eab308', '#ef4444', '#8b5cf6', '#10b981'];
+              
+              const datasets = TARGET_COLUMNS.map((col, i) => {
+                const isTargetCol = col === emotion.col;
+                return {
+                  label: LABELS_KO[i],
+                  data: songObj.rawData[col],
+                  borderColor: colors[i],
+                  backgroundColor: 'transparent',
+                  borderWidth: isTargetCol ? 2.5 : 1,
+                  pointRadius: 0,
+                  tension: 0.35
+                };
+              });
+              
+              canvas.chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  interaction: { mode: 'index', intersect: false },
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                      labels: { color: '#f8fafc', font: { family: '-apple-system', size: 10 } }
+                    },
+                    tooltip: { enabled: true }
+                  },
+                  scales: {
+                    x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#94a3b8', font: { size: 9 } } },
+                    y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 9 } } }
+                  }
+                },
+                plugins: [{
+                  id: 'verticalLine',
+                  afterDraw: (chart) => {
+                    if (highlightSec >= 0) {
+                      const chartCtx = chart.ctx;
+                      const xAxis = chart.scales.x;
+                      const yAxis = chart.scales.y;
                       
-                      const highlightSec = (award.type === 'max') ? detail.maxTime : (award.type === 'min' ? detail.minTime : -1);
-                      const chartColor = (award.type === 'max' || award.type === 'sum_high') ? '#30d158' : '#ff453a';
-                      
-                      canvas.chartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                          labels: labels,
-                          datasets: [{
-                            data: rawTimeline,
-                            borderColor: chartColor,
-                            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                            borderWidth: 1.5,
-                            tension: 0.3,
-                            pointRadius: rawTimeline.map((_, i) => i === highlightSec ? 5 : 0),
-                            pointBackgroundColor: rawTimeline.map((_, i) => i === highlightSec ? '#fff' : chartColor),
-                            pointBorderColor: '#000',
-                            pointBorderWidth: 1.5
-                          }]
-                        },
-                        options: {
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          plugins: { 
-                            legend: { display: false },
-                            tooltip: {
-                              enabled: true,
-                              callbacks: {
-                                label: function(context) {
-                                  return `${emotion.title}: ${context.parsed.y.toFixed(2)}`;
-                                }
-                              }
-                            }
-                          },
-                          scales: {
-                            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } },
-                            y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 9 } } }
-                          }
-                        }
-                      });
+                      const xPixel = xAxis.getPixelForValue(highlightSec);
+                      if (xPixel !== undefined) {
+                        chartCtx.save();
+                        chartCtx.beginPath();
+                        chartCtx.strokeStyle = '#ff453a'; // Red vertical line
+                        chartCtx.lineWidth = 1.5;
+                        chartCtx.setLineDash([5, 5]); // Dashed
+                        chartCtx.moveTo(xPixel, yAxis.top);
+                        chartCtx.lineTo(xPixel, yAxis.bottom);
+                        chartCtx.stroke();
+                        
+                        // Marker point text
+                        chartCtx.fillStyle = '#ff453a';
+                        chartCtx.font = 'bold 9px -apple-system';
+                        chartCtx.textAlign = 'center';
+                        chartCtx.fillText(`${highlightSec}초 사건 지점 📍`, xPixel, yAxis.top - 6);
+                        chartCtx.restore();
+                      }
                     }
                   }
-                }
-              }
+                }]
+              });
             });
           }
         });
