@@ -519,32 +519,46 @@ function loadTeamComparison() {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">`;
 
     AWARDS.forEach(award => {
-      let bestVal = award.findMax ? -Infinity : Infinity;
-      let winnerKey = null;
-      let scoresHtml = '';
-
+      const results = [];
+      
       Object.keys(teamStats).forEach(mKey => {
         const val = teamStats[mKey][emotion.col][award.key];
-        scoresHtml += `<div><strong>${MEMBERS[mKey]}:</strong> ${val.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>`;
-        
-        if (award.findMax) {
-          if (val > bestVal) { bestVal = val; winnerKey = mKey; }
-        } else {
-          if (val < bestVal) { bestVal = val; winnerKey = mKey; }
-        }
+        results.push({ mKey, val });
       });
 
-      if (winnerKey) {
-        htmlContent += `
-          <div class="king-card" style="padding: 1.5rem;">
-            <div class="king-title" style="font-size: 1rem; color: #fff;">${award.label}</div>
-            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">${award.desc}</div>
-            <div class="king-name" style="font-size: 1.5rem;">${MEMBERS[winnerKey]}</div>
-            <div class="king-score" style="font-size: 1rem;">${bestVal.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>
-            <div class="king-details" style="padding: 0.8rem; font-size: 0.8rem;">${scoresHtml}</div>
-          </div>
-        `;
+      if (award.findMax) {
+        results.sort((a, b) => b.val - a.val);
+      } else {
+        results.sort((a, b) => a.val - b.val);
       }
+
+      const medals = ['🥇', '🥈', '🥉'];
+      
+      let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
+      results.slice(0, 3).forEach((r, idx) => {
+        top3Html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+            <span style="color: var(--text-primary); font-weight: 500;">
+              <span style="margin-right: 0.5rem; font-size: 1.2rem;">${medals[idx]}</span> ${MEMBERS[r.mKey]}
+            </span>
+            <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+              ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
+            </span>
+          </div>`;
+      });
+      // Remove last margin/border for clean UI
+      top3Html = top3Html.replace(/margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba\(255,255,255,0.05\); padding-bottom: 0.5rem;"(?!.*margin-bottom)/, 'margin-bottom: 0;"');
+      top3Html += '</div>';
+
+      const winner = results[0];
+
+      htmlContent += `
+        <div class="king-card" style="padding: 1.5rem;">
+          <div class="king-title" style="font-size: 1.05rem; color: #fff; font-weight: 600;">${award.label}</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">${award.desc}</div>
+          ${top3Html}
+        </div>
+      `;
     });
 
     htmlContent += `</div></div>`;
