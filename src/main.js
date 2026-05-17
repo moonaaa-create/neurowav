@@ -521,10 +521,12 @@ function loadTeamComparison(type) {
       TARGET_COLUMNS.forEach(col => {
         let maxVal = -Infinity;
         let maxSongTitle = '';
+        let maxSongIdx = 1;
         let maxSec = 0;
         
         let minVal = Infinity;
         let minSongTitle = '';
+        let minSongIdx = 1;
         let minSec = 0;
         
         let sumVal = 0;
@@ -532,8 +534,10 @@ function loadTeamComparison(type) {
         // To track which song contributed the most/least to the sum
         let bestSongSum = -Infinity;
         let bestSongTitle = '';
+        let bestSongIdx = 1;
         let worstSongSum = Infinity;
         let worstSongTitle = '';
+        let worstSongIdx = 1;
         
         parsed.forEach(song => {
           const sIdx = song.songNumber;
@@ -546,12 +550,14 @@ function loadTeamComparison(type) {
             song.rawData[col].forEach((val, secIdx) => {
               if (val > maxVal) {
                 maxVal = val;
-                maxSongTitle = meta.title;
+                maxSongTitle = `${sIdx}. ${meta.title}`;
+                maxSongIdx = sIdx;
                 maxSec = secIdx;
               }
               if (val < minVal) {
                 minVal = val;
-                minSongTitle = meta.title;
+                minSongTitle = `${sIdx}. ${meta.title}`;
+                minSongIdx = sIdx;
                 minSec = secIdx;
               }
               sumVal += val;
@@ -567,11 +573,13 @@ function loadTeamComparison(type) {
           if (songPoints > 0) {
             if (songSum > bestSongSum) {
               bestSongSum = songSum;
-              bestSongTitle = meta.title;
+              bestSongTitle = `${sIdx}. ${meta.title}`;
+              bestSongIdx = sIdx;
             }
             if (songSum < worstSongSum) {
               worstSongSum = songSum;
-              worstSongTitle = meta.title;
+              worstSongTitle = `${sIdx}. ${meta.title}`;
+              worstSongIdx = sIdx;
             }
           }
           
@@ -588,13 +596,17 @@ function loadTeamComparison(type) {
         teamStats[memberKey][col] = {
           max: maxVal,
           maxSong: maxSongTitle,
+          maxSongIdx: maxSongIdx,
           maxTime: maxSec,
           min: minVal,
           minSong: minSongTitle,
+          minSongIdx: minSongIdx,
           minTime: minSec,
           sum: sumVal,
           bestSong: bestSongTitle,
-          worstSong: worstSongTitle
+          bestSongIdx: bestSongIdx,
+          worstSong: worstSongTitle,
+          worstSongIdx: worstSongIdx
         };
       });
     }
@@ -660,8 +672,12 @@ function loadTeamComparison(type) {
             detailText = `최소 기여 곡: ${r.detail.worstSong}`;
           }
 
+          const rowId = `award-row-${emotion.col}-${award.type}-${r.mKey}`;
+          const canvasId = `award-canvas-${emotion.col}-${award.type}-${r.mKey}`;
+          const containerId = `chart-container-${rowId}`;
+
           top3Html += `
-            <div style="display: flex; flex-direction: column; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+            <div id="${rowId}" style="display: flex; flex-direction: column; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem; cursor: pointer; padding: 0.4rem; border-radius: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.03)'" onmouseout="this.style.backgroundColor='transparent'">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
                   <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
@@ -671,8 +687,12 @@ function loadTeamComparison(type) {
                   ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
                 </span>
               </div>
-              <div style="font-size: 0.78rem; color: #8a99ad; margin-left: 28px; margin-top: 0.15rem; font-weight: 400;">
-                ${detailText}
+              <div style="font-size: 0.78rem; color: #8a99ad; margin-left: 28px; margin-top: 0.15rem; font-weight: 400; display: flex; align-items: center; gap: 4px;">
+                <span>${detailText}</span>
+                <span style="font-size: 0.65rem; color: var(--accent-color); margin-left: 4px;">(클릭 시 차트 보기 📈)</span>
+              </div>
+              <div id="${containerId}" style="display: none; height: 120px; margin-top: 0.6rem; padding: 0.4rem; background: rgba(0,0,0,0.4); border-radius: 6px; position: relative;">
+                <canvas id="${canvasId}"></canvas>
               </div>
             </div>`;
         });
@@ -786,6 +806,92 @@ function loadTeamComparison(type) {
   }
 
   teamGrid.innerHTML = htmlContent;
+
+  if (type === 'emotiv') {
+    EMOTIONS.forEach(emotion => {
+      AWARDS.forEach(award => {
+        Object.keys(teamStats).forEach(mKey => {
+          const detail = teamStats[mKey][emotion.col];
+          const rowId = `award-row-${emotion.col}-${award.type}-${mKey}`;
+          const canvasId = `award-canvas-${emotion.col}-${award.type}-${mKey}`;
+          const containerId = `chart-container-${rowId}`;
+          
+          const rowEl = document.getElementById(rowId);
+          if (rowEl) {
+            rowEl.addEventListener('click', (e) => {
+              if (e.target.tagName.toLowerCase() === 'canvas') return;
+
+              const container = document.getElementById(containerId);
+              if (container.style.display === 'block') {
+                container.style.display = 'none';
+              } else {
+                container.style.display = 'block';
+                const canvas = document.getElementById(canvasId);
+                if (!canvas.chartInstance) {
+                  const savedData = localStorage.getItem(`brainwaveData_${mKey}`);
+                  if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    let songIdx = 1;
+                    if (award.type === 'max') songIdx = detail.maxSongIdx;
+                    else if (award.type === 'min') songIdx = detail.minSongIdx;
+                    else if (award.type === 'sum_high') songIdx = detail.bestSongIdx;
+                    else if (award.type === 'sum_low') songIdx = detail.worstSongIdx;
+                    
+                    const songObj = parsed.find(s => s.songNumber === songIdx);
+                    if (songObj && songObj.rawData && songObj.rawData[emotion.col]) {
+                      const rawTimeline = songObj.rawData[emotion.col];
+                      const labels = rawTimeline.map((_, i) => `${i}초`);
+                      const ctx = canvas.getContext('2d');
+                      
+                      const highlightSec = (award.type === 'max') ? detail.maxTime : (award.type === 'min' ? detail.minTime : -1);
+                      const chartColor = (award.type === 'max' || award.type === 'sum_high') ? '#30d158' : '#ff453a';
+                      
+                      canvas.chartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                          labels: labels,
+                          datasets: [{
+                            data: rawTimeline,
+                            borderColor: chartColor,
+                            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                            borderWidth: 1.5,
+                            tension: 0.3,
+                            pointRadius: rawTimeline.map((_, i) => i === highlightSec ? 5 : 0),
+                            pointBackgroundColor: rawTimeline.map((_, i) => i === highlightSec ? '#fff' : chartColor),
+                            pointBorderColor: '#000',
+                            pointBorderWidth: 1.5
+                          }]
+                        },
+                        options: {
+                          responsive: true,
+                          maintainAspectRatio: false,
+                          plugins: { 
+                            legend: { display: false },
+                            tooltip: {
+                              enabled: true,
+                              callbacks: {
+                                label: function(context) {
+                                  return `${emotion.title}: ${context.parsed.y.toFixed(2)}`;
+                                }
+                              }
+                            }
+                          },
+                          scales: {
+                            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } },
+                            y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 9 } } }
+                          }
+                        }
+                      });
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      });
+    });
+  }
 }
 
 // Initially show home screen
