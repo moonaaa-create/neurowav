@@ -372,10 +372,10 @@ function renderRadarGrid() {
         labels: SHORT_LABELS,
         datasets: [{
           data: dataVals,
-          backgroundColor: 'rgba(16, 185, 129, 0.4)',
-          borderColor: '#10b981',
-          pointBackgroundColor: '#10b981',
-          borderWidth: 1,
+          backgroundColor: 'rgba(10, 132, 255, 0.4)',
+          borderColor: '#0a84ff',
+          pointBackgroundColor: '#0a84ff',
+          borderWidth: 1.5,
           pointRadius: 0
         }]
       },
@@ -385,7 +385,7 @@ function renderRadarGrid() {
         scales: {
           r: {
             angleLines: { color: 'rgba(255,255,255,0.1)' }, grid: { color: 'rgba(255,255,255,0.1)' },
-            pointLabels: { display: true, color: 'rgba(255,255,255,0.7)', font: { size: 9, family: 'Outfit' } },
+            pointLabels: { display: true, color: 'rgba(255,255,255,0.7)', font: { size: 9, family: '-apple-system' } },
             ticks: { display: false }
           }
         }
@@ -454,7 +454,7 @@ function renderLineChart(song) {
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'top', labels: { color: '#f8fafc', font: { family: 'Outfit' } } } },
+      plugins: { legend: { position: 'top', labels: { color: '#f8fafc', font: { family: '-apple-system' } } } },
       scales: {
         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
         y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
