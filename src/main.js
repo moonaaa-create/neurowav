@@ -480,7 +480,28 @@ function renderLineChart(song) {
         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
         y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
       }
-    }
+    },
+    plugins: [{
+      id: 'hoverLine',
+      afterDraw: (chart) => {
+        if (chart.tooltip && chart.tooltip.getActiveElements().length > 0) {
+          const activeElement = chart.tooltip.getActiveElements()[0];
+          const chartCtx = chart.ctx;
+          const yAxis = chart.scales.y;
+          const xPixel = activeElement.element.x;
+          
+          chartCtx.save();
+          chartCtx.beginPath();
+          chartCtx.strokeStyle = '#ff453a'; // Red vertical tracking line
+          chartCtx.lineWidth = 1.5;
+          chartCtx.setLineDash([4, 4]); // Dashed line
+          chartCtx.moveTo(xPixel, yAxis.top);
+          chartCtx.lineTo(xPixel, yAxis.bottom);
+          chartCtx.stroke();
+          chartCtx.restore();
+        }
+      }
+    }]
   });
 }
 
