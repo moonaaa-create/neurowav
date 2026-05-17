@@ -61,11 +61,27 @@ app.innerHTML = `
       <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
         <div>
           <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">멤버별 대시보드 보기</h3>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-            <button id="btn-member1" class="hero-btn">김한주 님</button>
-            <button id="btn-member2" class="hero-btn">김용석 님</button>
-            <button id="btn-member3" class="hero-btn">문경수 님</button>
-            <button id="btn-member4" class="hero-btn">홍수민 님</button>
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
+            <!-- 문경수 -->
+            <div id="btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile1.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">문경수 님</span>
+            </div>
+            <!-- 김한주 -->
+            <div id="btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile2.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">김한주 님</span>
+            </div>
+            <!-- 김용석 -->
+            <div id="btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile3.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">김용석 님</span>
+            </div>
+            <!-- 홍수민 -->
+            <div id="btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1rem 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 130px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+              <img src="/profile4.png" style="width: 90px; height: 90px; border-radius: 12px; object-fit: cover; margin-bottom: 0.6rem; border: 1.5px solid rgba(255,255,255,0.15);">
+              <span style="font-size: 0.95rem; font-weight: 600; color: #fff;">홍수민 님</span>
+            </div>
           </div>
         </div>
         
@@ -83,12 +99,13 @@ app.innerHTML = `
   </div>
 
   <div id="dashboardScreen" class="screen">
-    <header class="dash-header">
+    <header class="dash-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+      <img id="headerProfileImg" src="/profile1.png" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
       <div class="user-info">
-        <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-right: 0.5rem;">
+        <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none;">
+          <option value="member3">문경수's Dashboard</option>
           <option value="member1">김한주's Dashboard</option>
           <option value="member2">김용석's Dashboard</option>
-          <option value="member3">문경수's Dashboard</option>
           <option value="member4">홍수민's Dashboard</option>
         </select>
       </div>
@@ -332,6 +349,14 @@ function loadDashboard() {
   
   dashboardScreen.classList.add('active');
   userData = JSON.parse(savedData);
+  
+  const headerProfileImg = document.getElementById('headerProfileImg');
+  if (headerProfileImg) {
+    if (currentUserId === 'member3') headerProfileImg.src = '/profile1.png';
+    else if (currentUserId === 'member1') headerProfileImg.src = '/profile2.png';
+    else if (currentUserId === 'member2') headerProfileImg.src = '/profile3.png';
+    else if (currentUserId === 'member4') headerProfileImg.src = '/profile4.png';
+  }
   
   renderRadarGrid();
   renderRankings();
@@ -706,11 +731,18 @@ function loadTeamComparison(type) {
             ? `onmouseover="this.style.backgroundColor='rgba(255,255,255,0.03)'" onmouseout="this.style.backgroundColor='transparent'"` 
             : '';
 
+          let profileImgSrc = '';
+          if (r.mKey === 'member3') profileImgSrc = '/profile1.png';
+          else if (r.mKey === 'member1') profileImgSrc = '/profile2.png';
+          else if (r.mKey === 'member2') profileImgSrc = '/profile3.png';
+          else if (r.mKey === 'member4') profileImgSrc = '/profile4.png';
+
           top3Html += `
             <div id="${rowId}" style="display: flex; flex-direction: column; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem; ${rowStyle}" ${hoverAttr}>
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+                <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center; gap: 8px;">
                   <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+                  <img src="${profileImgSrc}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);">
                   <span style="display: inline-block;">${MEMBERS[r.mKey]}</span>
                 </span>
                 <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
