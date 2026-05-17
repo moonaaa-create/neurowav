@@ -364,15 +364,27 @@ function renderRadarGrid() {
     const ctx = document.getElementById(`radar-${currentUserId}-${index}`).getContext('2d');
     const dataVals = TARGET_COLUMNS.map(col => song.averages[col]);
     
+    // Find the emotion with the highest average value
+    const maxValIdx = dataVals.indexOf(Math.max(...dataVals));
+    
+    const emotionColors = [
+      { border: '#3b82f6', bg: 'rgba(59, 130, 246, 0.35)' }, // Engagement (Blue)
+      { border: '#eab308', bg: 'rgba(234, 179, 8, 0.35)' },  // Interest (Yellow)
+      { border: '#ef4444', bg: 'rgba(239, 68, 68, 0.35)' },   // Excitement (Red)
+      { border: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.35)' },  // Stress (Purple)
+      { border: '#10b981', bg: 'rgba(16, 185, 129, 0.35)' }   // Relaxation (Green)
+    ];
+    const colorSet = emotionColors[maxValIdx];
+    
     new Chart(ctx, {
       type: 'radar',
       data: {
         labels: SHORT_LABELS,
         datasets: [{
           data: dataVals,
-          backgroundColor: 'rgba(10, 132, 255, 0.4)',
-          borderColor: '#0a84ff',
-          pointBackgroundColor: '#0a84ff',
+          backgroundColor: colorSet.bg,
+          borderColor: colorSet.border,
+          pointBackgroundColor: colorSet.border,
           borderWidth: 1.5,
           pointRadius: 0
         }]
