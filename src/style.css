@@ -218,6 +218,27 @@ button:hover { background: var(--accent-hover); transform: scale(0.98); }
   transform: translateY(-2px);
 }
 
+.floating-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+.floating-emoji {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0;
+  animation: floatUp linear infinite;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+}
+
 /* Updated Dashboard Layout */
 .dashboard-layout {
   display: grid;

@@ -40,8 +40,16 @@ const SHORT_LABELS = ['En', 'In', 'Ex', 'St', 'Re'];
 const app = document.querySelector('#app');
 
 app.innerHTML = `
-  <div id="homeScreen" class="screen active">
-    <div class="hero-section" style="text-align: center; padding: 6rem 1rem; animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1);">
+  <div id="homeScreen" class="screen active" style="position: relative; min-height: 80vh; justify-content: center;">
+    <div class="floating-bg">
+      <div class="floating-emoji" style="left: 10%; animation-duration: 15s; animation-delay: 0s;">🎵</div>
+      <div class="floating-emoji" style="left: 25%; animation-duration: 20s; animation-delay: 2s; font-size: 4rem;">🎹</div>
+      <div class="floating-emoji" style="left: 45%; animation-duration: 18s; animation-delay: 5s;">🎸</div>
+      <div class="floating-emoji" style="left: 65%; animation-duration: 22s; animation-delay: 1s; font-size: 5rem;">🧠</div>
+      <div class="floating-emoji" style="left: 80%; animation-duration: 16s; animation-delay: 4s;">🎧</div>
+      <div class="floating-emoji" style="left: 90%; animation-duration: 19s; animation-delay: 7s;">🎶</div>
+    </div>
+    <div class="hero-section" style="text-align: center; padding: 2rem 1rem; animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10; position: relative;">
       <h1 style="font-size: 5rem; margin-bottom: 1.5rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NeuroWav</h1>
       <p class="subtitle" style="font-size: 1.3rem; max-width: 600px; margin: 0 auto 3.5rem auto; line-height: 1.8;">
         <strong>2026학년도 1학기 자료시각화 과제</strong><br>
@@ -577,8 +585,9 @@ function loadTeamComparison() {
       results.forEach((r, idx) => {
         top3Html += `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
-            <span style="color: var(--text-primary); font-weight: 500;">
-              <span style="margin-right: 0.5rem; font-size: 1.2rem;">${medals[idx]}</span> ${MEMBERS[r.mKey]}
+            <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+              <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+              <span style="display: inline-block;">${MEMBERS[r.mKey]}</span>
             </span>
             <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
               ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
