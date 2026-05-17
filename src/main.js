@@ -36,7 +36,7 @@ const app = document.querySelector('#app');
 app.innerHTML = `
   <div id="setupScreen" class="screen active">
     <header>
-      <h1>Brainwave Dashboard</h1>
+      <h1>NeuroWav Dashboard</h1>
       <p class="subtitle">Upload brainwave data (Excel/CSV) for your team member</p>
     </header>
     
@@ -72,7 +72,7 @@ app.innerHTML = `
         <div class="album-art" id="albumArt">💿</div>
         <h2 id="songTitle">Select a Song</h2>
         <h3 id="songArtist">-</h3>
-        <p id="songDesc" class="song-desc">Click on a radar chart to view detailed brainwave trends.</p>
+        <p id="songDesc" class="song-desc">Click on a radar chart to view detailed NeuroWav trends.</p>
       </div>
 
       <!-- Right Panel: Radar Grid -->
@@ -83,7 +83,7 @@ app.innerHTML = `
       <!-- Bottom Panel: Detailed Line Chart -->
       <div class="panel line-chart-panel">
         <div class="chart-header">
-          <h3 id="lineChartTitle">Raw Brainwave Trends (Over Time)</h3>
+          <h3 id="lineChartTitle">Raw NeuroWav Trends (Over Time)</h3>
         </div>
         <div style="position: relative; height: calc(100% - 2rem); width: 100%;">
           <canvas id="lineChart"></canvas>
@@ -100,11 +100,11 @@ app.innerHTML = `
 
   <div id="teamScreen" class="screen">
     <header>
-      <h1>Team Comparison: Emotion Kings</h1>
-      <p class="subtitle">Who has the highest average across all songs?</p>
+      <h1>Team Comparison: NeuroWav Awards</h1>
+      <p class="subtitle">Peak and Total Mass Analysis across all team members</p>
     </header>
-    <div class="team-grid" id="teamGrid">
-      <!-- King cards injected here -->
+    <div class="team-awards-container" id="teamGrid" style="display: flex; flex-direction: column; gap: 2rem;">
+      <!-- Award sections injected here -->
     </div>
   </div>
 
@@ -468,60 +468,101 @@ function loadTeamComparison() {
   teamScreen.classList.add('active');
   teamGrid.innerHTML = '';
   
-  const teamAverages = {};
+  const teamStats = {};
+  let hasData = false;
   
-  // Calculate each member's overall average for each metric
+  // Calculate each member's overall stats for each metric
   Object.keys(MEMBERS).forEach(memberKey => {
     const saved = localStorage.getItem(`brainwaveData_${memberKey}`);
     if (saved) {
+      hasData = true;
       const parsed = JSON.parse(saved);
-      teamAverages[memberKey] = {};
+      teamStats[memberKey] = {};
+      
       TARGET_COLUMNS.forEach(col => {
-        const sum = parsed.reduce((acc, song) => acc + song.averages[col], 0);
-        teamAverages[memberKey][col] = sum / parsed.length;
+        let maxVal = -Infinity;
+        let minVal = Infinity;
+        let sumVal = 0;
+        
+        parsed.forEach(song => {
+          if (song.rawData && song.rawData[col]) {
+            song.rawData[col].forEach(val => {
+              if (val > maxVal) maxVal = val;
+              if (val < minVal) minVal = val;
+              sumVal += val;
+            });
+          }
+        });
+        
+        // Handle case where no data was processed
+        if (maxVal === -Infinity) maxVal = 0;
+        if (minVal === Infinity) minVal = 0;
+        
+        teamStats[memberKey][col] = { max: maxVal, min: minVal, sum: sumVal };
       });
     }
   });
   
-  if (Object.keys(teamAverages).length === 0) {
+  if (!hasData) {
     teamGrid.innerHTML = `<p style="text-align:center; width: 100%; color: #ef4444;">No data available. Please upload data for team members first.</p>`;
     return;
   }
 
-  const KINGS = [
-    { col: 'engagement', emoji: '🧠', title: '몰입 왕 (Engagement King)' },
-    { col: 'interest', emoji: '👀', title: '흥미 왕 (Interest King)' },
-    { col: 'excitement', emoji: '🔥', title: '활성 왕 (Excitement King)' },
-    { col: 'stress', emoji: '🤯', title: '스트레스 왕 (Stress King)' },
-    { col: 'relaxation', emoji: '🧘‍♂️', title: '이완 왕 (Relaxation King)' }
+  const EMOTIONS = [
+    { col: 'engagement', emoji: '🧠', title: '몰입 (Engagement)' },
+    { col: 'interest', emoji: '👀', title: '흥미 (Interest)' },
+    { col: 'excitement', emoji: '🔥', title: '활성 (Excitement)' },
+    { col: 'stress', emoji: '🤯', title: '스트레스 (Stress)' },
+    { col: 'relaxation', emoji: '🧘‍♂️', title: '이완 (Relaxation)' }
   ];
 
-  KINGS.forEach(kingInfo => {
-    let maxVal = -Infinity;
-    let winnerKey = null;
-    
-    let scoresHtml = '';
-    
-    Object.keys(teamAverages).forEach(mKey => {
-      const val = teamAverages[mKey][kingInfo.col];
-      scoresHtml += `<div><strong>${MEMBERS[mKey]}:</strong> ${val.toFixed(3)}</div>`;
-      
-      if (val > maxVal) {
-        maxVal = val;
-        winnerKey = mKey;
+  const AWARDS = [
+    { key: 'max', label: 'Highest Peak', findMax: true, desc: '가장 높은 수치를 기록' },
+    { key: 'sum', label: 'Total Mass (Highest)', findMax: true, desc: '가장 많이 누적됨' },
+    { key: 'min', label: 'Lowest Peak', findMax: false, desc: '가장 낮은 수치를 기록' },
+    { key: 'sum', label: 'Total Mass (Lowest)', findMax: false, desc: '가장 적게 누적됨' }
+  ];
+
+  let htmlContent = '';
+
+  EMOTIONS.forEach(emotion => {
+    htmlContent += `<div style="width: 100%; margin-bottom: 3rem;">
+      <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
+        ${emotion.emoji} ${emotion.title} 시상식
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">`;
+
+    AWARDS.forEach(award => {
+      let bestVal = award.findMax ? -Infinity : Infinity;
+      let winnerKey = null;
+      let scoresHtml = '';
+
+      Object.keys(teamStats).forEach(mKey => {
+        const val = teamStats[mKey][emotion.col][award.key];
+        scoresHtml += `<div><strong>${MEMBERS[mKey]}:</strong> ${val.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>`;
+        
+        if (award.findMax) {
+          if (val > bestVal) { bestVal = val; winnerKey = mKey; }
+        } else {
+          if (val < bestVal) { bestVal = val; winnerKey = mKey; }
+        }
+      });
+
+      if (winnerKey) {
+        htmlContent += `
+          <div class="king-card" style="padding: 1.5rem;">
+            <div class="king-title" style="font-size: 1rem; color: #fff;">${award.label}</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">${award.desc}</div>
+            <div class="king-name" style="font-size: 1.5rem;">${MEMBERS[winnerKey]}</div>
+            <div class="king-score" style="font-size: 1rem;">${bestVal.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>
+            <div class="king-details" style="padding: 0.8rem; font-size: 0.8rem;">${scoresHtml}</div>
+          </div>
+        `;
       }
     });
-    
-    if (winnerKey) {
-      teamGrid.innerHTML += `
-        <div class="king-card">
-          <div class="king-emoji">${kingInfo.emoji}</div>
-          <div class="king-title">${kingInfo.title}</div>
-          <div class="king-name">${MEMBERS[winnerKey]}</div>
-          <div class="king-score">${maxVal.toFixed(2)} pts</div>
-          <div class="king-details">${scoresHtml}</div>
-        </div>
-      `;
-    }
+
+    htmlContent += `</div></div>`;
   });
+
+  teamGrid.innerHTML = htmlContent;
 }
