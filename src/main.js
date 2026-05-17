@@ -520,22 +520,61 @@ function loadTeamComparison(type) {
       
       TARGET_COLUMNS.forEach(col => {
         let maxVal = -Infinity;
+        let maxSongTitle = '';
+        let maxSec = 0;
+        
         let minVal = Infinity;
+        let minSongTitle = '';
+        let minSec = 0;
+        
         let sumVal = 0;
+        
+        // To track which song contributed the most/least to the sum
+        let bestSongSum = -Infinity;
+        let bestSongTitle = '';
+        let worstSongSum = Infinity;
+        let worstSongTitle = '';
         
         parsed.forEach(song => {
           const sIdx = song.songNumber;
+          const meta = SONG_METADATA[sIdx - 1] || { title: `Song ${sIdx}` };
+          
+          let songSum = 0;
+          let songPoints = 0;
+          
           if (song.rawData && song.rawData[col]) {
-            song.rawData[col].forEach(val => {
-              if (val > maxVal) maxVal = val;
-              if (val < minVal) minVal = val;
+            song.rawData[col].forEach((val, secIdx) => {
+              if (val > maxVal) {
+                maxVal = val;
+                maxSongTitle = meta.title;
+                maxSec = secIdx;
+              }
+              if (val < minVal) {
+                minVal = val;
+                minSongTitle = meta.title;
+                minSec = secIdx;
+              }
               sumVal += val;
+              songSum += val;
+              songPoints++;
               
               if (songStats[sIdx] && val > songStats[sIdx][col].max) {
                 songStats[sIdx][col].max = val;
               }
             });
           }
+          
+          if (songPoints > 0) {
+            if (songSum > bestSongSum) {
+              bestSongSum = songSum;
+              bestSongTitle = meta.title;
+            }
+            if (songSum < worstSongSum) {
+              worstSongSum = songSum;
+              worstSongTitle = meta.title;
+            }
+          }
+          
           if (song.averages && song.averages[col] !== undefined && songStats[sIdx]) {
             songStats[sIdx][col].sum += song.averages[col];
             songStats[sIdx][col].count++;
@@ -546,7 +585,17 @@ function loadTeamComparison(type) {
         if (maxVal === -Infinity) maxVal = 0;
         if (minVal === Infinity) minVal = 0;
         
-        teamStats[memberKey][col] = { max: maxVal, min: minVal, sum: sumVal };
+        teamStats[memberKey][col] = {
+          max: maxVal,
+          maxSong: maxSongTitle,
+          maxTime: maxSec,
+          min: minVal,
+          minSong: minSongTitle,
+          minTime: minSec,
+          sum: sumVal,
+          bestSong: bestSongTitle,
+          worstSong: worstSongTitle
+        };
       });
     }
   });
@@ -565,10 +614,10 @@ function loadTeamComparison(type) {
   ];
 
   const AWARDS = [
-    { key: 'max', label: 'Highest Peak', findMax: true, desc: '가장 높은 수치를 기록' },
-    { key: 'sum', label: 'Total Mass (Highest)', findMax: true, desc: '가장 많이 누적됨' },
-    { key: 'min', label: 'Lowest Peak', findMax: false, desc: '가장 낮은 수치를 기록' },
-    { key: 'sum', label: 'Total Mass (Lowest)', findMax: false, desc: '가장 적게 누적됨' }
+    { key: 'max', label: 'Highest Peak', findMax: true, desc: '가장 높은 수치를 기록', type: 'max' },
+    { key: 'sum', label: 'Total Mass (Highest)', findMax: true, desc: '가장 많이 누적됨', type: 'sum_high' },
+    { key: 'min', label: 'Lowest Peak', findMax: false, desc: '가장 낮은 수치를 기록', type: 'min' },
+    { key: 'sum', label: 'Total Mass (Lowest)', findMax: false, desc: '가장 적게 누적됨', type: 'sum_low' }
   ];
 
   let htmlContent = '';
@@ -586,7 +635,8 @@ function loadTeamComparison(type) {
         
         Object.keys(teamStats).forEach(mKey => {
           const val = teamStats[mKey][emotion.col][award.key];
-          results.push({ mKey, val });
+          const detail = teamStats[mKey][emotion.col];
+          results.push({ mKey, val, detail });
         });
 
         if (award.findMax) {
@@ -599,15 +649,31 @@ function loadTeamComparison(type) {
         
         let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
         results.forEach((r, idx) => {
+          let detailText = '';
+          if (award.type === 'max') {
+            detailText = `${r.detail.maxSong} (약 ${r.detail.maxTime}초 부근)`;
+          } else if (award.type === 'min') {
+            detailText = `${r.detail.minSong} (약 ${r.detail.minTime}초 부근)`;
+          } else if (award.type === 'sum_high') {
+            detailText = `최다 기여 곡: ${r.detail.bestSong}`;
+          } else if (award.type === 'sum_low') {
+            detailText = `최소 기여 곡: ${r.detail.worstSong}`;
+          }
+
           top3Html += `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
-              <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
-                <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
-                <span style="display: inline-block;">${MEMBERS[r.mKey]}</span>
-              </span>
-              <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
-                ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
-              </span>
+            <div style="display: flex; flex-direction: column; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: var(--text-primary); font-weight: 500; display: flex; align-items: center;">
+                  <span style="width: 28px; text-align: left; font-size: 1.2rem; display: inline-block;">${medals[idx]}</span> 
+                  <span style="display: inline-block;">${MEMBERS[r.mKey]}</span>
+                </span>
+                <span style="color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+                  ${r.val.toLocaleString(undefined, {maximumFractionDigits: 2})}
+                </span>
+              </div>
+              <div style="font-size: 0.78rem; color: #8a99ad; margin-left: 28px; margin-top: 0.15rem; font-weight: 400;">
+                ${detailText}
+              </div>
             </div>`;
         });
         // Remove last margin/border for clean UI
