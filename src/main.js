@@ -571,10 +571,10 @@ function loadTeamComparison() {
         results.sort((a, b) => a.val - b.val);
       }
 
-      const medals = ['🥇', '🥈', '🥉'];
+      const medals = ['🥇', '🥈', '🥉', '🏅'];
       
       let top3Html = '<div style="margin-top: 1rem; text-align: left; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-md); font-size: 0.95rem;">';
-      results.slice(0, 3).forEach((r, idx) => {
+      results.forEach((r, idx) => {
         top3Html += `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; border-bottom: 0.5px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
             <span style="color: var(--text-primary); font-weight: 500;">
