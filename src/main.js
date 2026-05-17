@@ -183,8 +183,8 @@ function switchScreen(screenId) {
   
   if (screenId === 'homeScreen') { homeScreen.classList.add('active'); }
   if (screenId === 'dashboardScreen') { navDashboard.classList.add('active'); loadDashboard(); }
-  if (screenId === 'emotivAwards') { navTeamEmotiv.classList.add('active'); loadTeamComparison('emotiv'); }
-  if (screenId === 'musicAwards') { navTeamMusic.classList.add('active'); loadTeamComparison('music'); }
+  if (screenId === 'emotivAwards') { navTeamEmotiv.classList.add('active'); loadTeamComparison('emotiv'); triggerConfetti(); }
+  if (screenId === 'musicAwards') { navTeamMusic.classList.add('active'); loadTeamComparison('music'); triggerConfetti(); }
 }
 
 navDashboard.addEventListener('click', () => switchScreen('dashboardScreen'));
@@ -699,6 +699,72 @@ function loadTeamComparison(type) {
   let htmlContent = '';
 
   if (type === 'emotiv') {
+    // Inject the amazing MBTI profiles first!
+    htmlContent += `
+      <div style="width: 100%; margin-bottom: 3.5rem; text-align: center; animation: fadeIn 0.6s ease-out;">
+        <h2 style="font-size: 1.6rem; color: #fff; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          🔮 재미로 보는 조원들의 뇌파 MBTI (Neuro-MBTI)
+        </h2>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.8rem;">평균 뇌파 데이터를 분석하여 도출한 AI 기반의 성향 프로필</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; width: 100%;">
+          
+          <!-- 문경수 -->
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(10, 132, 255, 0.15); background: rgba(10, 132, 255, 0.02); transition: all 0.3s ease;">
+            <img src="/profile1.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #0a84ff; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
+            <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">문경수 님</h3>
+            <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">휴먼AI공학전공 | 21학번</span>
+            <div style="background: rgba(10, 132, 255, 0.15); color: #64d2ff; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(10, 132, 255, 0.3);">
+              🧠 초집중 AI 마스터 (A.I.F.C)
+            </div>
+            <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
+              인공지능 연구원다운 탄탄한 뇌지컬! 강렬하고 빠른 곡에서도 뇌파의 흔들림 없이 극도의 몰입도를 유지하는 '인간 AI'의 면모를 보여줍니다. 몰입 최고조 시 뇌 효율성 극대화!
+            </p>
+          </div>
+          
+          <!-- 김한주 -->
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(48, 209, 88, 0.15); background: rgba(48, 209, 88, 0.02); transition: all 0.3s ease;">
+            <img src="/profile2.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #30d158; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(48, 209, 88, 0.3);">
+            <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">김한주 님</h3>
+            <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">음악학과 작곡과 | 21학번</span>
+            <div style="background: rgba(48, 209, 88, 0.15); color: #30d158; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(48, 209, 88, 0.3);">
+              🧘‍♂️ 만사태평 감성 음유시인 (Z.E.N.S)
+            </div>
+            <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
+              음악학과 대표 작곡가답게 어떤 복잡한 멜로디가 나와도 스트레스 반응 최소화! 음악 속에서 가장 편안하고 스트레스 지수가 낮아지는 완벽한 이완도 끝판왕, 걸어 다니는 명상 숲 수준입니다.
+            </p>
+          </div>
+          
+          <!-- 김용석 -->
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(255, 159, 10, 0.15); background: rgba(255, 159, 10, 0.02); transition: all 0.3s ease;">
+            <img src="/profile3.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #ff9f0a; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(255, 159, 10, 0.3);">
+            <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">김용석 님</h3>
+            <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">자유전공학부 인문 | 26학번</span>
+            <div style="background: rgba(255, 159, 10, 0.15); color: #ff9f0a; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(255, 159, 10, 0.3);">
+              🔥 아드레날린 활성 폭발러 (E.X.C.I)
+            </div>
+            <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
+              지적인 인문학도 뒤에 감춰진 폭발적인 내적 댄스 본능! 웅장한 록 멜로디가 시작되면 뇌파 활성도가 성층권을 뚫고 날아갑니다. 열정적이며 창의적인 에너지를 내면에 품고 있습니다.
+            </p>
+          </div>
+          
+          <!-- 홍수민 -->
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(191, 90, 242, 0.15); background: rgba(191, 90, 242, 0.02); transition: all 0.3s ease;">
+            <img src="/profile4.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #bf5af2; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(191, 90, 242, 0.3);">
+            <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">홍수민 님</h3>
+            <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">조형예술학과 | 25학번</span>
+            <div style="background: rgba(191, 90, 242, 0.15); color: #bf5af2; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(191, 90, 242, 0.3);">
+              👀 예술적 호기심 탐험가 (I.N.T.R)
+            </div>
+            <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
+              시각 예술가다운 고도의 관찰력과 호기심! 신선한 멜로디나 특이한 음역대가 노출될 때마다 흥미도가 수직으로 상승합니다. 사소한 사운드의 디테일까지 기가 막히게 캐치해 냅니다.
+            </p>
+          </div>
+          
+        </div>
+      </div>
+    `;
+
     EMOTIONS.forEach(emotion => {
       htmlContent += `<div style="width: 100%; margin-bottom: 3rem;">
         <h2 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--accent-color);">
@@ -1007,6 +1073,72 @@ function loadTeamComparison(type) {
       });
     });
   }
+}
+
+// Celebration Confetti effect when entering awards
+function triggerConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '9999';
+  document.body.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const colors = ['#0a84ff', '#ff9f0a', '#30d158', '#ff375f', '#bf5af2', '#ff453a'];
+  const confettiCount = 120;
+  const particles = [];
+  
+  for (let i = 0; i < confettiCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 5 + 3,
+      d: Math.random() * confettiCount,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 8 - 4,
+      tiltAngleIncremental: Math.random() * 0.05 + 0.02,
+      tiltAngle: 0
+    });
+  }
+  
+  let animationId;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let active = false;
+    
+    particles.forEach((p) => {
+      p.tiltAngle += p.tiltAngleIncremental;
+      p.y += (Math.cos(p.d) + 2.5 + p.r / 2) / 2;
+      p.x += Math.sin(p.tiltAngle);
+      p.tilt = Math.sin(p.tiltAngle - p.r / 2) * 12;
+      
+      if (p.y <= canvas.height) {
+        active = true;
+      }
+      
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+      ctx.stroke();
+    });
+    
+    if (active) {
+      animationId = requestAnimationFrame(draw);
+    } else {
+      document.body.removeChild(canvas);
+    }
+  }
+  
+  draw();
 }
 
 // Initially show home screen
