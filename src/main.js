@@ -42,12 +42,13 @@ const app = document.querySelector('#app');
 app.innerHTML = `
   <div id="homeScreen" class="screen active" style="position: relative; min-height: 80vh; justify-content: center;">
     <div class="floating-bg">
-      <div class="floating-emoji" style="left: 10%; animation-duration: 15s; animation-delay: 0s;">🎵</div>
-      <div class="floating-emoji" style="left: 25%; animation-duration: 20s; animation-delay: 2s; font-size: 4rem;">🎹</div>
-      <div class="floating-emoji" style="left: 45%; animation-duration: 18s; animation-delay: 5s;">🎸</div>
-      <div class="floating-emoji" style="left: 65%; animation-duration: 22s; animation-delay: 1s; font-size: 5rem;">🧠</div>
-      <div class="floating-emoji" style="left: 80%; animation-duration: 16s; animation-delay: 4s;">🎧</div>
-      <div class="floating-emoji" style="left: 90%; animation-duration: 19s; animation-delay: 7s;">🎶</div>
+      <div class="floating-emoji" style="left: 10%; top: 20%; animation: floatWander1 15s ease-in-out infinite;">🎵</div>
+      <div class="floating-emoji" style="left: 30%; top: 60%; animation: floatWander2 20s ease-in-out infinite; font-size: 4rem;">🎹</div>
+      <div class="floating-emoji" style="left: 50%; top: 30%; animation: floatWander1 18s ease-in-out infinite;">🎸</div>
+      <div class="floating-emoji" style="left: 70%; top: 70%; animation: floatWander2 22s ease-in-out infinite; font-size: 5rem;">🧠</div>
+      <div class="floating-emoji" style="left: 85%; top: 25%; animation: floatWander1 16s ease-in-out infinite;">🎧</div>
+      <div class="floating-emoji" style="left: 15%; top: 80%; animation: floatWander2 19s ease-in-out infinite;">🎶</div>
+      <div class="floating-emoji" style="left: 50%; top: 80%; animation: floatWander1 17s ease-in-out infinite; font-size: 3.5rem;">⚡</div>
     </div>
     <div class="hero-section" style="text-align: center; padding: 2rem 1rem; animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10; position: relative;">
       <h1 style="font-size: 5rem; margin-bottom: 1.5rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NeuroWav</h1>
@@ -170,6 +171,42 @@ document.querySelector('.nav-logo').addEventListener('click', () => switchScreen
 });
 
 document.getElementById('btn-awards').addEventListener('click', () => switchScreen('teamScreen'));
+
+// Emoji Dragging Logic
+let activeEmoji = null;
+let emojiOffsetX = 0;
+let emojiOffsetY = 0;
+
+document.querySelectorAll('.floating-emoji').forEach(emoji => {
+  emoji.addEventListener('mousedown', (e) => {
+    activeEmoji = emoji;
+    const rect = emoji.getBoundingClientRect();
+    emojiOffsetX = e.clientX - rect.left;
+    emojiOffsetY = e.clientY - rect.top;
+    
+    emoji.style.animation = 'none'; // Stop floating
+    emoji.style.transform = 'none';
+    emoji.style.left = rect.left + 'px';
+    emoji.style.top = rect.top + 'px';
+    emoji.style.opacity = '0.8';
+    emoji.style.zIndex = '1000';
+  });
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!activeEmoji) return;
+  activeEmoji.style.left = (e.clientX - emojiOffsetX) + 'px';
+  activeEmoji.style.top = (e.clientY - emojiOffsetY) + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  if (activeEmoji) {
+    activeEmoji.style.opacity = '0.2';
+    activeEmoji.style.zIndex = '';
+    // Emojis stay where dropped (animation remains 'none')
+    activeEmoji = null;
+  }
+});
 
 // Global State
 let currentUserId = 'member1';
