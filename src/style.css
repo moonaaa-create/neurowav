@@ -824,3 +824,75 @@ button:hover { background: var(--accent-hover); transform: scale(0.98); }
   border-radius: 2px;
   transition: width 0.5s ease-out;
 }
+
+/* ==========================================
+   7. Team Average Switch & Comparison Panel
+   ========================================== */
+
+/* Neon Switch Slider */
+.neon-switch-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.neon-switch-slider {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neon-switch-slider::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 2px;
+  bottom: 2px;
+  background: #cbd5e1;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input[type="checkbox"]:checked + .neon-switch-slider {
+  background: rgba(255, 215, 0, 0.25);
+  border-color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+input[type="checkbox"]:checked + .neon-switch-slider::before {
+  transform: translateX(18px);
+  background: #ffd700;
+  box-shadow: 0 0 8px #ffd700;
+}
+
+/* Neo Dropdown Select Styles */
+.neo-select {
+  transition: all 0.3s;
+}
+
+.neo-select:hover {
+  border-color: rgba(255, 215, 0, 0.5) !important;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2) !important;
+}
+
+.neo-select:focus {
+  border-color: #ffd700 !important;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4) !important;
+}
+
+/* Team Average Compare Panel styling */
+.team-average-compare-panel {
+  background: rgba(18, 18, 24, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+}
+

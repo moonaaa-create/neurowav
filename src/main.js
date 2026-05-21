@@ -227,9 +227,20 @@ app.innerHTML = `
             <div id="songAnalysisArtist" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Artist</div>
           </div>
           
-          <div class="mini-toggle-container">
-            <button id="btnSongChartRadar" class="mini-toggle-btn active">🕸️ Radar Overlap</button>
-            <button id="btnSongChartBar" class="mini-toggle-btn">📊 Grouped Bar</button>
+          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <!-- Team Average Toggle Switch -->
+            <label class="neon-switch-container" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="chkShowTeamAverage" checked>
+              <span class="neon-switch-slider"></span>
+              <span style="font-size: 0.85rem; font-weight: 600; color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.4); display: flex; align-items: center; gap: 0.3rem;">
+                👥 Show Team Average
+              </span>
+            </label>
+
+            <div class="mini-toggle-container">
+              <button id="btnSongChartRadar" class="mini-toggle-btn active">🕸️ Radar Overlap</button>
+              <button id="btnSongChartBar" class="mini-toggle-btn">📊 Grouped Bar</button>
+            </div>
           </div>
         </div>
 
@@ -247,6 +258,28 @@ app.innerHTML = `
           </h3>
           <div class="insight-grid" id="insightGrid">
             <!-- Dynamic insight cards for each 5 metrics -->
+          </div>
+        </div>
+
+        <!-- 13-Track Team Averages Ranking Panel -->
+        <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div class="compare-header-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem;">
+            <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+              📊 13-Track Team Averages Ranking
+            </h3>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">Select Metric:</span>
+              <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                <option value="engagement">몰입도 (Engagement)</option>
+                <option value="interest">흥미도 (Interest)</option>
+                <option value="excitement">활성도 (Excitement)</option>
+                <option value="stress">스트레스 (Stress)</option>
+                <option value="relaxation">이완도 (Relaxation)</option>
+              </select>
+            </div>
+          </div>
+          <div style="position: relative; height: 380px; width: 100%;">
+            <canvas id="songTeamAverageChart"></canvas>
           </div>
         </div>
       </div>
@@ -1572,6 +1605,8 @@ function renderCompareChart() {
 let currentSongAnalysisIndex = 0;
 let currentSongAnalysisChartType = 'radar';
 let songAnalysisChartInstance = null;
+let songTeamAverageChartInstance = null;
+let showTeamAverage = true;
 let isSongAnalysisInitialized = false;
 
 function loadSongAnalysis() {
@@ -1599,22 +1634,40 @@ function loadSongAnalysis() {
   if (!isSongAnalysisInitialized) {
     const btnRadar = document.getElementById('btnSongChartRadar');
     const btnBar = document.getElementById('btnSongChartBar');
+    const chkTeamAvg = document.getElementById('chkShowTeamAverage');
+    const selectMetric = document.getElementById('compareSongMetricSelect');
     
     if (btnRadar && btnBar) {
       btnRadar.addEventListener('click', () => {
         btnRadar.classList.add('active');
         btnBar.classList.remove('active');
         currentSongAnalysisChartType = 'radar';
-        renderSongCompareChart(currentSongAnalysisIndex, 'radar');
+        renderSongCompareChart(currentSongAnalysisIndex, currentSongAnalysisChartType);
       });
       
       btnBar.addEventListener('click', () => {
         btnBar.classList.add('active');
         btnRadar.classList.remove('active');
         currentSongAnalysisChartType = 'bar';
-        renderSongCompareChart(currentSongAnalysisIndex, 'bar');
+        renderSongCompareChart(currentSongAnalysisIndex, currentSongAnalysisChartType);
       });
     }
+
+    if (chkTeamAvg) {
+      // Set the initial checkbox state from our global variable
+      chkTeamAvg.checked = showTeamAverage;
+      chkTeamAvg.addEventListener('change', (e) => {
+        showTeamAverage = e.target.checked;
+        renderSongCompareChart(currentSongAnalysisIndex, currentSongAnalysisChartType);
+      });
+    }
+
+    if (selectMetric) {
+      selectMetric.addEventListener('change', (e) => {
+        render13TracksTeamAverageChart(e.target.value);
+      });
+    }
+    
     isSongAnalysisInitialized = true;
   }
 
@@ -1645,6 +1698,11 @@ function selectSongForAnalysis(index) {
 
   // Compute AI insights
   renderAIEmotionInsights(index);
+
+  // Render 13-track Team Averages ranking chart based on current metric selection
+  const selectMetric = document.getElementById('compareSongMetricSelect');
+  const currentMetric = selectMetric ? selectMetric.value : 'engagement';
+  render13TracksTeamAverageChart(currentMetric);
 }
 
 function renderSongCompareChart(songIndex, chartType) {
@@ -1697,6 +1755,51 @@ function renderSongCompareChart(songIndex, chartType) {
     }
   });
 
+  // Calculate & Add Team Average if toggled active
+  if (showTeamAverage) {
+    const teamAvgVals = TARGET_COLUMNS.map(col => {
+      let sum = 0;
+      let count = 0;
+      memberList.forEach(mId => {
+        const savedData = localStorage.getItem(`brainwaveData_${mId}`);
+        if (savedData) {
+          const memberData = JSON.parse(savedData);
+          const songData = memberData[songIndex];
+          if (songData) {
+            sum += songData.averages[col];
+            count++;
+          }
+        }
+      });
+      return count > 0 ? (sum / count) : 0;
+    });
+
+    if (chartType === 'radar') {
+      datasets.push({
+        label: "👥 조원 평균 (Team Avg)",
+        data: teamAvgVals,
+        borderColor: '#ffd700',
+        backgroundColor: 'rgba(255, 215, 0, 0.15)',
+        borderWidth: 3.5, // Thicker border for prominence
+        pointBackgroundColor: '#ffd700',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#ffd700',
+        order: -1 // Bring to front
+      });
+    } else {
+      datasets.push({
+        label: "👥 조원 평균 (Team Avg)",
+        data: teamAvgVals,
+        borderColor: '#ffd700',
+        backgroundColor: 'rgba(255, 215, 0, 0.75)',
+        borderWidth: 2,
+        borderRadius: 4,
+        order: -1
+      });
+    }
+  }
+
   const chartOptions = chartType === 'radar' ? {
     responsive: true,
     maintainAspectRatio: false,
@@ -1740,6 +1843,130 @@ function renderSongCompareChart(songIndex, chartType) {
       datasets: datasets
     },
     options: chartOptions
+  });
+}
+
+function render13TracksTeamAverageChart(metric) {
+  const canvas = document.getElementById('songTeamAverageChart');
+  if (!canvas) return;
+
+  if (songTeamAverageChartInstance) {
+    songTeamAverageChartInstance.destroy();
+  }
+
+  const ctx = canvas.getContext('2d');
+  const memberList = ['member3', 'member1', 'member2', 'member4'];
+
+  // Calculate team averages for all 13 songs
+  const songAverages = SONG_METADATA.map((song, songIdx) => {
+    let sum = 0;
+    let count = 0;
+
+    memberList.forEach(mId => {
+      const savedData = localStorage.getItem(`brainwaveData_${mId}`);
+      if (savedData) {
+        const memberData = JSON.parse(savedData);
+        const songData = memberData[songIdx];
+        if (songData) {
+          sum += songData.averages[metric];
+          count++;
+        }
+      }
+    });
+
+    const avgVal = count > 0 ? (sum / count) : 0;
+    return {
+      index: songIdx,
+      title: song.title,
+      cover: song.cover || '🎵',
+      value: avgVal
+    };
+  });
+
+  // Sort descending by value (Ranking style)
+  songAverages.sort((a, b) => b.value - a.value);
+
+  const labels = songAverages.map(item => `${item.cover} ${item.title}`);
+  const dataVals = songAverages.map(item => item.value);
+
+  // We will highlight the currently active song in the rankings with a golden glow!
+  const bgColors = songAverages.map(item => {
+    if (item.index === currentSongAnalysisIndex) {
+      return 'rgba(255, 215, 0, 0.85)'; // Active song: glowing gold
+    }
+    return 'rgba(191, 90, 242, 0.35)'; // Non-active songs: cool violet
+  });
+
+  const borderColors = songAverages.map(item => {
+    if (item.index === currentSongAnalysisIndex) {
+      return '#ffd700'; // Gold border
+    }
+    return '#bf5af2'; // Purple border
+  });
+
+  const metricKo = LABELS_KO[TARGET_COLUMNS.indexOf(metric)];
+
+  songTeamAverageChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: `👥 4인 합산 평균 (${metricKo})`,
+        data: dataVals,
+        backgroundColor: bgColors,
+        borderColor: borderColors,
+        borderWidth: 1.5,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y', // Horizontal Bar Chart
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          min: 0,
+          max: 1.0,
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#94a3b8' }
+        },
+        y: {
+          grid: { display: false },
+          ticks: {
+            color: (context) => {
+              const index = context.index;
+              if (songAverages[index] && songAverages[index].index === currentSongAnalysisIndex) {
+                return '#ffd700';
+              }
+              return '#f8fafc';
+            },
+            font: (context) => {
+              const index = context.index;
+              const isActive = songAverages[index] && songAverages[index].index === currentSongAnalysisIndex;
+              return {
+                family: '-apple-system',
+                size: 11,
+                weight: isActive ? '700' : '500'
+              };
+            }
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          enabled: true,
+          callbacks: {
+            label: function(context) {
+              const val = context.raw;
+              return ` 👥 조원 평균 ${metricKo}: ${Math.round(val * 100)}%`;
+            }
+          }
+        }
+      }
+    }
   });
 }
 
