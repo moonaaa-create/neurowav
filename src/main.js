@@ -94,6 +94,7 @@ app.innerHTML = `
         <div>
           <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">종합 비교 및 시상식</h3>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+            <button id="btn-song-analysis" class="hero-btn" style="background: linear-gradient(135deg, #bf5af2, #0a84ff); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(191, 90, 242, 0.3);">🎵 Song Dashboard</button>
             <button id="btn-awards-emotiv" class="hero-btn" style="background: linear-gradient(135deg, #ff9f0a, #ff375f); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 55, 95, 0.3);">🧠 Awards - Emotiv</button>
             <button id="btn-awards-music" class="hero-btn" style="background: linear-gradient(135deg, #0a84ff, #30d158); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(48, 209, 88, 0.3);">🎵 Awards - Music</button>
           </div>
@@ -103,22 +104,29 @@ app.innerHTML = `
   </div>
 
   <div id="dashboardScreen" class="screen">
-    <header class="dash-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-      <img id="headerProfileImg" src="/profile1.png" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-      <div class="user-info">
-        <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
-          <option value="member3">문경수's Dashboard</option>
-          <option value="member1">김한주's Dashboard</option>
-          <option value="member2">김용석's Dashboard</option>
-          <option value="member4">홍수민's Dashboard</option>
-        </select>
-        <div id="headerMemberInfo" style="font-size: 0.82rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-color); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+      <header class="dash-header" style="display: flex; align-items: center; gap: 1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 0;">
+        <img id="headerProfileImg" src="/profile1.png" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+        <div class="user-info">
+          <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
+            <option value="member3">문경수's Dashboard</option>
+            <option value="member1">김한주's Dashboard</option>
+            <option value="member2">김용석's Dashboard</option>
+            <option value="member4">홍수민's Dashboard</option>
+          </select>
+          <div id="headerMemberInfo" style="font-size: 0.82rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
+        </div>
+      </header>
+      
+      <div class="toggle-switch-container">
+        <button id="btnViewPersonal" class="toggle-btn active">👤 개인 분석</button>
+        <button id="btnViewComparative" class="toggle-btn">👥 조원 비교</button>
       </div>
-    </header>
+    </div>
 
     <div class="dashboard-layout">
       <!-- Left Panel: Radar Grid + Song Info Merged -->
-      <div class="panel radar-grid-panel">
+      <div class="panel radar-grid-panel" id="personalRadarPanel">
         <div class="radar-grid" id="radarGrid">
           <div class="song-info-inline">
             <div class="album-art" id="albumArt">💿</div>
@@ -126,13 +134,50 @@ app.innerHTML = `
               <h2 id="songTitle">Select a Song</h2>
               <h3 id="songArtist">-</h3>
               <p id="songDesc" class="song-desc" style="margin-bottom: 0.5rem; display: none;"></p>
-              <a id="spotifyLink" href="#" target="_blank" style="display: none; align-items: center; gap: 0.5rem; color: #1ed760; font-size: 0.85rem; font-weight: 600; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(30,215,96,0.1); border-radius: 20px; width: fit-content; transition: all 0.2s;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-                Listen on Spotify
-              </a>
+              
+              <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <a id="spotifyLink" href="#" target="_blank" style="display: none; align-items: center; gap: 0.5rem; color: #1ed760; font-size: 0.85rem; font-weight: 600; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(30,215,96,0.1); border-radius: 20px; transition: all 0.2s;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                  Listen on Spotify
+                </a>
+              </div>
+
+              <!-- Interactive Mock Audio Player -->
+              <div class="mock-player" id="mockAudioPlayer" style="display: none;">
+                <button id="playerPlayBtn" class="player-btn">▶ Play</button>
+                <button id="playerStopBtn" class="player-btn">■ Stop</button>
+                <div class="player-progress-container" id="playerProgressContainer">
+                  <div class="player-progress-bar" id="playerProgressBar"></div>
+                </div>
+                <span class="player-time" id="playerTime">00:00</span>
+                <!-- Equalizer visualizer -->
+                <div class="eq-container" id="playerEq">
+                  <div class="eq-bar"></div>
+                  <div class="eq-bar"></div>
+                  <div class="eq-bar"></div>
+                  <div class="eq-bar"></div>
+                </div>
+              </div>
             </div>
           </div>
           <!-- Radar items injected here -->
+        </div>
+      </div>
+
+      <!-- Left Panel (Comparative Mode): Multi-user Line Chart -->
+      <div class="panel comparison-panel" id="comparativePanel" style="display: none; grid-column: 1 / 2; grid-row: 1 / 2;">
+        <div class="comparison-selector-panel">
+          <span style="font-weight: 600; font-size: 0.95rem;">👥 조원 전체 감정 비교</span>
+          <select id="compareMetricSelect">
+            <option value="engagement">🧠 몰입도 (Engagement)</option>
+            <option value="interest">👀 흥미도 (Interest)</option>
+            <option value="excitement">🔥 활성도 (Excitement)</option>
+            <option value="stress">🤯 스트레스 (Stress)</option>
+            <option value="relaxation">🧘‍♂️ 이완도 (Relaxation)</option>
+          </select>
+        </div>
+        <div style="position: relative; height: 350px; width: 100%;">
+          <canvas id="compareChart"></canvas>
         </div>
       </div>
 
@@ -154,6 +199,60 @@ app.innerHTML = `
     </div>
   </div>
 
+  <div id="songAnalysisScreen" class="screen">
+    <header class="dash-header" style="margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-color); padding-bottom: 1rem;">
+      <div class="user-info" style="display: flex; flex-direction: column; gap: 0.2rem;">
+        <span style="color: var(--accent-color); font-size: 1.5rem; font-weight: 700;">🎵 Song Dashboard</span>
+        <div style="font-size: 0.82rem; color: var(--text-secondary);">Select a song from the track list to compare 4 members' emotional responses in real-time.</div>
+      </div>
+    </header>
+
+    <div class="song-analysis-layout">
+      <!-- Left Panel: 13 Songs Selection Card List -->
+      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; max-height: 800px;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          💿 Tracks <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">(13 total)</span>
+        </h3>
+        <div class="song-card-list" id="songCardList">
+          <!-- Dynamically populated song cards -->
+        </div>
+      </div>
+
+      <!-- Right Panel: Visualizer & AI Summary -->
+      <div class="song-analysis-main">
+        <!-- Chart Controls -->
+        <div class="chart-control-bar">
+          <div style="display: flex; flex-direction: column; gap: 0.2rem; min-width: 0;">
+            <h2 id="songAnalysisTitle" style="font-size: 1.4rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Song Title</h2>
+            <div id="songAnalysisArtist" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Artist</div>
+          </div>
+          
+          <div class="mini-toggle-container">
+            <button id="btnSongChartRadar" class="mini-toggle-btn active">🕸️ Radar Overlap</button>
+            <button id="btnSongChartBar" class="mini-toggle-btn">📊 Grouped Bar</button>
+          </div>
+        </div>
+
+        <!-- Big Comparison Chart Panel -->
+        <div class="panel" style="position: relative; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 420px; width: 100%;">
+          <div style="position: relative; height: 380px; width: 100%; max-width: 650px;">
+            <canvas id="songAnalysisChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Emotional Insight Panel (AI Summary) -->
+        <div class="panel ai-insight-panel" style="padding: 1.5rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+            🧠 Emotional Metrics & Top Responders
+          </h3>
+          <div class="insight-grid" id="insightGrid">
+            <!-- Dynamic insight cards for each 5 metrics -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="teamScreen" class="screen">
     <header class="team-header">
       <h1 id="awardsHeaderTitle">🏆 NeuroWav Awards</h1>
@@ -171,10 +270,12 @@ app.innerHTML = `
 `;
 
 const navDashboard = document.getElementById('navDashboard');
+const navSongAnalysis = document.getElementById('navSongAnalysis');
 const navTeamEmotiv = document.getElementById('navTeamEmotiv');
 const navTeamMusic = document.getElementById('navTeamMusic');
 const homeScreen = document.getElementById('homeScreen');
 const dashboardScreen = document.getElementById('dashboardScreen');
+const songAnalysisScreen = document.getElementById('songAnalysisScreen');
 const teamScreen = document.getElementById('teamScreen');
 
 function switchScreen(screenId) {
@@ -183,11 +284,13 @@ function switchScreen(screenId) {
   
   if (screenId === 'homeScreen') { homeScreen.classList.add('active'); }
   if (screenId === 'dashboardScreen') { navDashboard.classList.add('active'); loadDashboard(); }
+  if (screenId === 'songAnalysis') { navSongAnalysis.classList.add('active'); songAnalysisScreen.classList.add('active'); loadSongAnalysis(); triggerConfetti(); }
   if (screenId === 'emotivAwards') { navTeamEmotiv.classList.add('active'); loadTeamComparison('emotiv'); triggerConfetti(); }
   if (screenId === 'musicAwards') { navTeamMusic.classList.add('active'); loadTeamComparison('music'); triggerConfetti(); }
 }
 
 navDashboard.addEventListener('click', () => switchScreen('dashboardScreen'));
+navSongAnalysis.addEventListener('click', () => switchScreen('songAnalysis'));
 navTeamEmotiv.addEventListener('click', () => switchScreen('emotivAwards'));
 navTeamMusic.addEventListener('click', () => switchScreen('musicAwards'));
 
@@ -204,6 +307,7 @@ document.querySelector('.nav-logo').addEventListener('click', () => switchScreen
   });
 });
 
+document.getElementById('btn-song-analysis').addEventListener('click', () => switchScreen('songAnalysis'));
 document.getElementById('btn-awards-emotiv').addEventListener('click', () => switchScreen('emotivAwards'));
 document.getElementById('btn-awards-music').addEventListener('click', () => switchScreen('musicAwards'));
 
@@ -247,6 +351,15 @@ document.addEventListener('mouseup', () => {
 let currentUserId = 'member1';
 let userData = {}; 
 let lineChartInstance = null;
+let compareChartInstance = null;
+let currentDashboardView = 'personal'; // 'personal' or 'comparative'
+
+// Interactive Mock Player State
+let isPlaying = false;
+let playbackTime = 0; // in seconds
+let playbackInterval = null;
+let playbackMax = 30; // default max seconds
+let activeSongIndex = 0; // index of currently selected song
 
 // DOM Elements
 const userSelect = document.getElementById('userSelect');
@@ -259,6 +372,21 @@ const radarGrid = document.getElementById('radarGrid');
 const lineChartTitle = document.getElementById('lineChartTitle');
 const rankingContainer = document.getElementById('rankingContainer');
 const teamGrid = document.getElementById('teamGrid');
+
+// Newly added DOM Elements for Mock Player & Tab toggles
+const mockAudioPlayer = document.getElementById('mockAudioPlayer');
+const playerPlayBtn = document.getElementById('playerPlayBtn');
+const playerStopBtn = document.getElementById('playerStopBtn');
+const playerProgressBar = document.getElementById('playerProgressBar');
+const playerProgressContainer = document.getElementById('playerProgressContainer');
+const playerTime = document.getElementById('playerTime');
+const playerEq = document.getElementById('playerEq');
+
+const btnViewPersonal = document.getElementById('btnViewPersonal');
+const btnViewComparative = document.getElementById('btnViewComparative');
+const personalRadarPanel = document.getElementById('personalRadarPanel');
+const comparativePanel = document.getElementById('comparativePanel');
+const compareMetricSelect = document.getElementById('compareMetricSelect');
 
 userSelect.addEventListener('change', (e) => {
   currentUserId = e.target.value;
@@ -355,6 +483,17 @@ function loadDashboard() {
   dashboardScreen.classList.add('active');
   userData = JSON.parse(savedData);
   
+  // Reset tabs to Personal view by default on load
+  if (btnViewPersonal && btnViewComparative) {
+    btnViewPersonal.classList.add('active');
+    btnViewComparative.classList.remove('active');
+  }
+  if (personalRadarPanel && comparativePanel) {
+    personalRadarPanel.style.display = 'flex';
+    comparativePanel.style.display = 'none';
+  }
+  currentDashboardView = 'personal';
+
   const headerProfileImg = document.getElementById('headerProfileImg');
   const headerMemberInfo = document.getElementById('headerMemberInfo');
   
@@ -474,10 +613,15 @@ function renderRankings() {
 }
 
 function selectSong(index) {
+  activeSongIndex = index;
+  
   document.querySelectorAll('.radar-item').forEach(el => el.classList.remove('active'));
-  document.getElementById(`radar-item-${index}`).classList.add('active');
+  const radarItem = document.getElementById(`radar-item-${index}`);
+  if (radarItem) radarItem.classList.add('active');
   
   const song = userData[index];
+  if (!song) return;
+
   const metaIndex = Math.min(index, SONG_METADATA.length - 1);
   const meta = SONG_METADATA[metaIndex];
   
@@ -491,8 +635,27 @@ function selectSong(index) {
     spotifyLink.style.display = 'inline-flex';
     spotifyLink.href = `https://open.spotify.com/search/${encodeURIComponent(meta.title + ' ' + meta.artist)}`;
   }
+
+  // Display and reset player for this song
+  if (mockAudioPlayer) {
+    mockAudioPlayer.style.display = 'flex';
+  }
   
-  renderLineChart(song);
+  // Set total seconds duration matching actual raw data length
+  if (song.rawData && song.rawData.engagement) {
+    playbackMax = song.rawData.engagement.length - 1;
+  } else {
+    playbackMax = 30;
+  }
+  
+  // Stop previous playback and reset timeline
+  stopMockAudio();
+  
+  if (currentDashboardView === 'comparative') {
+    renderCompareChart();
+  } else {
+    renderLineChart(song);
+  }
 }
 
 function renderLineChart(song) {
@@ -521,27 +684,68 @@ function renderLineChart(song) {
         y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
       }
     },
-    plugins: [{
-      id: 'hoverLine',
-      afterDraw: (chart) => {
-        if (chart.tooltip && chart.tooltip.getActiveElements().length > 0) {
-          const activeElement = chart.tooltip.getActiveElements()[0];
-          const chartCtx = chart.ctx;
-          const yAxis = chart.scales.y;
-          const xPixel = activeElement.element.x;
-          
-          chartCtx.save();
-          chartCtx.beginPath();
-          chartCtx.strokeStyle = '#ff453a'; // Red vertical tracking line
-          chartCtx.lineWidth = 1.5;
-          chartCtx.setLineDash([4, 4]); // Dashed line
-          chartCtx.moveTo(xPixel, yAxis.top);
-          chartCtx.lineTo(xPixel, yAxis.bottom);
-          chartCtx.stroke();
-          chartCtx.restore();
+    plugins: [
+      {
+        id: 'hoverLine',
+        afterDraw: (chart) => {
+          if (chart.tooltip && chart.tooltip.getActiveElements().length > 0) {
+            const activeElement = chart.tooltip.getActiveElements()[0];
+            const chartCtx = chart.ctx;
+            const yAxis = chart.scales.y;
+            const xPixel = activeElement.element.x;
+            
+            chartCtx.save();
+            chartCtx.beginPath();
+            chartCtx.strokeStyle = '#ff453a'; // Red vertical tracking line
+            chartCtx.lineWidth = 1.5;
+            chartCtx.setLineDash([4, 4]); // Dashed line
+            chartCtx.moveTo(xPixel, yAxis.top);
+            chartCtx.lineTo(xPixel, yAxis.bottom);
+            chartCtx.stroke();
+            chartCtx.restore();
+          }
+        }
+      },
+      {
+        id: 'playbackSyncLine',
+        afterDraw: (chart) => {
+          // Purple vertical line showing interactive music progress sync
+          if (playbackTime >= 0) {
+            const chartCtx = chart.ctx;
+            const xAxis = chart.scales.x;
+            const yAxis = chart.scales.y;
+            const xPixel = xAxis.getPixelForValue(playbackTime + 1);
+            
+            if (xPixel !== undefined && xPixel >= xAxis.left && xPixel <= xAxis.right) {
+              chartCtx.save();
+              chartCtx.beginPath();
+              chartCtx.strokeStyle = '#bf5af2'; // Purple progress line
+              chartCtx.lineWidth = 2.5;
+              if (isPlaying) {
+                chartCtx.setLineDash([]); // Solid line when playing
+              } else {
+                chartCtx.setLineDash([4, 4]); // Dashed when paused
+              }
+              chartCtx.moveTo(xPixel, yAxis.top);
+              chartCtx.lineTo(xPixel, yAxis.bottom);
+              chartCtx.stroke();
+              
+              // Draw marker pointer
+              chartCtx.fillStyle = '#bf5af2';
+              chartCtx.beginPath();
+              chartCtx.arc(xPixel, yAxis.top, 5, 0, 2 * Math.PI);
+              chartCtx.fill();
+              
+              chartCtx.font = 'bold 10px monospace';
+              chartCtx.fillStyle = '#bf5af2';
+              chartCtx.textAlign = 'center';
+              chartCtx.fillText(`Sync ${playbackTime}s`, xPixel, yAxis.top - 8);
+              chartCtx.restore();
+            }
+          }
         }
       }
-    }]
+    ]
   });
 }
 
@@ -1140,6 +1344,459 @@ function triggerConfetti() {
   
   draw();
 }
+
+// ==========================================
+// 💡 Interactive Mock Audio Player & Sync Logic
+// ==========================================
+function initMockPlayer() {
+  if (!playerPlayBtn || !playerStopBtn || !playerProgressContainer) return;
+
+  playerPlayBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      pauseMockAudio();
+    } else {
+      playMockAudio();
+    }
+  });
+
+  playerStopBtn.addEventListener('click', () => {
+    stopMockAudio();
+  });
+
+  playerProgressContainer.addEventListener('click', (e) => {
+    const rect = playerProgressContainer.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const percentage = clickX / width;
+    
+    playbackTime = Math.floor(percentage * playbackMax);
+    updatePlayerUI();
+    
+    // Sync chart lines instantly
+    if (lineChartInstance) lineChartInstance.update('none');
+    if (compareChartInstance) compareChartInstance.update('none');
+  });
+}
+
+function playMockAudio() {
+  isPlaying = true;
+  playerPlayBtn.textContent = '⏸ Pause';
+  albumArt.classList.add('playing');
+  playerEq.classList.add('active');
+
+  playbackInterval = setInterval(() => {
+    playbackTime++;
+    if (playbackTime > playbackMax) {
+      stopMockAudio();
+    } else {
+      updatePlayerUI();
+      // Tick line charts to redraw the timeline guide line in real-time
+      if (lineChartInstance) lineChartInstance.update('none');
+      if (compareChartInstance) compareChartInstance.update('none');
+    }
+  }, 1000);
+}
+
+function pauseMockAudio() {
+  isPlaying = false;
+  playerPlayBtn.textContent = '▶ Play';
+  albumArt.classList.remove('playing');
+  playerEq.classList.remove('active');
+  if (playbackInterval) clearInterval(playbackInterval);
+}
+
+function stopMockAudio() {
+  isPlaying = false;
+  playbackTime = 0;
+  playerPlayBtn.textContent = '▶ Play';
+  albumArt.classList.remove('playing');
+  playerEq.classList.remove('active');
+  if (playbackInterval) clearInterval(playbackInterval);
+  updatePlayerUI();
+  
+  if (lineChartInstance) lineChartInstance.update('none');
+  if (compareChartInstance) compareChartInstance.update('none');
+}
+
+function updatePlayerUI() {
+  const percent = (playbackTime / playbackMax) * 100;
+  playerProgressBar.style.width = `${percent}%`;
+  
+  const secStr = String(playbackTime).padStart(2, '0');
+  playerTime.textContent = `00:${secStr}`;
+}
+
+// ==========================================
+// 💡 Multi-user Comparison Toggle & Chart Renderer
+// ==========================================
+function initDashboardTabs() {
+  if (!btnViewPersonal || !btnViewComparative) return;
+
+  btnViewPersonal.addEventListener('click', () => {
+    btnViewPersonal.classList.add('active');
+    btnViewComparative.classList.remove('active');
+    personalRadarPanel.style.display = 'flex';
+    comparativePanel.style.display = 'none';
+    currentDashboardView = 'personal';
+    
+    // Clean player on toggle
+    stopMockAudio();
+  });
+
+  btnViewComparative.addEventListener('click', () => {
+    btnViewComparative.classList.add('active');
+    btnViewPersonal.classList.remove('active');
+    personalRadarPanel.style.display = 'none';
+    comparativePanel.style.display = 'flex';
+    currentDashboardView = 'comparative';
+    
+    stopMockAudio();
+    renderCompareChart();
+  });
+
+  compareMetricSelect.addEventListener('change', () => {
+    renderCompareChart();
+  });
+}
+
+function renderCompareChart() {
+  const ctx = document.getElementById('compareChart').getContext('2d');
+  if (compareChartInstance) compareChartInstance.destroy();
+
+  const metric = compareMetricSelect.value;
+  const currentSongNum = activeSongIndex + 1;
+  const meta = SONG_METADATA[activeSongIndex] || { title: `Song ${currentSongNum}` };
+
+  const memberKeys = ['member3', 'member1', 'member2', 'member4'];
+  const colors = {
+    member3: '#0a84ff', // 문경수 (Blue)
+    member1: '#30d158', // 김한주 (Green)
+    member2: '#ff9f0a', // 김용석 (Orange)
+    member4: '#bf5af2'  // 홍수민 (Purple)
+  };
+
+  const datasets = [];
+  let labels = [];
+
+  memberKeys.forEach(mKey => {
+    const saved = localStorage.getItem(`brainwaveData_${mKey}`);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      const songData = parsed.find(s => s.songNumber === currentSongNum);
+      if (songData && songData.rawData && songData.rawData[metric]) {
+        const rawVals = songData.rawData[metric];
+        
+        // Use the longest length for labels
+        if (rawVals.length > labels.length) {
+          labels = rawVals.map((_, i) => i + 1);
+        }
+
+        datasets.push({
+          label: MEMBERS[mKey],
+          data: rawVals,
+          borderColor: colors[mKey],
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 0,
+          tension: 0.35
+        });
+      }
+    }
+  });
+
+  // Adjust maximum playback limit to match this song's raw timeline length
+  playbackMax = labels.length > 0 ? labels.length - 1 : 30;
+
+  compareChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: '#f8fafc', font: { family: '-apple-system', size: 11, weight: 'bold' } }
+        },
+        tooltip: { enabled: true }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#94a3b8' } },
+        y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+      }
+    },
+    plugins: [{
+      id: 'playbackSyncLine',
+      afterDraw: (chart) => {
+        // Red vertical line showing interactive music progress sync
+        if (playbackTime >= 0) {
+          const chartCtx = chart.ctx;
+          const xAxis = chart.scales.x;
+          const yAxis = chart.scales.y;
+          const xPixel = xAxis.getPixelForValue(playbackTime + 1);
+          
+          if (xPixel !== undefined && xPixel >= xAxis.left && xPixel <= xAxis.right) {
+            chartCtx.save();
+            chartCtx.beginPath();
+            chartCtx.strokeStyle = '#ff375f'; // Neon Red
+            chartCtx.lineWidth = 2;
+            if (isPlaying) {
+              chartCtx.setLineDash([]); // Solid line when playing
+            } else {
+              chartCtx.setLineDash([4, 4]); // Dashed when paused
+            }
+            chartCtx.moveTo(xPixel, yAxis.top);
+            chartCtx.lineTo(xPixel, yAxis.bottom);
+            chartCtx.stroke();
+            
+            // Draw marker pointer
+            chartCtx.fillStyle = '#ff375f';
+            chartCtx.beginPath();
+            chartCtx.arc(xPixel, yAxis.top, 5, 0, 2 * Math.PI);
+            chartCtx.fill();
+            
+            chartCtx.font = 'bold 10px monospace';
+            chartCtx.fillStyle = '#ff375f';
+            chartCtx.textAlign = 'center';
+            chartCtx.fillText(`Sync ${playbackTime}s`, xPixel, yAxis.top - 8);
+            chartCtx.restore();
+          }
+        }
+      }
+    }]
+  });
+}
+
+// Global State for Song Analysis
+let currentSongAnalysisIndex = 0;
+let currentSongAnalysisChartType = 'radar';
+let songAnalysisChartInstance = null;
+let isSongAnalysisInitialized = false;
+
+function loadSongAnalysis() {
+  const songCardList = document.getElementById('songCardList');
+  if (!songCardList) return;
+  
+  songCardList.innerHTML = '';
+  SONG_METADATA.forEach((song, idx) => {
+    const activeClass = idx === currentSongAnalysisIndex ? 'active' : '';
+    const div = document.createElement('div');
+    div.className = `song-card ${activeClass}`;
+    div.innerHTML = `
+      <span class="song-card-index">${String(idx + 1).padStart(2, '0')}</span>
+      <div class="song-card-cover">${song.cover || '🎵'}</div>
+      <div class="song-card-info">
+        <div class="song-card-title">${song.title}</div>
+        <div class="song-card-artist">${song.artist}</div>
+      </div>
+    `;
+    div.addEventListener('click', () => selectSongForAnalysis(idx));
+    songCardList.appendChild(div);
+  });
+
+  // Setup control toggles once
+  if (!isSongAnalysisInitialized) {
+    const btnRadar = document.getElementById('btnSongChartRadar');
+    const btnBar = document.getElementById('btnSongChartBar');
+    
+    if (btnRadar && btnBar) {
+      btnRadar.addEventListener('click', () => {
+        btnRadar.classList.add('active');
+        btnBar.classList.remove('active');
+        currentSongAnalysisChartType = 'radar';
+        renderSongCompareChart(currentSongAnalysisIndex, 'radar');
+      });
+      
+      btnBar.addEventListener('click', () => {
+        btnBar.classList.add('active');
+        btnRadar.classList.remove('active');
+        currentSongAnalysisChartType = 'bar';
+        renderSongCompareChart(currentSongAnalysisIndex, 'bar');
+      });
+    }
+    isSongAnalysisInitialized = true;
+  }
+
+  selectSongForAnalysis(currentSongAnalysisIndex);
+}
+
+function selectSongForAnalysis(index) {
+  currentSongAnalysisIndex = index;
+  
+  // Highlight active song card
+  const cards = document.querySelectorAll('#songCardList .song-card');
+  cards.forEach((card, idx) => {
+    if (idx === index) {
+      card.classList.add('active');
+    } else {
+      card.classList.remove('active');
+    }
+  });
+
+  const songMeta = SONG_METADATA[index];
+  const titleEl = document.getElementById('songAnalysisTitle');
+  const artistEl = document.getElementById('songAnalysisArtist');
+  if (titleEl) titleEl.textContent = songMeta.title;
+  if (artistEl) artistEl.textContent = songMeta.artist;
+
+  // Render comparative chart
+  renderSongCompareChart(index, currentSongAnalysisChartType);
+
+  // Compute AI insights
+  renderAIEmotionInsights(index);
+}
+
+function renderSongCompareChart(songIndex, chartType) {
+  const canvas = document.getElementById('songAnalysisChart');
+  if (!canvas) return;
+
+  if (songAnalysisChartInstance) {
+    songAnalysisChartInstance.destroy();
+  }
+
+  const ctx = canvas.getContext('2d');
+  
+  // Build datasets for 4 team members
+  const memberList = ['member3', 'member1', 'member2', 'member4'];
+  const datasets = memberList.map(mId => {
+    const savedData = localStorage.getItem(`brainwaveData_${mId}`);
+    const memberData = savedData ? JSON.parse(savedData) : [];
+    // The data is mapped to target columns averages
+    const songData = memberData[songIndex];
+    const dataVals = TARGET_COLUMNS.map(col => songData ? songData.averages[col] : 0);
+
+    const colorInfo = {
+      member3: { border: '#0a84ff', bgRadar: 'rgba(10, 132, 255, 0.15)', bgBar: 'rgba(10, 132, 255, 0.7)' }, // 문경수 - Blue
+      member1: { border: '#30d158', bgRadar: 'rgba(48, 209, 88, 0.15)', bgBar: 'rgba(48, 209, 88, 0.7)' },   // 김한주 - Green
+      member2: { border: '#ff9f0a', bgRadar: 'rgba(255, 159, 10, 0.15)', bgBar: 'rgba(255, 159, 10, 0.7)' },  // 김용석 - Orange
+      member4: { border: '#bf5af2', bgRadar: 'rgba(191, 90, 242, 0.15)', bgBar: 'rgba(191, 90, 242, 0.7)' }  // 홍수민 - Purple
+    }[mId];
+
+    if (chartType === 'radar') {
+      return {
+        label: MEMBERS[mId],
+        data: dataVals,
+        borderColor: colorInfo.border,
+        backgroundColor: colorInfo.bgRadar,
+        borderWidth: 2,
+        pointBackgroundColor: colorInfo.border,
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: colorInfo.border
+      };
+    } else {
+      return {
+        label: MEMBERS[mId],
+        data: dataVals,
+        borderColor: colorInfo.border,
+        backgroundColor: colorInfo.bgBar,
+        borderWidth: 1,
+        borderRadius: 4
+      };
+    }
+  });
+
+  const chartOptions = chartType === 'radar' ? {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      r: {
+        min: 0,
+        max: 1.0,
+        angleLines: { color: 'rgba(255,255,255,0.06)' },
+        grid: { color: 'rgba(255,255,255,0.08)' },
+        pointLabels: { color: '#f8fafc', font: { family: '-apple-system', size: 12, weight: '600' } },
+        ticks: { display: false, stepSize: 0.2 }
+      }
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: '#f8fafc', font: { family: '-apple-system', size: 11, weight: 'bold' } }
+      },
+      tooltip: { enabled: true }
+    }
+  } : {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#f8fafc', font: { family: '-apple-system', size: 11, weight: '600' } } },
+      y: { min: 0, max: 1.0, grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#94a3b8' } }
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: { color: '#f8fafc', font: { family: '-apple-system', size: 11, weight: 'bold' } }
+      },
+      tooltip: { enabled: true }
+    }
+  };
+
+  songAnalysisChartInstance = new Chart(ctx, {
+    type: chartType,
+    data: {
+      labels: LABELS_KO,
+      datasets: datasets
+    },
+    options: chartOptions
+  });
+}
+
+function renderAIEmotionInsights(songIndex) {
+  const insightGrid = document.getElementById('insightGrid');
+  if (!insightGrid) return;
+  
+  insightGrid.innerHTML = '';
+  
+  TARGET_COLUMNS.forEach((col, cIdx) => {
+    const colNameKo = LABELS_KO[cIdx];
+    let maxVal = -1;
+    let winnerId = '';
+
+    ['member3', 'member1', 'member2', 'member4'].forEach(mId => {
+      const savedData = localStorage.getItem(`brainwaveData_${mId}`);
+      if (savedData) {
+        const memberData = JSON.parse(savedData);
+        const songData = memberData[songIndex];
+        if (songData) {
+          const val = songData.averages[col];
+          if (val > maxVal) {
+            maxVal = val;
+            winnerId = mId;
+          }
+        }
+      }
+    });
+
+    const winnerName = MEMBERS[winnerId] || 'Unknown';
+    const percentage = Math.round(maxVal * 100);
+
+    let badgeClass = 'badge-blue';
+    if (winnerId === 'member1') badgeClass = 'badge-green';
+    if (winnerId === 'member2') badgeClass = 'badge-orange';
+    if (winnerId === 'member3') badgeClass = 'badge-blue';
+    if (winnerId === 'member4') badgeClass = 'badge-purple';
+
+    const card = document.createElement('div');
+    card.className = 'insight-card';
+    card.innerHTML = `
+      <div class="insight-metric-name">${colNameKo}</div>
+      <div class="insight-value-container">
+        <span class="insight-winner-name">${winnerName} 👑</span>
+        <span class="insight-badge ${badgeClass}">${percentage}%</span>
+      </div>
+      <div class="insight-score-bar-container">
+        <div class="insight-score-bar" style="width: ${percentage}%; background-color: var(--neon-${badgeClass.split('-')[1]}); box-shadow: 0 0 8px var(--neon-${badgeClass.split('-')[1]});"></div>
+      </div>
+    `;
+    insightGrid.appendChild(card);
+  });
+}
+
+// Initialize on script load
+initMockPlayer();
+initDashboardTabs();
 
 // Initially show home screen
 switchScreen('homeScreen');
