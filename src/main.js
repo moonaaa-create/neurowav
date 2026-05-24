@@ -1,5 +1,7 @@
 import './style.css';
 import * as XLSX from 'xlsx';
+import Papa from 'papaparse';
+import html2pdf from 'html2pdf.js';
 import Chart from 'chart.js/auto';
 import preloadedData from './preloadedData.json';
 
@@ -16,21 +18,21 @@ const MEMBERS = {
   member4: "홍수민"
 };
 
-// Mock Metadata based on user image
+// Mock Metadata based on user image with high-quality SoundHelix progressive electronic tracks for perfect web audio sync
 const SONG_METADATA = [
-  { title: "Syren", artist: "Anyma", cover: "🎵" },
-  { title: "Playing with Fire", artist: "BLACKPINK", cover: "🔥" },
-  { title: "Call Me Maybe", artist: "Carly Rae Jepsen", cover: "📱" },
-  { title: "Sie ergibt sich nicht", artist: "Chang Eun Ah", cover: "🎭" },
-  { title: "Lemon Tree", artist: "Fools Garden", cover: "🍋" },
-  { title: "Spain", artist: "Jesus Molina", cover: "🇪🇸" },
-  { title: "Jane Doe", artist: "Kenshi Yonezu", cover: "👤" },
-  { title: "Peligrosa", artist: "Ojos", cover: "⚠️" },
-  { title: "Lost Chapter", artist: "Pentakill, Jorn", cover: "📖" },
-  { title: "Attack on Titan", artist: "Sawano Hiroyuki", cover: "⚔️" },
-  { title: "6 Moments musicaux, Op. 16 : No. 4 in E", artist: "Sergei Rachmaninoff", cover: "🎹" },
-  { title: "Shoreditch", artist: "Vard", cover: "🎸" },
-  { title: "Look at Me!", artist: "XXTENTACION", cover: "💥" }
+  { title: "Syren", artist: "Anyma", cover: "🎵", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+  { title: "Playing with Fire", artist: "BLACKPINK", cover: "🔥", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+  { title: "Call Me Maybe", artist: "Carly Rae Jepsen", cover: "📱", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+  { title: "Sie ergibt sich nicht", artist: "Chang Eun Ah", cover: "🎭", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+  { title: "Lemon Tree", artist: "Fools Garden", cover: "🍋", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+  { title: "Spain", artist: "Jesus Molina", cover: "🇪🇸", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+  { title: "Jane Doe", artist: "Kenshi Yonezu", cover: "👤", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+  { title: "Peligrosa", artist: "Ojos", cover: "⚠️", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
+  { title: "Lost Chapter", artist: "Pentakill, Jorn", cover: "📖", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3" },
+  { title: "Attack on Titan", artist: "Sawano Hiroyuki", cover: "⚔️", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" },
+  { title: "6 Moments musicaux, Op. 16 : No. 4 in E", artist: "Sergei Rachmaninoff", cover: "🎹", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3" },
+  { title: "Shoreditch", artist: "Vard", cover: "🎸", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3" },
+  { title: "Look at Me!", artist: "XXTENTACION", cover: "💥", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3" }
 ];
 
 const TARGET_COLUMNS = ['engagement', 'interest', 'excitement', 'stress', 'relaxation'];
@@ -40,81 +42,259 @@ const SHORT_LABELS = ['En', 'In', 'Ex', 'St', 'Re'];
 const app = document.querySelector('#app');
 
 app.innerHTML = `
-  <div id="homeScreen" class="screen active" style="position: relative; min-height: 80vh; justify-content: center;">
+  <!-- [STAGE 1] INTRO SCREEN -->
+  <div id="introScreen" class="screen active" style="position: relative; min-height: 80vh; justify-content: center;">
     <div class="floating-bg">
-      <div class="floating-emoji" style="left: 10%; top: 20%; animation: floatWander1 15s ease-in-out infinite;">🎵</div>
-      <div class="floating-emoji" style="left: 30%; top: 60%; animation: floatWander2 20s ease-in-out infinite; font-size: 4rem;">🎹</div>
-      <div class="floating-emoji" style="left: 50%; top: 30%; animation: floatWander1 18s ease-in-out infinite;">🎸</div>
-      <div class="floating-emoji" style="left: 70%; top: 70%; animation: floatWander2 22s ease-in-out infinite; font-size: 5rem;">🧠</div>
-      <div class="floating-emoji" style="left: 85%; top: 25%; animation: floatWander1 16s ease-in-out infinite;">🎧</div>
-      <div class="floating-emoji" style="left: 15%; top: 80%; animation: floatWander2 19s ease-in-out infinite;">🎶</div>
-      <div class="floating-emoji" style="left: 50%; top: 80%; animation: floatWander1 17s ease-in-out infinite; font-size: 3.5rem;">⚡</div>
+      <div class="floating-emoji" style="left: 10%; top: 20%;">👾</div>
+      <div class="floating-emoji" style="left: 30%; top: 60%; font-size: 4rem;">🔮</div>
+      <div class="floating-emoji" style="left: 50%; top: 30%;">🎮</div>
+      <div class="floating-emoji" style="left: 70%; top: 70%; font-size: 5rem;">🧠</div>
+      <div class="floating-emoji" style="left: 85%; top: 25%;">⚔️</div>
     </div>
-    <div class="hero-section" style="text-align: center; padding: 2rem 1rem; animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10; position: relative;">
-      <h1 style="font-size: 5rem; margin-bottom: 1.5rem; background: linear-gradient(to right, #0a84ff, #64d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NeuroWav</h1>
-      <p class="subtitle" style="font-size: 1.3rem; max-width: 600px; margin: 0 auto 3.5rem auto; line-height: 1.8;">
-        <strong>2026학년도 1학기 자료시각화 과제</strong><br>
-        13곡의 음악 장르, 4명의 사용자.<br>
-        뇌파 분석을 통한 음악 취향 알아내기!
+    
+    <div class="hero-section" style="text-align: center; padding: 2rem 1rem; animation: fadeIn 0.8s ease-out; z-index: 10; position: relative;">
+      <div style="font-family: monospace; font-size: 1rem; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); margin-bottom: 0.5rem; letter-spacing: 2px;">STAGE 1: THE BEGINNING</div>
+      <h1 style="font-size: 4.5rem; margin-bottom: 1.5rem; background: linear-gradient(to right, #bf5af2, #0a84ff, #30d158); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(10, 132, 255, 0.2);">NeuroWav Quest</h1>
+      <p class="subtitle" style="font-size: 1.25rem; max-width: 750px; margin: 0 auto 3rem auto; line-height: 1.8;">
+        <strong>"서로 다른 4명이 음악을 듣고 검출된 뇌파 데이터를 통해 서로를 알아가는 N-BTI"</strong><br>
+        자료시각화 5조의 레트로 게임 컨셉 뇌파 탐험! 4명의 도트 캐릭터가 각 Stage를 클리어하며<br>
+        자신조차 몰랐던 뇌파 속 진짜 취향과 최종 뇌비티아이(N-BTI)를 파헤칩니다.
       </p>
       
       <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
         <div>
-          <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">멤버별 대시보드 보기</h3>
+          <h3 style="color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 1px;">🎮 플레이어 캐릭터 선택 (Player Select)</h3>
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
             <!-- 문경수 -->
-            <div id="btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile1.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">문경수 님</span>
-              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">휴먼AI공학전공<br>21학번</span>
+            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(10, 132, 255, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(10, 132, 255, 0.1);">
+              <img src="/profile1.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #0a84ff;">
+              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">문경수 님</span>
+              <span style="font-size: 0.75rem; color: #64d2ff; font-weight: 600; margin-top: 0.2rem;">🧠 AI 집중 마스터</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">휴먼AI공학전공<br>21학번</span>
             </div>
             <!-- 김한주 -->
-            <div id="btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile2.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">김한주 님</span>
-              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">음악학과 작곡과<br>21학번</span>
+            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(48, 209, 88, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(48, 209, 88, 0.1);">
+              <img src="/profile2.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #30d158;">
+              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김한주 님</span>
+              <span style="font-size: 0.75rem; color: #30d158; font-weight: 600; margin-top: 0.2rem;">🧘‍♂️ 감성 음유시인</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">음악학과 작곡과<br>21학번</span>
             </div>
             <!-- 김용석 -->
-            <div id="btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile3.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">김용석 님</span>
-              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">자유전공학부 인문<br>26학번</span>
+            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 159, 10, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255, 159, 10, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 159, 10, 0.1);">
+              <img src="/profile3.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #ff9f0a;">
+              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김용석 님</span>
+              <span style="font-size: 0.75rem; color: #ff9f0a; font-weight: 600; margin-top: 0.2rem;">🔥 아드레날린 락커</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">자유전공 인문<br>26학번</span>
             </div>
             <!-- 홍수민 -->
-            <div id="btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 140px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-              <img src="/profile4.png" style="width: 95px; height: 95px; border-radius: 12px; object-fit: cover; margin-bottom: 0.8rem; border: 1.5px solid rgba(255,255,255,0.15);">
-              <span style="font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem;">홍수민 님</span>
-              <span style="font-size: 0.72rem; color: var(--text-secondary); text-align: center; line-height: 1.3;">조형예술학과<br>25학번</span>
+            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(191, 90, 242, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(191, 90, 242, 0.1);">
+              <img src="/profile4.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #bf5af2;">
+              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">홍수민 님</span>
+              <span style="font-size: 0.75rem; color: #bf5af2; font-weight: 600; margin-top: 0.2rem;">🎨 호기심 미술가</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">조형예술학과<br>25학번</span>
             </div>
           </div>
         </div>
         
-        <div style="width: 100%; max-width: 400px; height: 1px; background: rgba(255,255,255,0.1); margin: 1rem 0;"></div>
-        
-        <div>
-          <h3 style="color: var(--text-secondary); margin-bottom: 1.2rem; font-weight: 500; letter-spacing: -0.5px;">종합 비교 및 시상식</h3>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-            <button id="btn-song-analysis" class="hero-btn" style="background: linear-gradient(135deg, #bf5af2, #0a84ff); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(191, 90, 242, 0.3);">🎵 Song Dashboard</button>
-            <button id="btn-awards-emotiv" class="hero-btn" style="background: linear-gradient(135deg, #ff9f0a, #ff375f); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 55, 95, 0.3);">🧠 Awards - Emotiv</button>
-            <button id="btn-awards-music" class="hero-btn" style="background: linear-gradient(135deg, #0a84ff, #30d158); font-size: 1.1rem; padding: 0.8rem 1.8rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(48, 209, 88, 0.3);">🎵 Awards - Music</button>
+        <div style="margin-top: 2rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+          <button id="intro-start-btn" class="hero-btn" style="background: linear-gradient(135deg, #0a84ff, #bf5af2); font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; box-shadow: 0 0 25px rgba(10, 132, 255, 0.4);">⚔️ QUEST START (탐험 시작)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- [STAGE 2] HOW WE DID SCREEN -->
+  <div id="howWeDidScreen" class="screen">
+    <header class="team-header">
+      <div style="font-family: monospace; font-size: 0.9rem; color: #30d158; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 2: THE DATA JOURNEY</div>
+      <h1 style="color: #30d158;">🛠️ How We DID</h1>
+      <p class="subtitle">프로젝트 준비물부터 데이터 검출, 정제 및 클리닝 과정까지의 개발 과정</p>
+    </header>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%;">
+      <!-- Card 1: Equipment -->
+      <div class="panel" style="padding: 2rem; text-align: left; gap: 1rem; border-color: rgba(48, 209, 88, 0.2);">
+        <div style="font-size: 2.5rem;">🎧</div>
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quest 1: 준비물 및 검사 방법</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+          실제 EEG 뇌파를 정밀하게 획득하기 위해 **Emotiv 뇌파 기기**를 머리에 장착한 후, 서로 다른 장르의 대표 음악 **13곡**을 선정하여 각 30초 이상 연속 청취하며 뇌파 피드백 데이터를 스트리밍 및 기록하였습니다.
+        </p>
+      </div>
+      <!-- Card 2: Archiving -->
+      <div class="panel" style="padding: 2rem; text-align: left; gap: 1rem; border-color: rgba(10, 132, 255, 0.2);">
+        <div style="font-size: 2.5rem;">🧠</div>
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quest 2: 5대 감정지표 수집</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+          EmotivApp을 통해 실시간 검출된 **Engagement(몰입), Excitement(활성), Interest(흥미), Stress(스트레스), Relaxation(이완)**의 5가지 감정 데이터를 시계열 로그 형태인 CSV/XLSX 원본 파일로 안전하게 아카이빙하였습니다.
+        </p>
+      </div>
+      <!-- Card 3: Archiving -->
+      <div class="panel" style="padding: 2rem; text-align: left; gap: 1rem; border-color: rgba(191, 90, 242, 0.2);">
+        <div style="font-size: 2.5rem;">🧹</div>
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quest 3: AI 기반 데이터 클리닝</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+          기존 데이터가 수동 검사 환경의 편차로 인해 노이즈가 많았기에, **바이브 코딩 및 AI 데이터 정제 솔루션**을 사용해 결측치 처리, 데이터 스케일링(0 ~ 1 범위 정규화), 헤더 컬럼 표준화 등의 **클리닝 작업**을 사전 완료하였습니다.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Big flow graphic -->
+    <div class="panel" style="padding: 2.5rem; text-align: center; gap: 1.5rem;">
+      <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff;">⚙️ NeuroWav Data Flow Pipeline</h3>
+      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
+          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🎧</span>
+          <strong style="color: #64d2ff;">Emotiv EPOC</strong>
+          <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">Raw EEG Stream</span>
+        </div>
+        <div style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
+          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">📊</span>
+          <strong style="color: #ff9f0a;">XLSX / CSV Logs</strong>
+          <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">5 Emotions (30s)</span>
+        </div>
+        <div style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
+          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🤖</span>
+          <strong style="color: #30d158;">AI & Node Engine</strong>
+          <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">Data Cleaning & Scale</span>
+        </div>
+        <div style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
+        <div style="background: rgba(10,132,255,0.1); border: 1px solid var(--accent-color); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px; box-shadow: 0 0 15px rgba(10,132,255,0.2);">
+          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🔮</span>
+          <strong style="color: #fff;">NeuroWav SPA</strong>
+          <span style="font-size: 0.75rem; color: #ffd700; display: block; margin-top: 0.2rem;">Real-time Dash uploader</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- [STAGE 3] SEE MUSIC SCREEN -->
+  <div id="seeMusicScreen" class="screen">
+    <header class="team-header">
+      <div style="font-family: monospace; font-size: 0.9rem; color: #bf5af2; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 3: TRACK ANALYSIS</div>
+      <h1 style="color: #bf5af2;">🎵 Let's See the Music</h1>
+      <p class="subtitle">13개 트랙별 장르 분석 해설 및 4인 조원 평균 감정 반응 랭킹</p>
+    </header>
+    
+    <div class="song-analysis-layout">
+      <!-- Left Panel: 13 Songs Selection Card List -->
+      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; max-height: 800px;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          💿 Tracks <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">(13 total)</span>
+        </h3>
+        <div class="song-card-list" id="songCardList">
+          <!-- Dynamically populated song cards -->
+        </div>
+      </div>
+      
+      <!-- Right Panel: Visualizer & AI Summary -->
+      <div class="song-analysis-main">
+        <!-- Chart Controls -->
+        <div class="chart-control-bar">
+          <div style="display: flex; flex-direction: column; gap: 0.2rem; min-width: 0;">
+            <h2 id="songAnalysisTitle" style="font-size: 1.4rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Song Title</h2>
+            <div id="songAnalysisArtist" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Artist</div>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <label class="neon-switch-container" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="chkShowTeamAverage" checked>
+              <span class="neon-switch-slider"></span>
+              <span style="font-size: 0.85rem; font-weight: 600; color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.4); display: flex; align-items: center; gap: 0.3rem;">
+                👥 Show Team Average
+              </span>
+            </label>
+
+            <div class="mini-toggle-container">
+              <button id="btnSongChartRadar" class="mini-toggle-btn active">🕸️ Radar Overlap</button>
+              <button id="btnSongChartBar" class="mini-toggle-btn">📊 Grouped Bar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Composer Genre Note Card (Special Addition) -->
+        <div class="panel" style="padding: 1.5rem; background: rgba(191, 90, 242, 0.05); border-color: rgba(191, 90, 242, 0.2); gap: 0.5rem;">
+          <h4 style="font-size: 0.95rem; color: #bf5af2; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+            🎼 작곡 전공 김한주의 장르 해설 노트
+          </h4>
+          <p id="genreComposerNote" style="font-size: 0.88rem; color: #d1c4e9; line-height: 1.6; font-style: italic;">
+            -
+          </p>
+        </div>
+
+        <!-- Big Comparison Chart Panel -->
+        <div class="panel" style="position: relative; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 420px; width: 100%;">
+          <div style="position: relative; height: 380px; width: 100%; max-width: 650px;">
+            <canvas id="songAnalysisChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Emotional Insight Panel (AI Summary) -->
+        <div class="panel ai-insight-panel" style="padding: 1.5rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+            🧠 Emotional Metrics & Top Responders
+          </h3>
+          <div class="insight-grid" id="insightGrid">
+            <!-- Dynamic insight cards for each 5 metrics -->
+          </div>
+        </div>
+
+        <!-- 13-Track Team Averages Ranking Panel -->
+        <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div class="compare-header-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem;">
+            <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+              📊 13-Track Team Averages Ranking
+            </h3>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">Select Metric:</span>
+              <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                <option value="engagement">몰입도 (Engagement)</option>
+                <option value="interest">흥미도 (Interest)</option>
+                <option value="excitement">활성도 (Excitement)</option>
+                <option value="stress">스트레스 (Stress)</option>
+                <option value="relaxation">이완도 (Relaxation)</option>
+              </select>
+            </div>
+          </div>
+          <div style="position: relative; height: 380px; width: 100%;">
+            <canvas id="songTeamAverageChart"></canvas>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- [STAGE 4] SEE PERSON SCREEN (HIGH INTERACTIONS) -->
   <div id="dashboardScreen" class="screen">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-color); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+    <header class="team-header" style="margin-bottom: 0.5rem;">
+      <div style="font-family: monospace; font-size: 0.9rem; color: #0a84ff; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 4: THE NEURAL PROFILE</div>
+      <h1 style="color: #0a84ff;">👤 Let's See a Person</h1>
+      <p class="subtitle">런치패드 기반 동적 로딩을 통한 조원 정밀 분석 및 뇌파 피드백 동기화</p>
+    </header>
+    
+    <!-- 🎛️ MIDI Launchpad control board (4x5 Grid) -->
+    <div class="panel" style="padding: 1.5rem; background: rgba(10, 132, 255, 0.03); border: 2px solid rgba(10, 132, 255, 0.2); border-radius: 20px;">
+      <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffd700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+        🎛️ 뇌파 인터랙티브 런치패드 (4 x 5 Neural Launchpad)
+        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(격자 패드를 눌러 조원과 감정을 즉시 믹싱/시각화해 보세요!)</span>
+      </h3>
+      <div class="launchpad-grid" id="neuralLaunchpad" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; max-width: 900px; margin: 0 auto; width: 100%;">
+        <!-- Interactive 4x5 launchpad buttons generated via JS -->
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 0.5px solid var(--border-color); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
       <header class="dash-header" style="display: flex; align-items: center; gap: 1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 0;">
-        <img id="headerProfileImg" src="/profile1.png" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+        <img id="headerProfileImg" src="/profile1.png" style="width: 54px; height: 54px; border-radius: 50%; border: 2.5px solid var(--accent-color); object-fit: cover; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
         <div class="user-info">
-          <select id="userSelect" style="font-size: 1.5rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
-            <option value="member3">문경수's Dashboard</option>
-            <option value="member1">김한주's Dashboard</option>
-            <option value="member2">김용석's Dashboard</option>
-            <option value="member4">홍수민's Dashboard</option>
+          <select id="userSelect" style="font-size: 1.6rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
+            <option value="member3">문경수's Profile</option>
+            <option value="member1">김한주's Profile</option>
+            <option value="member2">김용석's Profile</option>
+            <option value="member4">홍수민's Profile</option>
           </select>
-          <div id="headerMemberInfo" style="font-size: 0.82rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
+          <div id="headerMemberInfo" style="font-size: 0.85rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
         </div>
       </header>
       
@@ -122,6 +302,14 @@ app.innerHTML = `
         <button id="btnViewPersonal" class="toggle-btn active">👤 개인 분석</button>
         <button id="btnViewComparative" class="toggle-btn">👥 조원 비교</button>
       </div>
+    </div>
+
+    <!-- Interactive Track Selector Panel -->
+    <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); padding: 0.8rem 1.2rem; flex-wrap: wrap;">
+      <span style="font-size: 0.85rem; font-weight: 600; color: #ffd700;">🎵 현재 오디오 탐색 곡 선택:</span>
+      <select id="dashboardSongSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; flex-grow: 1;">
+        <!-- Filled by JS -->
+      </select>
     </div>
 
     <div class="dashboard-layout">
@@ -142,7 +330,7 @@ app.innerHTML = `
                 </a>
               </div>
 
-              <!-- Interactive Mock Audio Player -->
+              <!-- Interactive Real Audio Player -->
               <div class="mock-player" id="mockAudioPlayer" style="display: none;">
                 <button id="playerPlayBtn" class="player-btn">▶ Play</button>
                 <button id="playerStopBtn" class="player-btn">■ Stop</button>
@@ -199,227 +387,98 @@ app.innerHTML = `
     </div>
   </div>
 
-  <div id="songAnalysisScreen" class="screen">
-    <header class="dash-header" style="margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-color); padding-bottom: 1rem;">
-      <div class="user-info" style="display: flex; flex-direction: column; gap: 0.2rem;">
-        <span style="color: var(--accent-color); font-size: 1.5rem; font-weight: 700;">🎵 Song Dashboard</span>
-        <div style="font-size: 0.82rem; color: var(--text-secondary);">Select a song from the track list to compare 4 members' emotional responses in real-time.</div>
-      </div>
+  <!-- [STAGE 5] N-BTI RESULT SCREEN -->
+  <div id="nbtiScreen" class="screen">
+    <header class="team-header">
+      <div style="font-family: monospace; font-size: 0.9rem; color: #ffd700; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 5: PERSONALITY DIAGNOSIS</div>
+      <h1 style="color: #ffd700;">🔮 Let's Diagnose N-BTI !</h1>
+      <p class="subtitle">실시간 뇌파 비율 척도를 통한 개인별 최종 뇌비티아이 진단</p>
     </header>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <button id="nbti-tab-member3" class="hero-btn active" style="border-color: #0a84ff; background: rgba(10,132,255,0.1);">문경수 님</button>
+      <button id="nbti-tab-member1" class="hero-btn" style="border-color: #30d158;">김한주 님</button>
+      <button id="nbti-tab-member2" class="hero-btn" style="border-color: #ff9f0a;">김용석 님</button>
+      <button id="nbti-tab-member4" class="hero-btn" style="border-color: #bf5af2;">홍수민 님</button>
+    </div>
 
-    <div class="song-analysis-layout">
-      <!-- Left Panel: 13 Songs Selection Card List -->
-      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; max-height: 800px;">
-        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-          💿 Tracks <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">(13 total)</span>
-        </h3>
-        <div class="song-card-list" id="songCardList">
-          <!-- Dynamically populated song cards -->
-        </div>
-      </div>
-
-      <!-- Right Panel: Visualizer & AI Summary -->
-      <div class="song-analysis-main">
-        <!-- Chart Controls -->
-        <div class="chart-control-bar">
-          <div style="display: flex; flex-direction: column; gap: 0.2rem; min-width: 0;">
-            <h2 id="songAnalysisTitle" style="font-size: 1.4rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Song Title</h2>
-            <div id="songAnalysisArtist" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Artist</div>
-          </div>
-          
-          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-            <!-- Team Average Toggle Switch -->
-            <label class="neon-switch-container" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none;">
-              <input type="checkbox" id="chkShowTeamAverage" checked>
-              <span class="neon-switch-slider"></span>
-              <span style="font-size: 0.85rem; font-weight: 600; color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.4); display: flex; align-items: center; gap: 0.3rem;">
-                👥 Show Team Average
-              </span>
-            </label>
-
-            <div class="mini-toggle-container">
-              <button id="btnSongChartRadar" class="mini-toggle-btn active">🕸️ Radar Overlap</button>
-              <button id="btnSongChartBar" class="mini-toggle-btn">📊 Grouped Bar</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Big Comparison Chart Panel -->
-        <div class="panel" style="position: relative; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 420px; width: 100%;">
-          <div style="position: relative; height: 380px; width: 100%; max-width: 650px;">
-            <canvas id="songAnalysisChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Emotional Insight Panel (AI Summary) -->
-        <div class="panel ai-insight-panel" style="padding: 1.5rem;">
-          <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-            🧠 Emotional Metrics & Top Responders
-          </h3>
-          <div class="insight-grid" id="insightGrid">
-            <!-- Dynamic insight cards for each 5 metrics -->
-          </div>
-        </div>
-
-        <!-- 13-Track Team Averages Ranking Panel -->
-        <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
-          <div class="compare-header-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem;">
-            <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-              📊 13-Track Team Averages Ranking
-            </h3>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">Select Metric:</span>
-              <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                <option value="engagement">몰입도 (Engagement)</option>
-                <option value="interest">흥미도 (Interest)</option>
-                <option value="excitement">활성도 (Excitement)</option>
-                <option value="stress">스트레스 (Stress)</option>
-                <option value="relaxation">이완도 (Relaxation)</option>
-              </select>
-            </div>
-          </div>
-          <div style="position: relative; height: 380px; width: 100%;">
-            <canvas id="songTeamAverageChart"></canvas>
-          </div>
-        </div>
-      </div>
+    <div class="nbti-container-block" id="nbtiReportBlock" style="width: 100%; min-height: 500px;">
+      <!-- Dynamic N-BTI Card & MBTI Bar Chart generated here -->
     </div>
   </div>
 
+  <!-- [STAGE 6] AWARDS / ACHIEVEMENTS SCREEN -->
   <div id="teamScreen" class="screen">
     <header class="team-header">
-      <h1 id="awardsHeaderTitle">🏆 NeuroWav Awards</h1>
-      <p id="awardsHeaderSubtitle" class="subtitle">Peak and Total Mass Analysis across all team members</p>
+      <div style="font-family: monospace; font-size: 0.9rem; color: #ff375f; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 6: HALL OF FAME</div>
+      <h1 id="awardsHeaderTitle" style="color: #ff375f;">🏆 NeuroWav Quest Achievements</h1>
+      <p id="awardsHeaderSubtitle" class="subtitle">조원별 뇌파 특성과 결합된 고유 전설적 업적 및 획득 무기 시각화</p>
     </header>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
+      <button id="ach-tab-member3" class="hero-btn active" style="border-color: #0a84ff; background: rgba(10,132,255,0.1);">문경수's Achievements</button>
+      <button id="ach-tab-member1" class="hero-btn" style="border-color: #30d158;">김한주's Achievements</button>
+      <button id="ach-tab-member2" class="hero-btn" style="border-color: #ff9f0a;">김용석's Achievements</button>
+      <button id="ach-tab-member4" class="hero-btn" style="border-color: #bf5af2;">홍수민's Achievements</button>
+    </div>
+
     <div class="team-awards-container" id="teamGrid" style="display: flex; flex-direction: column; gap: 2rem;">
-      <!-- Award sections injected here -->
+      <!-- Custom Game achievements layout injected here -->
     </div>
   </div>
 
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-    <div class="loading-text">Processing data...</div>
+  <!-- DATA UPLOADER SCREEN -->
+  <div id="uploaderScreen" class="screen">
+    <header class="team-header">
+      <h1 style="color: var(--accent-color);">📤 Brainwave Data Uploader</h1>
+      <p class="subtitle">Excel (.xlsx) 또는 CSV 파일을 업로드하여 조원의 뇌파 데이터를 실시간으로 업데이트하세요.</p>
+    </header>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; width: 100%;">
+      <!-- Left Panel: Uploader Form -->
+      <div class="panel" style="padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+        <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;">
+          👤 대상 멤버 선택
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <label style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;">데이터를 업데이트할 조원:</label>
+          <select id="uploadMemberSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.6rem 1rem; font-size: 1rem; outline: none; cursor: pointer; width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+            <option value="member3">문경수 (휴먼AI공학전공)</option>
+            <option value="member1">김한주 (음악학과 작곡과)</option>
+            <option value="member2">김용석 (자유전공학부 인문)</option>
+            <option value="member4">홍수민 (조형예술학과)</option>
+          </select>
+        </div>
+        
+        <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.08); margin: 0.5rem 0;"></div>
+        
+        <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;">
+          📂 파일 드롭 또는 선택
+        </h3>
+        
+        <div class="upload-box" id="dropZone" style="border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; padding: 3rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(255,255,255,0.01);">
+          <div class="upload-icon" style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+          <div class="upload-text" style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Drag & drop files here</div>
+          <div class="upload-subtext" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">or click to select files (.xlsx, .csv)</div>
+          <input type="file" id="fileInput" multiple accept=".xlsx,.xls,.csv" style="display: none;">
+          <span style="font-size: 0.75rem; color: #ff9f0a; background: rgba(255, 159, 10, 0.1); padding: 0.3rem 0.8rem; border-radius: 20px;">노래 번호 자동 매칭 (예: 1.xlsx, 2_Syren.csv 등)</span>
+        </div>
+      </div>
+      
+      <!-- Right Panel: Status Log -->
+      <div class="panel" style="padding: 2rem; display: flex; flex-direction: column; gap: 1rem; max-height: 450px;">
+        <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; justify-content: space-between;">
+          <span>📈 업로드 및 파싱 로그</span>
+          <button id="clearLogBtn" style="font-size: 0.75rem; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: var(--text-secondary);">Clear</button>
+        </h3>
+        
+        <div id="uploadLog" style="flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 1rem; font-family: monospace; font-size: 0.8rem; overflow-y: auto; color: #94a3b8; display: flex; flex-direction: column; gap: 0.5rem; height: 300px;">
+          <div style="color: #64d2ff;">&gt; 업로더가 준비되었습니다. 파일을 드롭해 주세요.</div>
+        </div>
+      </div>
   </div>
 `;
-
-const navDashboard = document.getElementById('navDashboard');
-const navSongAnalysis = document.getElementById('navSongAnalysis');
-const navTeamEmotiv = document.getElementById('navTeamEmotiv');
-const navTeamMusic = document.getElementById('navTeamMusic');
-const homeScreen = document.getElementById('homeScreen');
-const dashboardScreen = document.getElementById('dashboardScreen');
-const songAnalysisScreen = document.getElementById('songAnalysisScreen');
-const teamScreen = document.getElementById('teamScreen');
-
-function switchScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
-  
-  if (screenId === 'homeScreen') { homeScreen.classList.add('active'); }
-  if (screenId === 'dashboardScreen') { navDashboard.classList.add('active'); loadDashboard(); }
-  if (screenId === 'songAnalysis') { navSongAnalysis.classList.add('active'); songAnalysisScreen.classList.add('active'); loadSongAnalysis(); triggerConfetti(); }
-  if (screenId === 'emotivAwards') { navTeamEmotiv.classList.add('active'); loadTeamComparison('emotiv'); triggerConfetti(); }
-  if (screenId === 'musicAwards') { navTeamMusic.classList.add('active'); loadTeamComparison('music'); triggerConfetti(); }
-}
-
-navDashboard.addEventListener('click', () => switchScreen('dashboardScreen'));
-navSongAnalysis.addEventListener('click', () => switchScreen('songAnalysis'));
-navTeamEmotiv.addEventListener('click', () => switchScreen('emotivAwards'));
-navTeamMusic.addEventListener('click', () => switchScreen('musicAwards'));
-
-// Nav Logo click to home
-document.querySelector('.nav-logo').style.cursor = 'pointer';
-document.querySelector('.nav-logo').addEventListener('click', () => switchScreen('homeScreen'));
-
-// Home screen button listeners
-['member1', 'member2', 'member3', 'member4'].forEach(memberId => {
-  document.getElementById(`btn-${memberId}`).addEventListener('click', () => {
-    currentUserId = memberId;
-    document.getElementById('userSelect').value = memberId;
-    switchScreen('dashboardScreen');
-  });
-});
-
-document.getElementById('btn-song-analysis').addEventListener('click', () => switchScreen('songAnalysis'));
-document.getElementById('btn-awards-emotiv').addEventListener('click', () => switchScreen('emotivAwards'));
-document.getElementById('btn-awards-music').addEventListener('click', () => switchScreen('musicAwards'));
-
-// Emoji Dragging Logic
-let activeEmoji = null;
-let emojiOffsetX = 0;
-let emojiOffsetY = 0;
-
-document.querySelectorAll('.floating-emoji').forEach(emoji => {
-  emoji.addEventListener('mousedown', (e) => {
-    activeEmoji = emoji;
-    const rect = emoji.getBoundingClientRect();
-    emojiOffsetX = e.clientX - rect.left;
-    emojiOffsetY = e.clientY - rect.top;
-    
-    emoji.style.animation = 'none'; // Stop floating
-    emoji.style.transform = 'none';
-    emoji.style.left = rect.left + 'px';
-    emoji.style.top = rect.top + 'px';
-    emoji.style.opacity = '0.8';
-    emoji.style.zIndex = '1000';
-  });
-});
-
-document.addEventListener('mousemove', (e) => {
-  if (!activeEmoji) return;
-  activeEmoji.style.left = (e.clientX - emojiOffsetX) + 'px';
-  activeEmoji.style.top = (e.clientY - emojiOffsetY) + 'px';
-});
-
-document.addEventListener('mouseup', () => {
-  if (activeEmoji) {
-    activeEmoji.style.opacity = '0.2';
-    activeEmoji.style.zIndex = '';
-    // Emojis stay where dropped (animation remains 'none')
-    activeEmoji = null;
-  }
-});
-
-// Global State
-let currentUserId = 'member1';
-let userData = {}; 
-let lineChartInstance = null;
-let compareChartInstance = null;
-let currentDashboardView = 'personal'; // 'personal' or 'comparative'
-
-// Interactive Mock Player State
-let isPlaying = false;
-let playbackTime = 0; // in seconds
-let playbackInterval = null;
-let playbackMax = 30; // default max seconds
-let activeSongIndex = 0; // index of currently selected song
-
-// DOM Elements
-const userSelect = document.getElementById('userSelect');
-const loadingOverlay = document.getElementById('loadingOverlay');
-
-const albumArt = document.getElementById('albumArt');
-const songTitle = document.getElementById('songTitle');
-const songArtist = document.getElementById('songArtist');
-const radarGrid = document.getElementById('radarGrid');
-const lineChartTitle = document.getElementById('lineChartTitle');
-const rankingContainer = document.getElementById('rankingContainer');
-const teamGrid = document.getElementById('teamGrid');
-
-// Newly added DOM Elements for Mock Player & Tab toggles
-const mockAudioPlayer = document.getElementById('mockAudioPlayer');
-const playerPlayBtn = document.getElementById('playerPlayBtn');
-const playerStopBtn = document.getElementById('playerStopBtn');
-const playerProgressBar = document.getElementById('playerProgressBar');
-const playerProgressContainer = document.getElementById('playerProgressContainer');
-const playerTime = document.getElementById('playerTime');
-const playerEq = document.getElementById('playerEq');
-
-const btnViewPersonal = document.getElementById('btnViewPersonal');
-const btnViewComparative = document.getElementById('btnViewComparative');
-const personalRadarPanel = document.getElementById('personalRadarPanel');
-const comparativePanel = document.getElementById('comparativePanel');
-const compareMetricSelect = document.getElementById('compareMetricSelect');
 
 userSelect.addEventListener('change', (e) => {
   currentUserId = e.target.value;
@@ -683,6 +742,12 @@ function selectSong(index) {
   
   // Stop previous playback and reset timeline
   stopMockAudio();
+
+  // Set the actual audio source
+  if (meta.url) {
+    globalAudio.src = meta.url;
+    globalAudio.load();
+  }
   
   if (currentDashboardView === 'comparative') {
     renderCompareChart();
@@ -1403,31 +1468,44 @@ function initMockPlayer() {
     const percentage = clickX / width;
     
     playbackTime = Math.floor(percentage * playbackMax);
+    globalAudio.currentTime = playbackTime;
     updatePlayerUI();
     
     // Sync chart lines instantly
     if (lineChartInstance) lineChartInstance.update('none');
     if (compareChartInstance) compareChartInstance.update('none');
   });
+
+  // HTML5 audio time sync listeners
+  globalAudio.addEventListener('timeupdate', () => {
+    if (isPlaying) {
+      playbackTime = Math.floor(globalAudio.currentTime);
+      if (playbackTime > playbackMax) {
+        stopMockAudio();
+      } else {
+        updatePlayerUI();
+        if (lineChartInstance) lineChartInstance.update('none');
+        if (compareChartInstance) compareChartInstance.update('none');
+      }
+    }
+  });
+
+  globalAudio.addEventListener('ended', () => {
+    stopMockAudio();
+  });
 }
 
 function playMockAudio() {
+  if (!globalAudio.src) {
+    selectSong(0);
+  }
   isPlaying = true;
   playerPlayBtn.textContent = '⏸ Pause';
   albumArt.classList.add('playing');
   playerEq.classList.add('active');
-
-  playbackInterval = setInterval(() => {
-    playbackTime++;
-    if (playbackTime > playbackMax) {
-      stopMockAudio();
-    } else {
-      updatePlayerUI();
-      // Tick line charts to redraw the timeline guide line in real-time
-      if (lineChartInstance) lineChartInstance.update('none');
-      if (compareChartInstance) compareChartInstance.update('none');
-    }
-  }, 1000);
+  globalAudio.play().catch(err => {
+    console.error("Playback failed (possibly waiting for user interaction):", err);
+  });
 }
 
 function pauseMockAudio() {
@@ -1435,7 +1513,7 @@ function pauseMockAudio() {
   playerPlayBtn.textContent = '▶ Play';
   albumArt.classList.remove('playing');
   playerEq.classList.remove('active');
-  if (playbackInterval) clearInterval(playbackInterval);
+  globalAudio.pause();
 }
 
 function stopMockAudio() {
@@ -1444,7 +1522,8 @@ function stopMockAudio() {
   playerPlayBtn.textContent = '▶ Play';
   albumArt.classList.remove('playing');
   playerEq.classList.remove('active');
-  if (playbackInterval) clearInterval(playbackInterval);
+  globalAudio.pause();
+  globalAudio.currentTime = 0;
   updatePlayerUI();
   
   if (lineChartInstance) lineChartInstance.update('none');
@@ -1452,7 +1531,7 @@ function stopMockAudio() {
 }
 
 function updatePlayerUI() {
-  const percent = (playbackTime / playbackMax) * 100;
+  const percent = playbackMax > 0 ? (playbackTime / playbackMax) * 100 : 0;
   playerProgressBar.style.width = `${percent}%`;
   
   const secStr = String(playbackTime).padStart(2, '0');
@@ -1692,6 +1771,26 @@ function selectSongForAnalysis(index) {
   const artistEl = document.getElementById('songAnalysisArtist');
   if (titleEl) titleEl.textContent = songMeta.title;
   if (artistEl) artistEl.textContent = songMeta.artist;
+
+  const genreComposerNote = document.getElementById('genreComposerNote');
+  if (genreComposerNote) {
+    const COMPOSER_NOTES = {
+      0: "멜로딕 테크노. 반복적이고 몽환적인 신스 베이스가 뇌를 서서히 자극하여 조원 전체의 몰입도(Engagement)를 고조시킵니다. (Anyma - Syren 🎵)",
+      1: "K-POP 댄스. 강렬한 비트와 친숙한 훅송 멜로디가 활성도(Excitement)와 흥미도(Interest)를 즉각적으로 끌어올리는 효과가 있습니다. (BLACKPINK - 불장난 🔥)",
+      2: "버블검 팝. 밝고 신나는 리듬감 덕분에 이완도(Relaxation)와 흥미도가 높게 유지되며, 스트레스가 급격히 하락합니다. (Carly Rae Jepsen - Call Me Maybe 📱)",
+      3: "뮤지컬 락. 드라마틱하고 웅장한 가창이 활성도를 크게 흔들어 놓으며 감정적 기복(스트레스/흥미 혼재)을 자극합니다. (장은아 - Sie ergibt sich nicht 🎭)",
+      4: "어쿠스틱 인디 팝. 경쾌하고 따뜻한 멜로디라인이 뇌파를 극도로 편안하게 만들어 김한주 님을 비롯한 조원들의 스트레스를 지우고 이완도를 최고치로 올립니다. (이완도 폭발 명약 Lemon Tree 🍋)",
+      5: "라틴 재즈 피아노. 복잡하고 빠른 재즈 스케일과 리듬 변화가 일어날 때 뇌파의 흥미도와 활성도가 어지럽게 요동치는 패턴을 보여줍니다. (Jesus Molina - Spain 🇪🇸)",
+      6: "J-POP. J-POP 특유의 속도감 있는 세션 구성과 독보적인 리듬감이 뇌의 흥미도와 고도의 몰입을 동시에 잡습니다. (Kenshi Yonezu - Jane Doe 👤)",
+      7: "프렌치 인디 팝. 이국적이고 시크한 톤앤매너로, 고도의 예술적 자극을 유도하여 미술 전공 홍수민 님의 예술적 호기심을 극대화합니다. (Ojos - Peligrosa ⚠️)",
+      8: "헤비 메탈. 거친 메탈 기타 리프가 뇌를 각성시켜 김용석 님의 아드레날린(Excitement)을 최대치로 분출하지만, 동시에 스트레스 반응도 동반 상승하는 패턴을 보입니다. (Pentakill - Lost Chapter 📖)",
+      9: "오케스트라 에픽. 영화 같은 웅장한 사운드 트랙이 조원들의 몰입(Engagement)을 끌어올리며 성전의 한복판에 선 듯한 긴장감을 자극합니다. (진격의 거인 OST ⚔️)",
+      10: "정통 클래식 피아노. 한순간도 쉴 틈 없는 건반의 속주가 클래식 선율 특유의 우아함과 현란함으로 작곡과 김한주 님의 뇌파를 완전히 동화시켜 클래식 거장다운 깊은 교감을 이끌어냅니다. (Rachmaninoff - Moment Musicaux 🎹)",
+      11: "인디 기타 인스트루멘탈. 빈티지한 기타 사운드가 조용히 마음을 어루만져 조원 전체적으로 높은 수준의 이완도와 스트레스 해소 작용을 합니다. (Vard - Shoreditch 🎸)",
+      12: "디스토션 트랩/힙합. 의도적으로 깨진 거친 베이스 사운드가 조원들의 스트레스 반응을 즉시 폭발시키며, 뇌파를 가장 강렬하게 흔들어놓는 파괴적인 충격을 줍니다. (XXTENTACION - Look at Me! 💥)"
+    };
+    genreComposerNote.innerHTML = COMPOSER_NOTES[index] || "장르 해설이 준비되지 않았습니다.";
+  }
 
   // Render comparative chart
   renderSongCompareChart(index, currentSongAnalysisChartType);
@@ -2021,9 +2120,761 @@ function renderAIEmotionInsights(songIndex) {
   });
 }
 
+function initUploaderListeners() {
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const uploadMemberSelect = document.getElementById('uploadMemberSelect');
+  const uploadLog = document.getElementById('uploadLog');
+  const clearLogBtn = document.getElementById('clearLogBtn');
+
+  if (!dropZone || !fileInput || !uploadLog) return;
+
+  // Clear log
+  clearLogBtn.addEventListener('click', () => {
+    uploadLog.innerHTML = `<div style="color: #64d2ff;">&gt; 업로드 로그가 초기화되었습니다.</div>`;
+  });
+
+  // Drag over
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--accent-color)';
+    dropZone.style.background = 'rgba(10, 132, 255, 0.05)';
+  });
+
+  // Drag leave
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.style.borderColor = 'rgba(255,255,255,0.2)';
+    dropZone.style.background = 'rgba(255,255,255,0.01)';
+  });
+
+  // Click on dropzone
+  dropZone.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  // Change input file
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      processFiles(e.target.files);
+    }
+  });
+
+  // Drop
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'rgba(255,255,255,0.2)';
+    dropZone.style.background = 'rgba(255,255,255,0.01)';
+    
+    if (e.dataTransfer.files.length > 0) {
+      processFiles(e.dataTransfer.files);
+    }
+  });
+
+  function logMessage(text, type = 'info') {
+    const div = document.createElement('div');
+    if (type === 'error') {
+      div.style.color = '#ff453a';
+    } else if (type === 'success') {
+      div.style.color = '#30d158';
+    } else if (type === 'warning') {
+      div.style.color = '#ff9f0a';
+    } else {
+      div.style.color = '#94a3b8';
+    }
+    div.innerHTML = `&gt; ${text}`;
+    uploadLog.appendChild(div);
+    uploadLog.scrollTop = uploadLog.scrollHeight;
+  }
+
+  function extractSongNumber(filename) {
+    const match = filename.match(/\d+/);
+    return match ? parseInt(match[0], 10) : null;
+  }
+
+  function processFiles(files) {
+    const memberKey = uploadMemberSelect.value;
+    const memberName = MEMBERS[memberKey];
+    logMessage(`[${memberName}] 데이터 업로드 시작... (${files.length}개 파일)`, 'info');
+
+    // Load existing data for this member if present, or create empty list
+    let memberData = [];
+    const saved = localStorage.getItem(`brainwaveData_${memberKey}`);
+    if (saved) {
+      try {
+        memberData = JSON.parse(saved);
+      } catch (err) {
+        memberData = [];
+      }
+    }
+
+    let filesProcessed = 0;
+    const validFiles = Array.from(files).filter(f => f.name.endsWith('.csv') || f.name.endsWith('.xlsx') || f.name.endsWith('.xls'));
+
+    if (validFiles.length === 0) {
+      logMessage(`[에러] 업로드할 수 있는 유효한 파일(.csv, .xlsx, .xls)이 없습니다.`, 'error');
+      return;
+    }
+    
+    validFiles.forEach(file => {
+      const songNumber = extractSongNumber(file.name);
+      if (songNumber === null || songNumber < 1 || songNumber > 13) {
+        logMessage(`[에러] '${file.name}'에서 노래 번호(1~13)를 찾을 수 없습니다. 건너뜁니다.`, 'error');
+        filesProcessed++;
+        return;
+      }
+
+      logMessage(`파일 처리 중: ${file.name} -> 노래 ${songNumber}번으로 매칭`, 'info');
+
+      const reader = new FileReader();
+
+      if (file.name.endsWith('.csv')) {
+        reader.onload = function(e) {
+          const text = e.target.result;
+          Papa.parse(text, {
+            header: false,
+            skipEmptyLines: true,
+            complete: function(results) {
+              const rows = results.data;
+              const stats = calculateStats(rows, file.name, songNumber);
+              if (stats) {
+                // Remove existing song if present
+                memberData = memberData.filter(s => s.songNumber !== songNumber);
+                memberData.push(stats);
+                logMessage(`[성공] '${file.name}' 분석 성공! (평균 몰입도: ${(stats.averages.engagement * 100).toFixed(1)}%)`, 'success');
+              } else {
+                logMessage(`[에러] '${file.name}' 데이터 파싱에 실패했습니다. (뇌파 컬럼 누락)`, 'error');
+              }
+              checkCompletion();
+            }
+          });
+        };
+        reader.readAsText(file);
+      } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+        reader.onload = function(e) {
+          const data = new Uint8Array(e.target.result);
+          try {
+            const workbook = XLSX.read(data, { type: 'array' });
+            let allRows = [];
+            workbook.SheetNames.forEach(sheetName => {
+              const worksheet = workbook.Sheets[sheetName];
+              const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null });
+              if (rows && rows.length > 0) {
+                allRows = allRows.concat(rows);
+              }
+            });
+
+            const stats = calculateStats(allRows, file.name, songNumber);
+            if (stats) {
+              memberData = memberData.filter(s => s.songNumber !== songNumber);
+              memberData.push(stats);
+              logMessage(`[성공] '${file.name}' 분석 성공! (평균 몰입도: ${(stats.averages.engagement * 100).toFixed(1)}%)`, 'success');
+            } else {
+              logMessage(`[에러] '${file.name}' 데이터 파싱에 실패했습니다. (뇌파 컬럼 누락)`, 'error');
+            }
+          } catch (err) {
+            logMessage(`[에러] '${file.name}'을 읽는 도중 오류가 발생했습니다: ${err.message}`, 'error');
+          }
+          checkCompletion();
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    });
+
+    function checkCompletion() {
+      filesProcessed++;
+      if (filesProcessed >= validFiles.length) {
+        // Sort member data by songNumber ascending
+        memberData.sort((a, b) => a.songNumber - b.songNumber);
+        
+        // Save to localStorage
+        localStorage.setItem(`brainwaveData_${memberKey}`, JSON.stringify(memberData));
+        logMessage(`🏁 모든 파일 처리 완료! ${memberName} 님의 대시보드가 실시간 업데이트되었습니다.`, 'success');
+        
+        // Trigger confetti for the uploader success!
+        triggerConfetti();
+      }
+    }
+  }
+}
+
+// ==========================================
+// 💡 Presentation Navigation & Storyboards
+// ==========================================
+
+const navIntro = document.getElementById('navIntro');
+const navHowWeDid = document.getElementById('navHowWeDid');
+const navSeeMusic = document.getElementById('navSeeMusic');
+const navSeePerson = document.getElementById('navSeePerson');
+const navNbti = document.getElementById('navNbti');
+const navAchievements = document.getElementById('navAchievements');
+const navUploader = document.getElementById('navUploader');
+
+const introScreen = document.getElementById('introScreen');
+const howWeDidScreen = document.getElementById('howWeDidScreen');
+const seeMusicScreen = document.getElementById('seeMusicScreen');
+const dashboardScreen = document.getElementById('dashboardScreen');
+const nbtiScreen = document.getElementById('nbtiScreen');
+const teamScreen = document.getElementById('teamScreen');
+const uploaderScreen = document.getElementById('uploaderScreen');
+
+function switchScreen(screenId) {
+  // Ensure music stops playing when navigating between screens
+  stopMockAudio();
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  
+  if (screenId === 'introScreen') {
+    navIntro.classList.add('active');
+    introScreen.classList.add('active');
+  }
+  if (screenId === 'howWeDid') {
+    navHowWeDid.classList.add('active');
+    howWeDidScreen.classList.add('active');
+  }
+  if (screenId === 'seeMusic') {
+    navSeeMusic.classList.add('active');
+    seeMusicScreen.classList.add('active');
+    loadSongAnalysis();
+  }
+  if (screenId === 'seePerson') {
+    navSeePerson.classList.add('active');
+    dashboardScreen.classList.add('active');
+    loadDashboard();
+  }
+  if (screenId === 'nbti') {
+    navNbti.classList.add('active');
+    nbtiScreen.classList.add('active');
+    loadNbtiScreen('member3'); // Default to Moon Kyung Soo
+    triggerConfetti();
+  }
+  if (screenId === 'achievements') {
+    navAchievements.classList.add('active');
+    teamScreen.classList.add('active');
+    loadAchievementsScreen('member3'); // Default to Moon Kyung Soo
+    triggerConfetti();
+  }
+  if (screenId === 'uploader') {
+    navUploader.classList.add('active');
+    uploaderScreen.classList.add('active');
+  }
+}
+
+// Nav items click bindings
+navIntro.addEventListener('click', () => switchScreen('introScreen'));
+navHowWeDid.addEventListener('click', () => switchScreen('howWeDid'));
+navSeeMusic.addEventListener('click', () => switchScreen('seeMusic'));
+navSeePerson.addEventListener('click', () => switchScreen('seePerson'));
+navNbti.addEventListener('click', () => switchScreen('nbti'));
+navAchievements.addEventListener('click', () => switchScreen('achievements'));
+navUploader.addEventListener('click', () => switchScreen('uploader'));
+
+// Nav Logo click to home
+document.querySelector('.nav-logo').style.cursor = 'pointer';
+document.querySelector('.nav-logo').addEventListener('click', () => switchScreen('introScreen'));
+
+// Intro page buttons click handlers
+['member1', 'member2', 'member3', 'member4'].forEach(mId => {
+  const btn = document.getElementById(`intro-btn-${mId}`);
+  if (btn) {
+    btn.addEventListener('click', () => {
+      currentUserId = mId;
+      document.getElementById('userSelect').value = mId;
+      switchScreen('seePerson');
+    });
+  }
+});
+
+const introStartBtn = document.getElementById('intro-start-btn');
+if (introStartBtn) {
+  introStartBtn.addEventListener('click', () => {
+    switchScreen('howWeDid');
+  });
+}
+
+// Stage 5 N-BTI member selector tabs
+['member3', 'member1', 'member2', 'member4'].forEach(mId => {
+  const tabBtn = document.getElementById(`nbti-tab-${mId}`);
+  if (tabBtn) {
+    tabBtn.addEventListener('click', () => {
+      document.querySelectorAll('#nbtiScreen .hero-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+      });
+      tabBtn.classList.add('active');
+      const colors = { member3: '#0a84ff', member1: '#30d158', member2: '#ff9f0a', member4: '#bf5af2' };
+      tabBtn.style.background = `rgba(${hexToRgb(colors[mId])}, 0.15)`;
+      loadNbtiScreen(mId);
+    });
+  }
+});
+
+// Stage 6 Achievements member selector tabs
+['member3', 'member1', 'member2', 'member4'].forEach(mId => {
+  const tabBtn = document.getElementById(`ach-tab-${mId}`);
+  if (tabBtn) {
+    tabBtn.addEventListener('click', () => {
+      document.querySelectorAll('#teamScreen .hero-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+      });
+      tabBtn.classList.add('active');
+      const colors = { member3: '#0a84ff', member1: '#30d158', member2: '#ff9f0a', member4: '#bf5af2' };
+      tabBtn.style.background = `rgba(${hexToRgb(colors[mId])}, 0.15)`;
+      loadAchievementsScreen(mId);
+    });
+  }
+});
+
+function hexToRgb(hex) {
+  const bigint = parseInt(hex.replace('#', ''), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `${r}, ${g}, ${b}`;
+}
+
+// ==========================================
+// 🎛️ Interactive 4x5 Neural Launchpad
+// ==========================================
+function initLaunchpad() {
+  const launchpad = document.getElementById('neuralLaunchpad');
+  if (!launchpad) return;
+
+  launchpad.innerHTML = '';
+  
+  const subjects = ['member3', 'member1', 'member2', 'member4'];
+  const metrics = ['engagement', 'interest', 'excitement', 'stress', 'relaxation'];
+  const metricsKo = ['몰입', '흥미', '활성', '스트레스', '이완'];
+  const colors = {
+    member3: 'rgba(10, 132, 255, 0.45)', // 문경수 - Blue
+    member1: 'rgba(48, 209, 88, 0.45)',  // 김한주 - Green
+    member2: 'rgba(255, 159, 10, 0.45)', // 김용석 - Orange
+    member4: 'rgba(191, 90, 242, 0.45)'  // 홍수민 - Purple
+  };
+
+  subjects.forEach(mId => {
+    metrics.forEach((metric, mIdx) => {
+      const btn = document.createElement('button');
+      btn.className = 'launchpad-btn';
+      btn.style.padding = '0.75rem 0.5rem';
+      btn.style.fontSize = '0.8rem';
+      btn.style.fontFamily = 'monospace';
+      btn.style.fontWeight = '700';
+      btn.style.color = '#fff';
+      btn.style.border = '1px solid rgba(255,255,255,0.08)';
+      btn.style.borderRadius = '8px';
+      btn.style.cursor = 'pointer';
+      btn.style.transition = 'all 0.2s';
+      btn.style.background = 'rgba(255, 255, 255, 0.02)';
+      btn.innerHTML = `${MEMBERS[mId].substring(0, 3)}<br><span style="font-size: 0.65rem; color: var(--text-secondary);">${metricsKo[mIdx]}</span>`;
+
+      // Highlight active cell
+      if (currentUserId === mId && compareMetricSelect.value === metric) {
+        btn.classList.add('active');
+        btn.style.background = colors[mId];
+        btn.style.borderColor = '#fff';
+        btn.style.boxShadow = `0 0 15px ${colors[mId].replace('0.45', '0.8')}`;
+      }
+
+      btn.addEventListener('click', () => {
+        // Remove active class from all launchpad buttons
+        document.querySelectorAll('.launchpad-btn').forEach(b => {
+          b.style.background = 'rgba(255, 255, 255, 0.02)';
+          b.style.borderColor = 'rgba(255,255,255,0.08)';
+          b.style.boxShadow = 'none';
+        });
+
+        // Set active state
+        btn.style.background = colors[mId];
+        btn.style.borderColor = '#fff';
+        btn.style.boxShadow = `0 0 15px ${colors[mId].replace('0.45', '0.8')}`;
+
+        // Dynamic State updates
+        currentUserId = mId;
+        document.getElementById('userSelect').value = mId;
+        compareMetricSelect.value = metric;
+        
+        // Load the personal dashboard
+        loadDashboard();
+      });
+
+      launchpad.appendChild(btn);
+    });
+  });
+}
+
+// ==========================================
+// 🔮 Stage 5: N-BTI Personality Diagnosis
+// ==========================================
+function loadNbtiScreen(mId) {
+  const block = document.getElementById('nbtiReportBlock');
+  if (!block) return;
+
+  const saved = localStorage.getItem(`brainwaveData_${mId}`);
+  if (!saved) {
+    block.innerHTML = `<p style="text-align: center; color: red;">이 조원의 뇌파 데이터가 존재하지 않습니다. Uploader 탭에서 데이터를 업로드해 주세요.</p>`;
+    return;
+  }
+
+  const parsed = JSON.parse(saved);
+  
+  // Calculate average stats over all songs
+  let totalStats = { engagement: 0, interest: 0, excitement: 0, stress: 0, relaxation: 0 };
+  let count = 0;
+  
+  parsed.forEach(song => {
+    TARGET_COLUMNS.forEach(col => {
+      totalStats[col] += song.averages[col] || 0;
+    });
+    count++;
+  });
+  
+  if (count > 0) {
+    TARGET_COLUMNS.forEach(col => {
+      totalStats[col] = totalStats[col] / count;
+    });
+  }
+
+  // Define N-BTI personality profile texts
+  const PROFILE_DB = {
+    member1: {
+      nbti: "Z.E.N.S (Zen & Emotional Serene)",
+      title: "🧘‍♂️ 만사태평 감성 음유시인 (The Composer)",
+      bg: "rgba(48, 209, 88, 0.03)",
+      border: "#30d158",
+      glow: "rgba(48, 209, 88, 0.3)",
+      description: "음악학과 대표 작곡가답게 어떤 복잡하고 자극적인 소리나 장르의 변화가 일어나도 스트레스 반응을 매우 낮게 통제합니다. 소리에 대해 불안해하지 않고, 오히려 음계의 변화에 몰입하면서 심신을 완전히 정돈하는 '마인드 컨트롤 클래스'의 모습을 보입니다. 뇌파 전체 지표 중에서 이완도가 최고치에 가닿으며, 거의 걸어 다니는 명상 숲 수준으로 멜로디를 수용하는 가장 평온하고 감성적인 인물입니다.",
+      quote: "Lemon Tree에서 이완도 최고 0.857을 기록하며 음악과 완전한 물아일체에 도달했습니다. 🎧"
+    },
+    member3: {
+      nbti: "A.I.F.C (AI Focused chipset)",
+      title: "🧠 초집중 AI 마스터 (The AI Wizard)",
+      bg: "rgba(10, 132, 255, 0.03)",
+      border: "#0a84ff",
+      glow: "rgba(10, 132, 255, 0.3)",
+      description: "인공지능 연구원다운 엄청난 집중형 뇌지컬! 강렬하고 변칙적인 리듬감이나 빠른 스케일의 테크노 음악이 재생될 때도 뇌의 흔들림 없이 극도로 높은 수준의 몰입도(Engagement)를 안정적으로 쭉 이어나갑니다. 복잡한 사운드 트랙을 분석하듯 들으며 고도의 신경 흐름을 장시간 유지하여, 뇌의 인지 기능 효율성을 극대화시키는 완벽한 이성적 몰입형 아키텍처를 보여줍니다.",
+      quote: "진격의 거인 OST와 같은 웅장한 곡에서도 감정을 이성으로 수렴하여 전율을 몰입으로 치환시켰습니다. ⚔️"
+    },
+    member2: {
+      nbti: "E.X.C.I (Excitement Catalyst Intellect)",
+      title: "🔥 아드레날린 락커 (The Adrenaline Rocker)",
+      bg: "rgba(255, 159, 10, 0.03)",
+      border: "#ff9f0a",
+      glow: "rgba(255, 159, 10, 0.3)",
+      description: "지적이고 냉철한 인문학적 학도 뒤에 깊숙이 감춰져 있던 폭발적인 록스피릿 본능! 헤비메탈이나 강력한 록 계열 드럼 비트, 웅장한 스케일의 클래식 속주 멜로디가 귓가에 닿는 순간, 뇌파의 활성도(Excitement)가 성층권을 뚫고 날아갑니다. 감정에 따라 피드백이 가장 빠르게 변하며 지루할 틈 없이 음악을 온몸의 세포 단위로 격렬하게 반겨주는 가장 에너지틱하고 매력적인 탐험가입니다.",
+      quote: "Pentakill - Lost Chapter에서 활성도가 최대치로 분출되며 귓가에 내적 록 콘서트를 개장하였습니다! 🎸"
+    },
+    member4: {
+      nbti: "I.N.T.R (Interactive Neuro receptor)",
+      title: "👀 예술적 호기심 탐험가 (The Art Curator)",
+      bg: "rgba(191, 90, 242, 0.03)",
+      border: "#bf5af2",
+      glow: "rgba(191, 90, 242, 0.3)",
+      description: "조형 예술가다운 극도로 섬세하고 정밀한 사운드 텍스처 감상력! 악기의 작은 배음 변화나 처음 듣는 아방가르드한 프렌치 팝 멜로디라인이 노출될 때마다 흥미도(Interest) 반응이 번개처럼 민감하고 빠르게 치솟습니다. 귀로 들어오는 소리의 시각적 입체감과 미장센을 머릿속 캔버스에 즉시 그려내는 듯한 특별하고 경이로운 예술 감수성을 지닌 호기심 대장입니다.",
+      quote: "Peligrosa와 같은 감각적인 트랙에서 흥미 반응이 팀원 중 가장 기민하게 반응하여 예술적 본능을 인증했습니다. 🎨"
+    }
+  };
+
+  const profile = PROFILE_DB[mId] || PROFILE_DB.member3;
+
+  // Let's compute some custom ratios for MBTI-style bar chart
+  // Dimension 1: C (Concentration) vs D (Diversion)
+  const scoreC = Math.round(totalStats.engagement * 100);
+  const scoreD = 100 - scoreC;
+
+  // Dimension 2: A (Activation) vs R (Relaxation)
+  const sumAR = totalStats.excitement + totalStats.relaxation;
+  const scoreA = Math.round((totalStats.excitement / (sumAR || 1)) * 100);
+  const scoreR = 100 - scoreA;
+
+  // Dimension 3: P (Passion) vs S (Serene)
+  const sumPS = totalStats.interest + totalStats.stress;
+  const scoreP = Math.round((totalStats.interest / (sumPS || 1)) * 100);
+  const scoreS = 100 - scoreP;
+
+  block.innerHTML = `
+    <div id="pdf-report-container" style="background: ${profile.bg}; border: 2.5px solid ${profile.border}; border-radius: 24px; padding: 2.5rem; box-shadow: 0 0 30px ${profile.glow}; animation: fadeIn 0.5s ease-out; display: flex; flex-direction: column; gap: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1.5rem;">
+        <div>
+          <div style="font-family: monospace; font-size: 1.1rem; color: #ffd700; font-weight: 700; margin-bottom: 0.2rem; letter-spacing: 1px;">FINAL BRAINWAVE DIAGNOSIS</div>
+          <h2 style="font-size: 2.2rem; color: #fff; font-weight: 800; margin-bottom: 0.4rem;">${MEMBERS[mId]} 님의 N-BTI 성향 보고서</h2>
+          <span style="font-size: 1.3rem; font-weight: 700; color: ${profile.border}; text-shadow: 0 0 10px ${profile.glow};">${profile.nbti}</span>
+        </div>
+        <button id="downloadPdfBtn" style="background: linear-gradient(135deg, ${profile.border}, #050508); border: 1.5px solid ${profile.border}; box-shadow: 0 0 15px ${profile.glow}; font-size: 0.95rem; font-weight: 700; padding: 0.7rem 1.5rem; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+          📄 리포트 PDF 저장
+        </button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: center; flex-wrap: wrap;">
+        <!-- Left: Personality Description -->
+        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+          <h3 style="font-size: 1.4rem; color: #fff; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            💎 성향 분류: ${profile.title}
+          </h3>
+          <p style="font-size: 1rem; color: #cfd8dc; line-height: 1.8; text-align: justify;">
+            ${profile.description}
+          </p>
+          <div style="background: rgba(255, 255, 255, 0.02); border: 1px dashed ${profile.border}; padding: 1.2rem; border-radius: 12px; font-weight: 500; font-size: 0.9rem; color: #ffd700; line-height: 1.5;">
+            💡 <strong>시그니처 분석 근거:</strong> ${profile.quote}
+          </div>
+        </div>
+
+        <!-- Right: MBTI-style ratio bars -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 2rem; border-radius: 20px; display: flex; flex-direction: column; gap: 1.8rem;">
+          <h3 style="font-size: 1.15rem; color: #fff; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.2rem;">
+            📊 뇌파 성향 차원별 척도 비율
+          </h3>
+
+          <!-- Dimension 1: 몰입 vs 분산 -->
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #fff;">
+              <span>몰입(C) [${scoreC}%]</span>
+              <span>분산(D) [${scoreD}%]</span>
+            </div>
+            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex;">
+              <div style="width: ${scoreC}%; background: linear-gradient(90deg, #bf5af2, ${profile.border}); height: 100%;"></div>
+              <div style="width: ${scoreD}%; background: rgba(255,255,255,0.1); height: 100%;"></div>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-secondary);">C (Concentration) vs D (Diversion)</span>
+          </div>
+
+          <!-- Dimension 2: 각성 vs 이완 -->
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #fff;">
+              <span>각성(A) [${scoreA}%]</span>
+              <span>이완(R) [${scoreR}%]</span>
+            </div>
+            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex;">
+              <div style="width: ${scoreA}%; background: linear-gradient(90deg, #ff9f0a, #ff375f); height: 100%;"></div>
+              <div style="width: ${scoreR}%; background: #30d158; height: 100%;"></div>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-secondary);">A (Activation) vs R (Relaxation)</span>
+          </div>
+
+          <!-- Dimension 3: 열정 vs 평온 -->
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #fff;">
+              <span>열정(P) [${scoreP}%]</span>
+              <span>평온(S) [${scoreS}%]</span>
+            </div>
+            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex;">
+              <div style="width: ${scoreP}%; background: linear-gradient(90deg, #0a84ff, #bf5af2); height: 100%;"></div>
+              <div style="width: ${scoreS}%; background: rgba(255,69,58,0.3); height: 100%;"></div>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-secondary);">P (Passion) vs S (Serene)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Attach PDF Generation logic
+  const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+  if (downloadPdfBtn) {
+    downloadPdfBtn.addEventListener('click', () => {
+      generatePDFReport(mId, profile);
+    });
+  }
+}
+
+function generatePDFReport(mId, profile) {
+  const element = document.getElementById('pdf-report-container');
+  if (!element) return;
+  
+  const opt = {
+    margin:       0.5,
+    filename:     `NeuroWav_N-BTI_${MEMBERS[mId]}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#050508' },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+  };
+  
+  // Load loading overlay
+  const loading = document.getElementById('loadingOverlay');
+  if (loading) {
+    loading.querySelector('.loading-text').textContent = 'Generating PDF Report...';
+    loading.style.display = 'flex';
+  }
+  
+  html2pdf().set(opt).from(element).save().then(() => {
+    if (loading) loading.style.display = 'none';
+  }).catch(err => {
+    console.error("PDF generation failed:", err);
+    if (loading) loading.style.display = 'none';
+  });
+}
+
+// ==========================================
+// 🏆 Stage 6: Retro Achievements Hall of Fame
+// ==========================================
+function loadAchievementsScreen(mId) {
+  const grid = document.getElementById('teamGrid');
+  if (!grid) return;
+
+  const saved = localStorage.getItem(`brainwaveData_${mId}`);
+  if (!saved) {
+    grid.innerHTML = `<p style="text-align: center; color: red;">이 조원의 뇌파 데이터가 존재하지 않습니다. Uploader 탭에서 데이터를 업로드해 주세요.</p>`;
+    return;
+  }
+
+  const parsed = JSON.parse(saved);
+
+  // Compute highest and lowest stress songs
+  let maxStress = -Infinity;
+  let maxStressSong = "";
+  let minStress = Infinity;
+  let minStressSong = "";
+
+  parsed.forEach(song => {
+    const sIdx = song.songNumber;
+    const meta = SONG_METADATA[sIdx - 1] || { title: `Song ${sIdx}` };
+    if (song.averages.stress > maxStress) {
+      maxStress = song.averages.stress;
+      maxStressSong = `${sIdx}. ${meta.title}`;
+    }
+    if (song.averages.stress < minStress) {
+      minStress = song.averages.stress;
+      minStressSong = `${sIdx}. ${meta.title}`;
+    }
+  });
+
+  const ACHIEVEMENTS_DB = {
+    member1: {
+      avatar: "/profile2.png",
+      weapon: "🎹 Golden Tuning Fork (황금 소리굽쇠)",
+      weaponIcon: "🎹",
+      border: "#30d158",
+      colorName: "green",
+      list: [
+        { title: "🛡️ 이완의 천재 (Relaxation Deity)", desc: "어떤 변박 사운드나 웅장한 가창곡이 귓가에 들이닥쳐도, 심적 자극 없이 극락의 심리적 이완도 지수를 끝까지 유지하여 숲속 명상 힐러임을 입증함! (이완도 팀원 최고 0.426)" },
+        { title: "🧊 스트레스 최저 브레이커 (Cold-Blooded)", desc: "팀원들이 가장 경악하고 스트레스를 폭발시켰던 디스토션 트랩 'Look at Me!' 구간에서도 팀내 최저 스트레스 반응을 단단히 수호해냄!" },
+        { title: "🎹 물아일체 사운드 융합 (Lyrical Fusion)", desc: "Lemon Tree 감상 중 몰입도 0.596 돌파와 최고 이완도 0.857을 달성하며 선율과 신경세포가 완전히 한 덩어리로 어우러지는 기적을 보여줌." }
+      ]
+    },
+    member3: {
+      avatar: "/profile1.png",
+      weapon: "⚡ Neural Beam Cannon (신경 광선 포)",
+      weaponIcon: "⚡",
+      border: "#0a84ff",
+      colorName: "blue",
+      list: [
+        { title: "🧠 초집중 인공 신경망 (Neural Processor)", desc: "외부의 감정적 동요(Stress/Relaxation)에 아랑곳하지 않고, 단 1초의 딜레이도 없이 신경계를 초고속 집중 모드로 기동하는 팀 최고의 인지력 소유자!" },
+        { title: "🚀 뇌파 오버클럭 캡틴 (Synapse Accelerator)", desc: "테크노 및 빠른 오토튠 음악 청취 시 시냅스의 연산 반응이 실시간으로 급증하며 고속 비트에 초정밀 응답하는 성향을 보여줌." },
+        { title: "⚔️ 진격의 거인 타이탄 크러셔 (Titan Slayer)", desc: "Sawano Hiroyuki의 웅장한 진격의 거인 에픽 사운드가 귓가에 도달할 때, 뇌의 전 영역이 압도적인 전투 몰입도로 똘똘 뭉침." }
+      ]
+    },
+    member2: {
+      avatar: "/profile3.png",
+      weapon: "🎸 Overdrive Distortion Guitar (지옥의 일렉기타)",
+      weaponIcon: "🎸",
+      border: "#ff9f0a",
+      colorName: "orange",
+      list: [
+        { title: "🔥 아드레날린 제트 엔진 (Adrenaline Overdrive)", desc: "메탈 기타 리프나 강렬한 록 사운드를 접할 때, 뇌가 즉각적으로 성층권을 뚫는 강력한 초활성(Excitement)과 내적 분출 상태를 감행함!" },
+        { title: "🤘 헤비메탈 콘서트 라이더 (Metal Core Headbanger)", desc: "Pentakill의 묵직한 디스토션 멜로디가 전개될 때, 내면에 잠자던 전사의 투지와 내적 헤드뱅잉 본능이 뇌파에 폭발적으로 매핑됨." },
+        { title: "💥 거침없는 데이터 탐색가 (Fearless Explorer)", desc: "어려운 변박 재즈 음악 속에서도 뇌가 당황(Stress)하지 않고 끊임없이 소리를 탐색하고 흥미를 느끼는 진취성을 입증함." }
+      ]
+    },
+    member4: {
+      avatar: "/profile4.png",
+      weapon: "🎨 Prismatic Spectrum Staff (예술의 프리즘 요술봉)",
+      weaponIcon: "🎨",
+      border: "#bf5af2",
+      colorName: "purple",
+      list: [
+        { title: "👀 예술적 미장센 디텍터 (Aesthetic Receptor)", desc: "악기의 주파수 질감 변화와 처음 들어보는 이색적 프렌치 인디 팝에 흥미도 지표가 실시간 번개처럼 예민하게 반응하여 최고 미학 감각 증명!" },
+        { title: "🎭 극적 뇌파 큐레이션 (Dramatic Mind)", desc: "Sie ergibt sich nicht와 같이 드라마틱한 가창과 가사가 풍부한 뮤지컬 락 장르에서 뇌파 감정이 한 편의 서사시처럼 기민하게 춤을 춤." },
+        { title: "✨ 호기심의 찬란한 팔레트 (Curious Palette)", desc: "곡의 인트로 구간이 재생될 때마다 '이것은 무슨 악기인가?'라는 경이로운 호기심 감수성을 팀내에서 가장 크게 터트림." }
+      ]
+    }
+  };
+
+  const ach = ACHIEVEMENTS_DB[mId] || ACHIEVEMENTS_DB.member3;
+
+  let listHtml = '';
+  ach.list.forEach(item => {
+    listHtml += `
+      <div style="background: rgba(0, 0, 0, 0.35); border-left: 5px solid ${ach.border}; border-radius: 12px; padding: 1.5rem; text-align: left; display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid rgba(255,255,255,0.04); border-left: 5px solid ${ach.border}; transition: transform 0.2s;">
+        <h4 style="font-size: 1.15rem; font-weight: 700; color: #fff;">${item.title}</h4>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">${item.desc}</p>
+      </div>
+    `;
+  });
+
+  grid.innerHTML = `
+    <div style="background: rgba(28,28,30,0.75); border: 2.5px solid ${ach.border}; border-radius: var(--radius-lg); padding: 2.5rem; display: flex; flex-direction: column; gap: 2.5rem; text-align: center; box-shadow: 0 0 25px rgba(${hexToRgb(ach.border)}, 0.15); animation: fadeIn 0.5s ease-out;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <img src="${ach.avatar}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3.5px solid ${ach.border}; box-shadow: 0 0 20px rgba(${hexToRgb(ach.border)}, 0.4);">
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 0;">${MEMBERS[mId]} 님의 최종 전설적 업적</h2>
+        <div style="display: flex; align-items: center; gap: 8px; background: rgba(${hexToRgb(ach.border)}, 0.15); color: #fff; padding: 0.4rem 1.2rem; border-radius: 30px; font-size: 0.95rem; font-weight: 700; border: 1px solid ${ach.border};">
+          <span>${ach.weaponIcon} 장착 무기: <strong>${ach.weapon}</strong></span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%; margin-top: 1rem;">
+        ${listHtml}
+      </div>
+
+      <!-- Stress Track Summary -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
+        <div style="background: rgba(255, 69, 58, 0.05); border: 1px dashed rgba(255, 69, 58, 0.3); border-radius: 16px; padding: 1.5rem; text-align: left;">
+          <h4 style="font-size: 1rem; color: #ff453a; font-weight: 700; margin-bottom: 0.5rem;">🤯 뇌에 부담을 준 기피 트랙 (Max Stress)</h4>
+          <span style="font-size: 1.15rem; color: #fff; font-weight: 700;">${maxStressSong}</span>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.4;">
+            이 트랙 청취 시 스트레스 지표가 최고조인 <strong>${(maxStress * 100).toFixed(1)}%</strong>에 수렴하여 뇌가 본능적으로 기피하는 반응을 나타냈습니다.
+          </p>
+        </div>
+        <div style="background: rgba(48, 209, 88, 0.05); border: 1px dashed rgba(48, 209, 88, 0.3); border-radius: 16px; padding: 1.5rem; text-align: left;">
+          <h4 style="font-size: 1rem; color: #30d158; font-weight: 700; margin-bottom: 0.5rem;">🧘‍♂️ 뇌를 평온하게 한 치유 트랙 (Min Stress)</h4>
+          <span style="font-size: 1.15rem; color: #fff; font-weight: 700;">${minStressSong}</span>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.4;">
+            이 트랙 청취 시 스트레스 지표가 최저치인 <strong>${(minStress * 100).toFixed(1)}%</strong>로 감소하여 뇌 세포가 극도로 평안하고 안정적인 상태에 이완되었습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ==========================================
+// 💡 Real-time Track Selector Syncing
+// ==========================================
+function initDashboardSongSelect() {
+  const songSelect = document.getElementById('dashboardSongSelect');
+  if (!songSelect) return;
+
+  songSelect.innerHTML = '';
+  SONG_METADATA.forEach((song, idx) => {
+    const opt = document.createElement('option');
+    opt.value = idx;
+    opt.textContent = `${idx + 1}. ${song.title} - ${song.artist} (${song.cover})`;
+    songSelect.appendChild(opt);
+  });
+
+  songSelect.addEventListener('change', (e) => {
+    selectSong(parseInt(e.target.value));
+  });
+}
+
+// Overwrite loadDashboard to add Launchpad & Song Select initializers
+const oldLoadDashboard = loadDashboard;
+loadDashboard = function() {
+  oldLoadDashboard();
+  initLaunchpad();
+  initDashboardSongSelect();
+  
+  // Sync the dropdown value
+  const songSelect = document.getElementById('dashboardSongSelect');
+  if (songSelect) {
+    songSelect.value = activeSongIndex;
+  }
+};
+
 // Initialize on script load
 initMockPlayer();
 initDashboardTabs();
+initUploaderListeners();
 
-// Initially show home screen
-switchScreen('homeScreen');
+// Initially show Stage 1 Intro
+switchScreen('introScreen');

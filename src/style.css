@@ -896,3 +896,35 @@ input[type="checkbox"]:checked + .neon-switch-slider::before {
   backdrop-filter: blur(20px);
 }
 
+/* ==========================================
+   8. Launchpad & Retro Quest Styles
+   ========================================== */
+.launchpad-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.launchpad-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.03) translateY(-2px);
+}
+
+.launchpad-btn.active {
+  animation: launchpadGlow 2s infinite alternate;
+}
+
+@keyframes launchpadGlow {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.02); filter: brightness(1.15); }
+}
+
+.nbti-container-block {
+  animation: fadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.profile-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
