@@ -84,31 +84,31 @@ app.innerHTML = `
           <h3 style="color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 1px;">🎮 플레이어 캐릭터 선택 (Player Select)</h3>
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
             <!-- 김용석 -->
-            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 159, 10, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255, 159, 10, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 159, 10, 0.1);">
-              <img src="/profile3.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #ff9f0a;">
+            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 69, 58, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255, 69, 58, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 69, 58, 0.1);">
+              <img src="/profile3.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #ff453a;">
               <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김용석 님</span>
-              <span style="font-size: 0.75rem; color: #ff9f0a; font-weight: 600; margin-top: 0.2rem;">🔥 아드레날린 락커</span>
+              <span style="font-size: 0.75rem; color: #ff453a; font-weight: 600; margin-top: 0.2rem;">🔥 아드레날린 락커</span>
               <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">자유전공 인문<br>26학번</span>
             </div>
             <!-- 김한주 -->
-            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(48, 209, 88, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(48, 209, 88, 0.1);">
-              <img src="/profile2.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #30d158;">
+            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(10, 132, 255, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(10, 132, 255, 0.1);">
+              <img src="/profile2.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #0a84ff;">
               <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김한주 님</span>
-              <span style="font-size: 0.75rem; color: #30d158; font-weight: 600; margin-top: 0.2rem;">🧘‍♂️ 감성 음유시인</span>
+              <span style="font-size: 0.75rem; color: #0a84ff; font-weight: 600; margin-top: 0.2rem;">🧘‍♂️ 감성 음유시인</span>
               <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">음악학과 작곡과<br>21학번</span>
             </div>
             <!-- 문경수 -->
-            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(10, 132, 255, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(10, 132, 255, 0.1);">
-              <img src="/profile1.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #0a84ff;">
+            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(191, 90, 242, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(191, 90, 242, 0.1);">
+              <img src="/profile1.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #bf5af2;">
               <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">문경수 님</span>
-              <span style="font-size: 0.75rem; color: #64d2ff; font-weight: 600; margin-top: 0.2rem;">🧠 AI 집중 마스터</span>
+              <span style="font-size: 0.75rem; color: #bf5af2; font-weight: 600; margin-top: 0.2rem;">🧠 AI 집중 마스터</span>
               <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">휴먼AI공학전공<br>21학번</span>
             </div>
             <!-- 홍수민 -->
-            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(191, 90, 242, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(191, 90, 242, 0.1);">
-              <img src="/profile4.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #bf5af2;">
+            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(48, 209, 88, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(48, 209, 88, 0.1);">
+              <img src="/profile4.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #30d158;">
               <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">홍수민 님</span>
-              <span style="font-size: 0.75rem; color: #bf5af2; font-weight: 600; margin-top: 0.2rem;">🎨 호기심 미술가</span>
+              <span style="font-size: 0.75rem; color: #30d158; font-weight: 600; margin-top: 0.2rem;">🎨 호기심 미술가</span>
               <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">조형예술학과<br>25학번</span>
             </div>
           </div>
@@ -418,10 +418,10 @@ app.innerHTML = `
     </header>
     
     <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
-      <button id="nbti-tab-member2" class="hero-btn active" style="border-color: #ff9f0a; background: rgba(255,159,10,0.15);">김용석 님</button>
-      <button id="nbti-tab-member1" class="hero-btn" style="border-color: #30d158;">김한주 님</button>
-      <button id="nbti-tab-member3" class="hero-btn" style="border-color: #0a84ff;">문경수 님</button>
-      <button id="nbti-tab-member4" class="hero-btn" style="border-color: #bf5af2;">홍수민 님</button>
+      <button id="nbti-tab-member2" class="hero-btn active" style="border-color: #ff453a; background: rgba(255,69,58,0.15);">김용석 님</button>
+      <button id="nbti-tab-member1" class="hero-btn" style="border-color: #0a84ff;">김한주 님</button>
+      <button id="nbti-tab-member3" class="hero-btn" style="border-color: #bf5af2;">문경수 님</button>
+      <button id="nbti-tab-member4" class="hero-btn" style="border-color: #30d158;">홍수민 님</button>
     </div>
 
     <div class="nbti-container-block" id="nbtiReportBlock" style="width: 100%; min-height: 500px;">
@@ -438,10 +438,10 @@ app.innerHTML = `
     </header>
     
     <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
-      <button id="ach-tab-member2" class="hero-btn active" style="border-color: #ff9f0a; background: rgba(255, 159, 10, 0.15);">김용석's Achievements</button>
-      <button id="ach-tab-member1" class="hero-btn" style="border-color: #30d158;">김한주's Achievements</button>
-      <button id="ach-tab-member3" class="hero-btn" style="border-color: #0a84ff;">문경수's Achievements</button>
-      <button id="ach-tab-member4" class="hero-btn" style="border-color: #bf5af2;">홍수민's Achievements</button>
+      <button id="ach-tab-member2" class="hero-btn active" style="border-color: #ff453a; background: rgba(255, 69, 58, 0.15);">김용석's Achievements</button>
+      <button id="ach-tab-member1" class="hero-btn" style="border-color: #0a84ff;">김한주's Achievements</button>
+      <button id="ach-tab-member3" class="hero-btn" style="border-color: #bf5af2;">문경수's Achievements</button>
+      <button id="ach-tab-member4" class="hero-btn" style="border-color: #30d158;">홍수민's Achievements</button>
     </div>
 
     <div class="team-awards-container" id="teamGrid" style="display: flex; flex-direction: column; gap: 2rem;">
@@ -1045,11 +1045,11 @@ function loadTeamComparison(type) {
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; width: 100%;">
           
           <!-- 문경수 -->
-          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(10, 132, 255, 0.15); background: rgba(10, 132, 255, 0.02); transition: all 0.3s ease;">
-            <img src="/profile1.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #0a84ff; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(191, 90, 242, 0.15); background: rgba(191, 90, 242, 0.02); transition: all 0.3s ease;">
+            <img src="/profile1.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #bf5af2; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(191, 90, 242, 0.3);">
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">문경수 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">휴먼AI공학전공 | 21학번</span>
-            <div style="background: rgba(10, 132, 255, 0.15); color: #64d2ff; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(10, 132, 255, 0.3);">
+            <div style="background: rgba(191, 90, 242, 0.15); color: #bf5af2; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(191, 90, 242, 0.3);">
               🧠 초집중 AI 마스터 (A.I.F.C)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
@@ -1058,11 +1058,11 @@ function loadTeamComparison(type) {
           </div>
           
           <!-- 김한주 -->
-          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(48, 209, 88, 0.15); background: rgba(48, 209, 88, 0.02); transition: all 0.3s ease;">
-            <img src="/profile2.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #30d158; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(48, 209, 88, 0.3);">
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(10, 132, 255, 0.15); background: rgba(10, 132, 255, 0.02); transition: all 0.3s ease;">
+            <img src="/profile2.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #0a84ff; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">김한주 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">음악학과 작곡과 | 21학번</span>
-            <div style="background: rgba(48, 209, 88, 0.15); color: #30d158; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(48, 209, 88, 0.3);">
+            <div style="background: rgba(10, 132, 255, 0.15); color: #0a84ff; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(10, 132, 255, 0.3);">
               🧘‍♂️ 만사태평 감성 음유시인 (Z.E.N.S)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
@@ -1071,11 +1071,11 @@ function loadTeamComparison(type) {
           </div>
           
           <!-- 김용석 -->
-          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(255, 159, 10, 0.15); background: rgba(255, 159, 10, 0.02); transition: all 0.3s ease;">
-            <img src="/profile3.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #ff9f0a; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(255, 159, 10, 0.3);">
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(255, 69, 58, 0.15); background: rgba(255, 69, 58, 0.02); transition: all 0.3s ease;">
+            <img src="/profile3.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #ff453a; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(255, 69, 58, 0.3);">
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">김용석 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">자유전공학부 인문 | 26학번</span>
-            <div style="background: rgba(255, 159, 10, 0.15); color: #ff9f0a; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(255, 159, 10, 0.3);">
+            <div style="background: rgba(255, 69, 58, 0.15); color: #ff453a; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(255, 69, 58, 0.3);">
               🔥 아드레날린 활성 폭발러 (E.X.C.I)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
@@ -1084,15 +1084,15 @@ function loadTeamComparison(type) {
           </div>
           
           <!-- 홍수민 -->
-          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(191, 90, 242, 0.15); background: rgba(191, 90, 242, 0.02); transition: all 0.3s ease;">
-            <img src="/profile4.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #bf5af2; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(191, 90, 242, 0.3);">
+          <div class="king-card" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(48, 209, 88, 0.15); background: rgba(48, 209, 88, 0.02); transition: all 0.3s ease;">
+            <img src="/profile4.png" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2.5px solid #30d158; margin-bottom: 0.8rem; box-shadow: 0 0 15px rgba(48, 209, 88, 0.3);">
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">홍수민 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">조형예술학과 | 25학번</span>
-            <div style="background: rgba(191, 90, 242, 0.15); color: #bf5af2; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(191, 90, 242, 0.3);">
+            <div style="background: rgba(48, 209, 88, 0.15); color: #30d158; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(48, 209, 88, 0.3);">
               👀 예술적 호기심 탐험가 (I.N.T.R)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
-              시각 예술가다운 고도의 관찰력과 호기심! 신선한 멜로디나 특이한 음역대가 노출될 때마다 흥미도가 수직으로 상승합니다. 사소한 사운드의 디테일까지 기가 막히게 캐치해 냅니다.
+              시각 예술가다운 고도의 관찰력 and 호기심! 신선한 멜로디나 특이한 음역대가 노출될 때마다 흥미도가 수직으로 상승합니다. 사소한 사운드의 디테일까지 기가 막히게 캐치해 냅니다.
             </p>
           </div>
           
@@ -1614,10 +1614,10 @@ function renderCompareChart() {
 
   const memberKeys = ['member2', 'member1', 'member3', 'member4'];
   const colors = {
-    member3: '#0a84ff', // 문경수 (Blue)
-    member1: '#30d158', // 김한주 (Green)
-    member2: '#ff9f0a', // 김용석 (Orange)
-    member4: '#bf5af2'  // 홍수민 (Purple)
+    member3: '#bf5af2', // 문경수 (Purple)
+    member1: '#0a84ff', // 김한주 (Blue)
+    member2: '#ff453a', // 김용석 (Red)
+    member4: '#30d158'  // 홍수민 (Green)
   };
 
   const datasets = [];
@@ -1866,10 +1866,10 @@ function renderSongCompareChart(songIndex, chartType) {
     const dataVals = TARGET_COLUMNS.map(col => songData ? songData.averages[col] : 0);
 
     const colorInfo = {
-      member3: { border: '#0a84ff', bgRadar: 'rgba(10, 132, 255, 0.15)', bgBar: 'rgba(10, 132, 255, 0.7)' }, // 문경수 - Blue
-      member1: { border: '#30d158', bgRadar: 'rgba(48, 209, 88, 0.15)', bgBar: 'rgba(48, 209, 88, 0.7)' },   // 김한주 - Green
-      member2: { border: '#ff9f0a', bgRadar: 'rgba(255, 159, 10, 0.15)', bgBar: 'rgba(255, 159, 10, 0.7)' },  // 김용석 - Orange
-      member4: { border: '#bf5af2', bgRadar: 'rgba(191, 90, 242, 0.15)', bgBar: 'rgba(191, 90, 242, 0.7)' }  // 홍수민 - Purple
+      member3: { border: '#bf5af2', bgRadar: 'rgba(191, 90, 242, 0.15)', bgBar: 'rgba(191, 90, 242, 0.7)' }, // 문경수 - Purple
+      member1: { border: '#0a84ff', bgRadar: 'rgba(10, 132, 255, 0.15)', bgBar: 'rgba(10, 132, 255, 0.7)' },   // 김한주 - Blue
+      member2: { border: '#ff453a', bgRadar: 'rgba(255, 69, 58, 0.15)', bgBar: 'rgba(255, 69, 58, 0.7)' },    // 김용석 - Red
+      member4: { border: '#30d158', bgRadar: 'rgba(48, 209, 88, 0.15)', bgBar: 'rgba(48, 209, 88, 0.7)' }     // 홍수민 - Green
     }[mId];
 
     if (chartType === 'radar') {
@@ -2508,7 +2508,7 @@ if (introStartBtn) {
         b.style.background = 'transparent';
       });
       tabBtn.classList.add('active');
-      const colors = { member3: '#0a84ff', member1: '#30d158', member2: '#ff9f0a', member4: '#bf5af2' };
+      const colors = { member3: '#bf5af2', member1: '#0a84ff', member2: '#ff453a', member4: '#30d158' };
       tabBtn.style.background = `rgba(${hexToRgb(colors[mId])}, 0.15)`;
       loadNbtiScreen(mId);
     });
@@ -2525,7 +2525,7 @@ if (introStartBtn) {
         b.style.background = 'transparent';
       });
       tabBtn.classList.add('active');
-      const colors = { member3: '#0a84ff', member1: '#30d158', member2: '#ff9f0a', member4: '#bf5af2' };
+      const colors = { member3: '#bf5af2', member1: '#0a84ff', member2: '#ff453a', member4: '#30d158' };
       tabBtn.style.background = `rgba(${hexToRgb(colors[mId])}, 0.15)`;
       loadAchievementsScreen(mId);
     });
@@ -2553,10 +2553,10 @@ function initLaunchpad() {
   const metrics = ['engagement', 'interest', 'excitement', 'stress', 'relaxation'];
   const metricsKo = ['몰입', '흥미', '활성', '스트레스', '이완'];
   const colors = {
-    member3: 'rgba(10, 132, 255, 0.45)', // 문경수 - Blue
-    member1: 'rgba(48, 209, 88, 0.45)',  // 김한주 - Green
-    member2: 'rgba(255, 159, 10, 0.45)', // 김용석 - Orange
-    member4: 'rgba(191, 90, 242, 0.45)'  // 홍수민 - Purple
+    member3: 'rgba(191, 90, 242, 0.45)', // 문경수 - Purple
+    member1: 'rgba(10, 132, 255, 0.45)', // 김한주 - Blue
+    member2: 'rgba(255, 69, 58, 0.45)',  // 김용석 - Red
+    member4: 'rgba(48, 209, 88, 0.45)'   // 홍수민 - Green
   };
 
   subjects.forEach(mId => {
@@ -2647,36 +2647,36 @@ function loadNbtiScreen(mId) {
     member1: {
       nbti: "Z.E.N.S (Zen & Emotional Serene)",
       title: "🧘‍♂️ 만사태평 감성 음유시인 (The Composer)",
-      bg: "rgba(48, 209, 88, 0.03)",
-      border: "#30d158",
-      glow: "rgba(48, 209, 88, 0.3)",
+      bg: "rgba(10, 132, 255, 0.03)",
+      border: "#0a84ff",
+      glow: "rgba(10, 132, 255, 0.3)",
       description: "음악학과 대표 작곡가답게 어떤 복잡하고 자극적인 소리나 장르의 변화가 일어나도 스트레스 반응을 매우 낮게 통제합니다. 소리에 대해 불안해하지 않고, 오히려 음계의 변화에 몰입하면서 심신을 완전히 정돈하는 '마인드 컨트롤 클래스'의 모습을 보입니다. 뇌파 전체 지표 중에서 이완도가 최고치에 가닿으며, 거의 걸어 다니는 명상 숲 수준으로 멜로디를 수용하는 가장 평온하고 감성적인 인물입니다.",
       quote: "Lemon Tree에서 이완도 최고 0.857을 기록하며 음악과 완전한 물아일체에 도달했습니다. 🎧"
     },
     member3: {
       nbti: "A.I.F.C (AI Focused chipset)",
       title: "🧠 초집중 AI 마스터 (The AI Wizard)",
-      bg: "rgba(10, 132, 255, 0.03)",
-      border: "#0a84ff",
-      glow: "rgba(10, 132, 255, 0.3)",
+      bg: "rgba(191, 90, 242, 0.03)",
+      border: "#bf5af2",
+      glow: "rgba(191, 90, 242, 0.3)",
       description: "인공지능 연구원다운 엄청난 집중형 뇌지컬! 강렬하고 변칙적인 리듬감이나 빠른 스케일의 테크노 음악이 재생될 때도 뇌의 흔들림 없이 극도로 높은 수준의 몰입도(Engagement)를 안정적으로 쭉 이어나갑니다. 복잡한 사운드 트랙을 분석하듯 들으며 고도의 신경 흐름을 장시간 유지하여, 뇌의 인지 기능 효율성을 극대화시키는 완벽한 이성적 몰입형 아키텍처를 보여줍니다.",
       quote: "진격의 거인 OST와 같은 웅장한 곡에서도 감정을 이성으로 수렴하여 전율을 몰입으로 치환시켰습니다. ⚔️"
     },
     member2: {
       nbti: "E.X.C.I (Excitement Catalyst Intellect)",
       title: "🔥 아드레날린 락커 (The Adrenaline Rocker)",
-      bg: "rgba(255, 159, 10, 0.03)",
-      border: "#ff9f0a",
-      glow: "rgba(255, 159, 10, 0.3)",
+      bg: "rgba(255, 69, 58, 0.03)",
+      border: "#ff453a",
+      glow: "rgba(255, 69, 58, 0.3)",
       description: "지적이고 냉철한 인문학적 학도 뒤에 깊숙이 감춰져 있던 폭발적인 록스피릿 본능! 헤비메탈이나 강력한 록 계열 드럼 비트, 웅장한 스케일의 클래식 속주 멜로디가 귓가에 닿는 순간, 뇌파의 활성도(Excitement)가 성층권을 뚫고 날아갑니다. 감정에 따라 피드백이 가장 빠르게 변하며 지루할 틈 없이 음악을 온몸의 세포 단위로 격렬하게 반겨주는 가장 에너지틱하고 매력적인 탐험가입니다.",
       quote: "Pentakill - Lost Chapter에서 활성도가 최대치로 분출되며 귓가에 내적 록 콘서트를 개장하였습니다! 🎸"
     },
     member4: {
       nbti: "I.N.T.R (Interactive Neuro receptor)",
       title: "👀 예술적 호기심 탐험가 (The Art Curator)",
-      bg: "rgba(191, 90, 242, 0.03)",
-      border: "#bf5af2",
-      glow: "rgba(191, 90, 242, 0.3)",
+      bg: "rgba(48, 209, 88, 0.03)",
+      border: "#30d158",
+      glow: "rgba(48, 209, 88, 0.3)",
       description: "조형 예술가다운 극도로 섬세하고 정밀한 사운드 텍스처 감상력! 악기의 작은 배음 변화나 처음 듣는 아방가르드한 프렌치 팝 멜로디라인이 노출될 때마다 흥미도(Interest) 반응이 번개처럼 민감하고 빠르게 치솟습니다. 귀로 들어오는 소리의 시각적 입체감과 미장센을 머릿속 캔버스에 즉시 그려내는 듯한 특별하고 경이로운 예술 감수성을 지닌 호기심 대장입니다.",
       quote: "Peligrosa와 같은 감각적인 트랙에서 흥미 반응이 팀원 중 가장 기민하게 반응하여 예술적 본능을 인증했습니다. 🎨"
     }
@@ -2699,81 +2699,175 @@ function loadNbtiScreen(mId) {
   const scoreP = Math.round((totalStats.interest / (sumPS || 1)) * 100);
   const scoreS = 100 - scoreP;
 
-  block.innerHTML = `
-    <div id="pdf-report-container" style="background: ${profile.bg}; border: 2.5px solid ${profile.border}; border-radius: 24px; padding: 2.5rem; box-shadow: 0 0 30px ${profile.glow}; animation: fadeIn 0.5s ease-out; display: flex; flex-direction: column; gap: 2rem;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1.5rem;">
-        <div>
-          <div style="font-family: monospace; font-size: 1.1rem; color: #ffd700; font-weight: 700; margin-bottom: 0.2rem; letter-spacing: 1px;">FINAL BRAINWAVE DIAGNOSIS</div>
-          <h2 style="font-size: 2.2rem; color: #fff; font-weight: 800; margin-bottom: 0.4rem;">${MEMBERS[mId]} 님의 N-BTI 성향 보고서</h2>
-          <span style="font-size: 1.3rem; font-weight: 700; color: ${profile.border}; text-shadow: 0 0 10px ${profile.glow};">${profile.nbti}</span>
+  // Dimension 4: T (Explorative) vs J (Structured)
+  const scoreT = Math.round(totalStats.interest * 100);
+  const scoreJ = 100 - scoreT;
+
+  // Dimension 5: S (Sensitive) vs C (Confident)
+  const scoreSens = Math.round(totalStats.stress * 100);
+  const scoreConf = 100 - scoreSens;
+
+  const avatarMap = {
+    member1: '/profile2.png',
+    member2: '/profile3.png',
+    member3: '/profile1.png',
+    member4: '/profile4.png'
+  };
+  const avatarUrl = avatarMap[mId] || '/profile1.png';
+
+  // Inner helper function to render beautiful horizontal MBTI dimension bars
+  const renderMbtiBar = (leftName, leftScore, rightName, rightScore, labelTitle) => {
+    const isLeft = leftScore >= rightScore;
+    const activeColor = profile.border;
+    const glowColor = profile.glow;
+    return `
+      <div style="display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.4rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+          <span style="color: var(--text-secondary); font-size: 0.72rem;">${labelTitle}</span>
         </div>
-        <button id="downloadPdfBtn" style="background: linear-gradient(135deg, ${profile.border}, #050508); border: 1.5px solid ${profile.border}; box-shadow: 0 0 15px ${profile.glow}; font-size: 0.95rem; font-weight: 700; padding: 0.7rem 1.5rem; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 700; color: #fff;">
+          <span style="${isLeft ? `color: ${activeColor}; text-shadow: 0 0 8px ${glowColor};` : 'color: rgba(255,255,255,0.45);'}">${leftName} ${leftScore}%</span>
+          <span style="${!isLeft ? `color: ${activeColor}; text-shadow: 0 0 8px ${glowColor};` : 'color: rgba(255,255,255,0.45);'}">${rightScore}% ${rightName}</span>
+        </div>
+        <div style="width: 100%; height: 10px; background: rgba(255,255,255,0.04); border-radius: 5px; overflow: hidden; display: flex; position: relative; border: 0.5px solid rgba(255,255,255,0.05);">
+          ${isLeft 
+            ? `<div style="width: ${leftScore}%; background: linear-gradient(90deg, rgba(${hexToRgb(activeColor)}, 0.4), ${activeColor}); height: 100%; border-radius: 5px 0 0 5px;"></div>`
+            : `<div style="width: ${leftScore}%; background: transparent; height: 100%;"></div>
+               <div style="width: ${rightScore}%; background: linear-gradient(90deg, ${activeColor}, rgba(${hexToRgb(activeColor)}, 0.4)); height: 100%; border-radius: 0 5px 5px 0;"></div>`
+          }
+        </div>
+      </div>
+    `;
+  };
+
+  block.innerHTML = `
+    <div id="pdf-report-container" style="background: ${profile.bg}; border: 2.5px solid ${profile.border}; border-radius: 24px; padding: 2rem; box-shadow: 0 0 30px ${profile.glow}; animation: fadeIn 0.5s ease-out; display: flex; flex-direction: column; gap: 2rem;">
+      
+      <!-- Top header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
+        <div>
+          <div style="font-family: monospace; font-size: 1rem; color: #ffd700; font-weight: 700; margin-bottom: 0.2rem; letter-spacing: 1px;">FINAL BRAINWAVE DIAGNOSIS</div>
+          <h2 style="font-size: 1.8rem; color: #fff; font-weight: 800; margin-bottom: 0.2rem;">${MEMBERS[mId]} 님의 N-BTI 성향 보고서</h2>
+          <span style="font-size: 1.25rem; font-weight: 700; color: ${profile.border}; text-shadow: 0 0 10px ${profile.glow}; font-family: monospace;">${profile.nbti}</span>
+        </div>
+        <button id="downloadPdfBtn" style="background: linear-gradient(135deg, ${profile.border}, #050508); border: 1.5px solid ${profile.border}; box-shadow: 0 0 15px ${profile.glow}; font-size: 0.9rem; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
           📄 리포트 PDF 저장
         </button>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: center; flex-wrap: wrap;">
-        <!-- Left: Personality Description -->
-        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
-          <h3 style="font-size: 1.4rem; color: #fff; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-            💎 성향 분류: ${profile.title}
+      <!-- [TOP BLOCK] 16Personalities style MBTI Illustration Card -->
+      <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem; align-items: stretch;">
+        
+        <!-- Left Panel: Character illustration card -->
+        <div style="background: linear-gradient(135deg, rgba(${hexToRgb(profile.border)}, 0.15) 0%, rgba(18, 18, 24, 0.75) 100%); border-radius: 20px; padding: 2rem; border: 1.5px solid rgba(${hexToRgb(profile.border)}, 0.35); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 340px; box-shadow: inset 0 0 20px rgba(${hexToRgb(profile.border)}, 0.15);">
+          <!-- Decorative wave pattern backdrop -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 160px; background: linear-gradient(180deg, transparent 0%, rgba(${hexToRgb(profile.border)}, 0.18) 100%); clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%); z-index: 1;"></div>
+          
+          <span style="font-size: 0.85rem; font-weight: 700; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 2px; z-index: 2;">성격 유형</span>
+          <h3 style="font-size: 1.7rem; color: #fff; font-weight: 800; text-shadow: 0 0 15px rgba(${hexToRgb(profile.border)}, 0.4); z-index: 2; margin: 0; line-height: 1.2;">
+            ${profile.title.split('(')[0].replace(/[\u2300-\u23FF\u2600-\u27BF]/g, '').trim()}
           </h3>
-          <p style="font-size: 1rem; color: #cfd8dc; line-height: 1.8; text-align: justify;">
-            ${profile.description}
-          </p>
-          <div style="background: rgba(255, 255, 255, 0.02); border: 1px dashed ${profile.border}; padding: 1.2rem; border-radius: 12px; font-weight: 500; font-size: 0.9rem; color: #ffd700; line-height: 1.5;">
+          
+          <img src="${avatarUrl}" style="width: 120px; height: 120px; border-radius: 20px; border: 3px solid #fff; box-shadow: 0 0 20px rgba(${hexToRgb(profile.border)}, 0.4); z-index: 2; object-fit: cover; background: #fff; transform: translateY(-3px);">
+          
+          <span style="font-size: 1.25rem; font-weight: 800; color: ${profile.border}; letter-spacing: 2px; text-shadow: 0 0 8px rgba(${hexToRgb(profile.border)}, 0.3); z-index: 2; margin: 0; font-family: monospace;">
+            ${profile.nbti.split(' ')[0]}-T
+          </span>
+        </div>
+
+        <!-- Right Panel: 5 Dimensions Scales -->
+        <div style="background: rgba(10, 10, 15, 0.4); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 0.9rem; justify-content: center; min-height: 340px; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+          ${renderMbtiBar('몰입형 (C)', scoreC, '분산형 (D)', scoreD, '정신 (Mind) - C/D')}
+          ${renderMbtiBar('각성형 (A)', scoreA, '이완형 (R)', scoreR, '에너지 (Energy) - A/R')}
+          ${renderMbtiBar('열정형 (P)', scoreP, '평온형 (S)', scoreS, '본성 (Nature) - P/S')}
+          ${renderMbtiBar('탐색형 (T)', scoreT, '계획형 (J)', scoreJ, '전술 (Tactics) - T/J')}
+          ${renderMbtiBar('민감형 (S)', scoreSens, '확신형 (C)', scoreConf, '자아 (Identity) - S/C')}
+        </div>
+
+      </div>
+
+      <!-- [BOTTOM BLOCK] Detailed Brainwave Analysis & canvas radar chart -->
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: stretch;">
+        
+        <!-- Left Panel: Narrative interpretation & Quote -->
+        <div style="background: rgba(18, 18, 24, 0.5); border-radius: 20px; padding: 1.8rem; border: 1.5px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 1.2rem; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+          <div>
+            <h3 style="font-size: 1.15rem; color: #fff; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;">
+              💎 뇌파 성향 정밀 분석
+            </h3>
+            <p style="font-size: 0.95rem; color: #cfd8dc; line-height: 1.7; text-align: justify; margin: 0;">
+              ${profile.description}
+            </p>
+          </div>
+          <div style="background: rgba(${hexToRgb(profile.border)}, 0.04); border: 1px dashed ${profile.border}; padding: 0.8rem 1rem; border-radius: 12px; font-weight: 500; font-size: 0.85rem; color: #ffd700; line-height: 1.4; box-shadow: inset 0 0 10px rgba(${hexToRgb(profile.border)}, 0.05);">
             💡 <strong>시그니처 분석 근거:</strong> ${profile.quote}
           </div>
         </div>
 
-        <!-- Right: MBTI-style ratio bars -->
-        <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); padding: 2rem; border-radius: 20px; display: flex; flex-direction: column; gap: 1.8rem;">
-          <h3 style="font-size: 1.15rem; color: #fff; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.2rem;">
-            📊 뇌파 성향 차원별 척도 비율
+        <!-- Right Panel: Emotional Brainwave Radar Chart -->
+        <div style="background: rgba(10, 10, 15, 0.4); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+          <h3 style="font-size: 0.9rem; color: #fff; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; width: 100%; text-align: center;">
+            🧠 5대 감정 뇌파 지표 분석 (EEG)
           </h3>
-
-          <!-- Dimension 1: 몰입 vs 분산 -->
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #fff;">
-              <span>몰입(C) [${scoreC}%]</span>
-              <span>분산(D) [${scoreD}%]</span>
-            </div>
-            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex;">
-              <div style="width: ${scoreC}%; background: linear-gradient(90deg, #bf5af2, ${profile.border}); height: 100%;"></div>
-              <div style="width: ${scoreD}%; background: rgba(255,255,255,0.1); height: 100%;"></div>
-            </div>
-            <span style="font-size: 0.72rem; color: var(--text-secondary);">C (Concentration) vs D (Diversion)</span>
-          </div>
-
-          <!-- Dimension 2: 각성 vs 이완 -->
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #fff;">
-              <span>각성(A) [${scoreA}%]</span>
-              <span>이완(R) [${scoreR}%]</span>
-            </div>
-            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex;">
-              <div style="width: ${scoreA}%; background: linear-gradient(90deg, #ff9f0a, #ff375f); height: 100%;"></div>
-              <div style="width: ${scoreR}%; background: #30d158; height: 100%;"></div>
-            </div>
-            <span style="font-size: 0.72rem; color: var(--text-secondary);">A (Activation) vs R (Relaxation)</span>
-          </div>
-
-          <!-- Dimension 3: 열정 vs 평온 -->
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: #fff;">
-              <span>열정(P) [${scoreP}%]</span>
-              <span>평온(S) [${scoreS}%]</span>
-            </div>
-            <div style="width: 100%; height: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; display: flex;">
-              <div style="width: ${scoreP}%; background: linear-gradient(90deg, #0a84ff, #bf5af2); height: 100%;"></div>
-              <div style="width: ${scoreS}%; background: rgba(255,69,58,0.3); height: 100%;"></div>
-            </div>
-            <span style="font-size: 0.72rem; color: var(--text-secondary);">P (Passion) vs S (Serene)</span>
+          <div style="position: relative; width: 100%; height: 180px;">
+            <canvas id="nbtiEmotionChart" style="max-height: 180px; width: 100%;"></canvas>
           </div>
         </div>
+
       </div>
+
     </div>
   `;
+
+  // Dynamically initialize the Chart.js radar chart in the bottom-right corner
+  setTimeout(() => {
+    const canvas = document.getElementById('nbtiEmotionChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const labels = ['몰입', '흥미', '활성', '스트레스', '이완'];
+    const dataVals = [
+      totalStats.engagement,
+      totalStats.interest,
+      totalStats.excitement,
+      totalStats.stress,
+      totalStats.relaxation
+    ];
+
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '평균 뇌파 지표',
+          data: dataVals,
+          borderColor: profile.border,
+          backgroundColor: `rgba(${hexToRgb(profile.border)}, 0.22)`,
+          borderWidth: 2,
+          pointBackgroundColor: profile.border,
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: profile.border
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            angleLines: { color: 'rgba(255,255,255,0.08)' },
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            pointLabels: { color: 'rgba(255,255,255,0.5)', font: { size: 10, weight: 'bold' } },
+            ticks: { display: false, maxTicksLimit: 5 },
+            suggestedMin: 0,
+            suggestedMax: 0.8
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  }, 30);
 
   // Attach PDF Generation logic
   const downloadPdfBtn = document.getElementById('downloadPdfBtn');
@@ -2850,8 +2944,8 @@ function loadAchievementsScreen(mId) {
       avatar: "/profile2.png",
       weapon: "🎹 Golden Tuning Fork (황금 소리굽쇠)",
       weaponIcon: "🎹",
-      border: "#30d158",
-      colorName: "green",
+      border: "#0a84ff",
+      colorName: "blue",
       list: [
         { title: "🛡️ 이완의 천재 (Relaxation Deity)", desc: "어떤 변박 사운드나 웅장한 가창곡이 귓가에 들이닥쳐도, 심적 자극 없이 극락의 심리적 이완도 지수를 끝까지 유지하여 숲속 명상 힐러임을 입증함! (이완도 팀원 최고 0.426)" },
         { title: "🧊 스트레스 최저 브레이커 (Cold-Blooded)", desc: "팀원들이 가장 경악하고 스트레스를 폭발시켰던 디스토션 트랩 'Look at Me!' 구간에서도 팀내 최저 스트레스 반응을 단단히 수호해냄!" },
@@ -2862,8 +2956,8 @@ function loadAchievementsScreen(mId) {
       avatar: "/profile1.png",
       weapon: "⚡ Neural Beam Cannon (신경 광선 포)",
       weaponIcon: "⚡",
-      border: "#0a84ff",
-      colorName: "blue",
+      border: "#bf5af2",
+      colorName: "purple",
       list: [
         { title: "🧠 초집중 인공 신경망 (Neural Processor)", desc: "외부의 감정적 동요(Stress/Relaxation)에 아랑곳하지 않고, 단 1초의 딜레이도 없이 신경계를 초고속 집중 모드로 기동하는 팀 최고의 인지력 소유자!" },
         { title: "🚀 뇌파 오버클럭 캡틴 (Synapse Accelerator)", desc: "테크노 및 빠른 오토튠 음악 청취 시 시냅스의 연산 반응이 실시간으로 급증하며 고속 비트에 초정밀 응답하는 성향을 보여줌." },
@@ -2874,8 +2968,8 @@ function loadAchievementsScreen(mId) {
       avatar: "/profile3.png",
       weapon: "🎸 Overdrive Distortion Guitar (지옥의 일렉기타)",
       weaponIcon: "🎸",
-      border: "#ff9f0a",
-      colorName: "orange",
+      border: "#ff453a",
+      colorName: "red",
       list: [
         { title: "🔥 아드레날린 제트 엔진 (Adrenaline Overdrive)", desc: "메탈 기타 리프나 강렬한 록 사운드를 접할 때, 뇌가 즉각적으로 성층권을 뚫는 강력한 초활성(Excitement)과 내적 분출 상태를 감행함!" },
         { title: "🤘 헤비메탈 콘서트 라이더 (Metal Core Headbanger)", desc: "Pentakill의 묵직한 디스토션 멜로디가 전개될 때, 내면에 잠자던 전사의 투지와 내적 헤드뱅잉 본능이 뇌파에 폭발적으로 매핑됨." },
@@ -2886,10 +2980,10 @@ function loadAchievementsScreen(mId) {
       avatar: "/profile4.png",
       weapon: "🎨 Prismatic Spectrum Staff (예술의 프리즘 요술봉)",
       weaponIcon: "🎨",
-      border: "#bf5af2",
-      colorName: "purple",
+      border: "#30d158",
+      colorName: "green",
       list: [
-        { title: "👀 예술적 미장센 디텍터 (Aesthetic Receptor)", desc: "악기의 주파수 질감 변화와 처음 들어보는 이색적 프렌치 인디 팝에 흥미도 지표가 실시간 번개처럼 예민하게 반응하여 최고 미학 감각 증명!" },
+        { title: "👀 예술적 미장센 디텍터 (Aesthetic Receptor)", desc: "악기의 주파수 질감 변화 and 처음 들어보는 이색적 프렌치 인디 팝에 흥미도 지표가 실시간 번개처럼 예민하게 반응하여 최고 미학 감각 증명!" },
         { title: "🎭 극적 뇌파 큐레이션 (Dramatic Mind)", desc: "Sie ergibt sich nicht와 같이 드라마틱한 가창과 가사가 풍부한 뮤지컬 락 장르에서 뇌파 감정이 한 편의 서사시처럼 기민하게 춤을 춤." },
         { title: "✨ 호기심의 찬란한 팔레트 (Curious Palette)", desc: "곡의 인트로 구간이 재생될 때마다 '이것은 무슨 악기인가?'라는 경이로운 호기심 감수성을 팀내에서 가장 크게 터트림." }
       ]
