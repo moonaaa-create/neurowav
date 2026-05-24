@@ -11,7 +11,7 @@ Object.keys(preloadedData).forEach(key => {
 });
 
 // Global State & DOM Element References
-let currentUserId = 'member3'; // Default to 문경수 (AI 집중 마스터)
+let currentUserId = 'member2'; // Default to 김용석 (아드레날린 락커)
 let activeSongIndex = 0;
 let isPlaying = false;
 let playbackTime = 0;
@@ -82,12 +82,12 @@ app.innerHTML = `
         <div>
           <h3 style="color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 1px;">🎮 플레이어 캐릭터 선택 (Player Select)</h3>
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
-            <!-- 문경수 -->
-            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(10, 132, 255, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(10, 132, 255, 0.1);">
-              <img src="/profile1.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #0a84ff;">
-              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">문경수 님</span>
-              <span style="font-size: 0.75rem; color: #64d2ff; font-weight: 600; margin-top: 0.2rem;">🧠 AI 집중 마스터</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">휴먼AI공학전공<br>21학번</span>
+            <!-- 김용석 -->
+            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 159, 10, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255, 159, 10, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 159, 10, 0.1);">
+              <img src="/profile3.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #ff9f0a;">
+              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김용석 님</span>
+              <span style="font-size: 0.75rem; color: #ff9f0a; font-weight: 600; margin-top: 0.2rem;">🔥 아드레날린 락커</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">자유전공 인문<br>26학번</span>
             </div>
             <!-- 김한주 -->
             <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(48, 209, 88, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(48, 209, 88, 0.1);">
@@ -96,12 +96,12 @@ app.innerHTML = `
               <span style="font-size: 0.75rem; color: #30d158; font-weight: 600; margin-top: 0.2rem;">🧘‍♂️ 감성 음유시인</span>
               <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">음악학과 작곡과<br>21학번</span>
             </div>
-            <!-- 김용석 -->
-            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 159, 10, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255, 159, 10, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 159, 10, 0.1);">
-              <img src="/profile3.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #ff9f0a;">
-              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김용석 님</span>
-              <span style="font-size: 0.75rem; color: #ff9f0a; font-weight: 600; margin-top: 0.2rem;">🔥 아드레날린 락커</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">자유전공 인문<br>26학번</span>
+            <!-- 문경수 -->
+            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(10, 132, 255, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(10, 132, 255, 0.1);">
+              <img src="/profile1.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #0a84ff;">
+              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">문경수 님</span>
+              <span style="font-size: 0.75rem; color: #64d2ff; font-weight: 600; margin-top: 0.2rem;">🧠 AI 집중 마스터</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">휴먼AI공학전공<br>21학번</span>
             </div>
             <!-- 홍수민 -->
             <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(191, 90, 242, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(191, 90, 242, 0.1);">
@@ -316,9 +316,9 @@ app.innerHTML = `
         <img id="headerProfileImg" src="/profile1.png" style="width: 54px; height: 54px; border-radius: 50%; border: 2.5px solid var(--accent-color); object-fit: cover; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
         <div class="user-info">
           <select id="userSelect" style="font-size: 1.6rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
-            <option value="member3">문경수's Profile</option>
-            <option value="member1">김한주's Profile</option>
             <option value="member2">김용석's Profile</option>
+            <option value="member1">김한주's Profile</option>
+            <option value="member3">문경수's Profile</option>
             <option value="member4">홍수민's Profile</option>
           </select>
           <div id="headerMemberInfo" style="font-size: 0.85rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
@@ -407,9 +407,9 @@ app.innerHTML = `
     </header>
     
     <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
-      <button id="nbti-tab-member3" class="hero-btn active" style="border-color: #0a84ff; background: rgba(10,132,255,0.1);">문경수 님</button>
+      <button id="nbti-tab-member2" class="hero-btn active" style="border-color: #ff9f0a; background: rgba(255,159,10,0.15);">김용석 님</button>
       <button id="nbti-tab-member1" class="hero-btn" style="border-color: #30d158;">김한주 님</button>
-      <button id="nbti-tab-member2" class="hero-btn" style="border-color: #ff9f0a;">김용석 님</button>
+      <button id="nbti-tab-member3" class="hero-btn" style="border-color: #0a84ff;">문경수 님</button>
       <button id="nbti-tab-member4" class="hero-btn" style="border-color: #bf5af2;">홍수민 님</button>
     </div>
 
@@ -427,9 +427,9 @@ app.innerHTML = `
     </header>
     
     <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
-      <button id="ach-tab-member3" class="hero-btn active" style="border-color: #0a84ff; background: rgba(10,132,255,0.1);">문경수's Achievements</button>
+      <button id="ach-tab-member2" class="hero-btn active" style="border-color: #ff9f0a; background: rgba(255, 159, 10, 0.15);">김용석's Achievements</button>
       <button id="ach-tab-member1" class="hero-btn" style="border-color: #30d158;">김한주's Achievements</button>
-      <button id="ach-tab-member2" class="hero-btn" style="border-color: #ff9f0a;">김용석's Achievements</button>
+      <button id="ach-tab-member3" class="hero-btn" style="border-color: #0a84ff;">문경수's Achievements</button>
       <button id="ach-tab-member4" class="hero-btn" style="border-color: #bf5af2;">홍수민's Achievements</button>
     </div>
 
@@ -455,9 +455,9 @@ app.innerHTML = `
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <label style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;">데이터를 업데이트할 조원:</label>
           <select id="uploadMemberSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.6rem 1rem; font-size: 1rem; outline: none; cursor: pointer; width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-            <option value="member3">문경수 (휴먼AI공학전공)</option>
-            <option value="member1">김한주 (음악학과 작곡과)</option>
             <option value="member2">김용석 (자유전공학부 인문)</option>
+            <option value="member1">김한주 (음악학과 작곡과)</option>
+            <option value="member3">문경수 (휴먼AI공학전공)</option>
             <option value="member4">홍수민 (조형예술학과)</option>
           </select>
         </div>
@@ -1618,7 +1618,7 @@ function renderCompareChart() {
   const currentSongNum = activeSongIndex + 1;
   const meta = SONG_METADATA[activeSongIndex] || { title: `Song ${currentSongNum}` };
 
-  const memberKeys = ['member3', 'member1', 'member2', 'member4'];
+  const memberKeys = ['member2', 'member1', 'member3', 'member4'];
   const colors = {
     member3: '#0a84ff', // 문경수 (Blue)
     member1: '#30d158', // 김한주 (Green)
@@ -1854,7 +1854,7 @@ function renderSongCompareChart(songIndex, chartType) {
   const ctx = canvas.getContext('2d');
   
   // Build datasets for 4 team members
-  const memberList = ['member3', 'member1', 'member2', 'member4'];
+  const memberList = ['member2', 'member1', 'member3', 'member4'];
   const datasets = memberList.map(mId => {
     const savedData = localStorage.getItem(`brainwaveData_${mId}`);
     const memberData = savedData ? JSON.parse(savedData) : [];
@@ -1993,7 +1993,7 @@ function render13TracksTeamAverageChart(metric) {
   }
 
   const ctx = canvas.getContext('2d');
-  const memberList = ['member3', 'member1', 'member2', 'member4'];
+  const memberList = ['member2', 'member1', 'member3', 'member4'];
 
   // Calculate team averages for all 13 songs
   const songAverages = SONG_METADATA.map((song, songIdx) => {
@@ -2161,7 +2161,7 @@ function renderAIEmotionInsights(songIndex) {
     let maxVal = -1;
     let winnerId = '';
 
-    ['member3', 'member1', 'member2', 'member4'].forEach(mId => {
+    ['member2', 'member1', 'member3', 'member4'].forEach(mId => {
       const savedData = localStorage.getItem(`brainwaveData_${mId}`);
       if (savedData) {
         const memberData = JSON.parse(savedData);
@@ -2426,13 +2426,13 @@ function switchScreen(screenId) {
   if (screenId === 'nbti') {
     navNbti.classList.add('active');
     nbtiScreen.classList.add('active');
-    loadNbtiScreen('member3'); // Default to Moon Kyung Soo
+    loadNbtiScreen('member2'); // Default to Kim Yong Seok
     triggerConfetti();
   }
   if (screenId === 'achievements') {
     navAchievements.classList.add('active');
     teamScreen.classList.add('active');
-    loadAchievementsScreen('member3'); // Default to Moon Kyung Soo
+    loadAchievementsScreen('member2'); // Default to Kim Yong Seok
     triggerConfetti();
   }
   if (screenId === 'uploader') {
@@ -2455,7 +2455,7 @@ document.querySelector('.nav-logo').style.cursor = 'pointer';
 document.querySelector('.nav-logo').addEventListener('click', () => switchScreen('introScreen'));
 
 // Intro page buttons click handlers
-['member1', 'member2', 'member3', 'member4'].forEach(mId => {
+['member2', 'member1', 'member3', 'member4'].forEach(mId => {
   const btn = document.getElementById(`intro-btn-${mId}`);
   if (btn) {
     btn.addEventListener('click', () => {
@@ -2474,7 +2474,7 @@ if (introStartBtn) {
 }
 
 // Stage 5 N-BTI member selector tabs
-['member3', 'member1', 'member2', 'member4'].forEach(mId => {
+['member2', 'member1', 'member3', 'member4'].forEach(mId => {
   const tabBtn = document.getElementById(`nbti-tab-${mId}`);
   if (tabBtn) {
     tabBtn.addEventListener('click', () => {
@@ -2491,7 +2491,7 @@ if (introStartBtn) {
 });
 
 // Stage 6 Achievements member selector tabs
-['member3', 'member1', 'member2', 'member4'].forEach(mId => {
+['member2', 'member1', 'member3', 'member4'].forEach(mId => {
   const tabBtn = document.getElementById(`ach-tab-${mId}`);
   if (tabBtn) {
     tabBtn.addEventListener('click', () => {
@@ -2524,7 +2524,7 @@ function initLaunchpad() {
 
   launchpad.innerHTML = '';
   
-  const subjects = ['member3', 'member1', 'member2', 'member4'];
+  const subjects = ['member2', 'member1', 'member3', 'member4'];
   const metrics = ['engagement', 'interest', 'excitement', 'stress', 'relaxation'];
   const metricsKo = ['몰입', '흥미', '활성', '스트레스', '이완'];
   const colors = {
