@@ -324,7 +324,7 @@ app.innerHTML = `
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 0.5px solid var(--border-color); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
       <header class="dash-header" style="display: flex; align-items: center; gap: 1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 0;">
-        <img id="headerProfileImg" src="/profile1.png" style="width: 54px; height: 54px; border-radius: 50%; border: 2.5px solid var(--accent-color); object-fit: cover; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
+        <img id="headerProfileImg" src="/profile3.png" style="width: 54px; height: 54px; border-radius: 50%; border: 2.5px solid var(--accent-color); object-fit: cover; box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);">
         <div class="user-info">
           <select id="userSelect" style="font-size: 1.6rem; font-weight: 700; border: none; background: transparent; color: var(--accent-color); cursor: pointer; outline: none; margin-bottom: 0.15rem;">
             <option value="member2">김용석's Profile</option>
@@ -332,7 +332,7 @@ app.innerHTML = `
             <option value="member3">문경수's Profile</option>
             <option value="member4">홍수민's Profile</option>
           </select>
-          <div id="headerMemberInfo" style="font-size: 0.85rem; color: var(--text-secondary); padding-left: 0.25rem;"></div>
+          <div id="headerMemberInfo" style="font-size: 0.85rem; color: var(--text-secondary); padding-left: 0.25rem;">자유전공학부 인문 | 26학번</div>
         </div>
       </header>
       
@@ -779,26 +779,8 @@ function selectSong(index) {
     spotifyLink.href = `https://open.spotify.com/search/${encodeURIComponent(meta.title + ' ' + meta.artist)}`;
   }
 
-  // Display and reset player for this song
-  if (mockAudioPlayer) {
-    mockAudioPlayer.style.display = 'flex';
-  }
-  
-  // Set total seconds duration matching actual raw data length
-  if (song.rawData && song.rawData.engagement) {
-    playbackMax = song.rawData.engagement.length - 1;
-  } else {
-    playbackMax = 30;
-  }
-  
   // Stop previous playback and reset timeline
   stopMockAudio();
-
-  // Set the actual audio source
-  if (meta.url) {
-    globalAudio.src = meta.url;
-    globalAudio.load();
-  }
   
   if (currentDashboardView === 'comparative') {
     renderCompareChart();
