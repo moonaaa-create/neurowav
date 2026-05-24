@@ -13,20 +13,14 @@ Object.keys(preloadedData).forEach(key => {
 // Global State & DOM Element References
 let currentUserId = 'member3'; // Default to 문경수 (AI 집중 마스터)
 let activeSongIndex = 0;
-let isPlaying = false;
-let playbackTime = 0;
-let playbackMax = 30;
 let userData = [];
 let lineChartInstance = null;
 let compareChartInstance = null;
 let currentDashboardView = 'personal';
 let currentComparisonMode = 'average';
 
-// Audio Context
-const globalAudio = new Audio();
-
 // DOM Element References
-let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, mockAudioPlayer, playerPlayBtn, playerStopBtn, playerProgressContainer, playerProgressBar, playerTime, playerEq, lineChartTitle, compareMetricSelect, compareSongModeSelect;
+let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, lineChartTitle, compareMetricSelect, compareSongModeSelect;
 
 // Hardcoded Team Members
 const MEMBERS = {
@@ -303,10 +297,10 @@ app.innerHTML = `
     </div>
   </div>
 
-  <!-- [STAGE 4] SEE PERSON SCREEN (HIGH INTERACTIONS) -->
+  <!-- [STAGE 5] SEE PERSON SCREEN (HIGH INTERACTIONS) -->
   <div id="dashboardScreen" class="screen">
     <header class="team-header" style="margin-bottom: 0.5rem;">
-      <div style="font-family: monospace; font-size: 0.9rem; color: #0a84ff; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 4: THE NEURAL PROFILE</div>
+      <div style="font-family: monospace; font-size: 0.9rem; color: #0a84ff; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 5: THE NEURAL PROFILE</div>
       <h1 style="color: #0a84ff;">👤 Let's See a Person</h1>
       <p class="subtitle">런치패드 기반 동적 로딩을 통한 조원 정밀 분석 및 뇌파 피드백 동기화</p>
     </header>
@@ -409,10 +403,10 @@ app.innerHTML = `
     </div>
   </div>
 
-  <!-- [STAGE 5] N-BTI RESULT SCREEN -->
+  <!-- [STAGE 4] N-BTI RESULT SCREEN -->
   <div id="nbtiScreen" class="screen">
     <header class="team-header">
-      <div style="font-family: monospace; font-size: 0.9rem; color: #ffd700; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 5: PERSONALITY DIAGNOSIS</div>
+      <div style="font-family: monospace; font-size: 0.9rem; color: #ffd700; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 4: PERSONALITY DIAGNOSIS</div>
       <h1 style="color: #ffd700;">🔮 Let's Diagnose N-BTI !</h1>
       <p class="subtitle">실시간 뇌파 비율 척도를 통한 개인별 최종 뇌비티아이 진단</p>
     </header>
@@ -512,13 +506,6 @@ radarGrid = document.getElementById('radarGrid');
 albumArt = document.getElementById('albumArt');
 songTitle = document.getElementById('songTitle');
 songArtist = document.getElementById('songArtist');
-mockAudioPlayer = document.getElementById('mockAudioPlayer');
-playerPlayBtn = document.getElementById('playerPlayBtn');
-playerStopBtn = document.getElementById('playerStopBtn');
-playerProgressContainer = document.getElementById('playerProgressContainer');
-playerProgressBar = document.getElementById('playerProgressBar');
-playerTime = document.getElementById('playerTime');
-playerEq = document.getElementById('playerEq');
 lineChartTitle = document.getElementById('lineChartTitle');
 compareMetricSelect = document.getElementById('compareMetricSelect');
 compareSongModeSelect = document.getElementById('compareSongModeSelect');
@@ -779,9 +766,7 @@ function selectSong(index) {
     spotifyLink.href = `https://open.spotify.com/search/${encodeURIComponent(meta.title + ' ' + meta.artist)}`;
   }
 
-  // Stop previous playback and reset timeline
-  stopMockAudio();
-  
+
   if (currentDashboardView === 'comparative') {
     renderCompareChart();
   } else {
@@ -834,45 +819,6 @@ function renderLineChart(song) {
             chartCtx.lineTo(xPixel, yAxis.bottom);
             chartCtx.stroke();
             chartCtx.restore();
-          }
-        }
-      },
-      {
-        id: 'playbackSyncLine',
-        afterDraw: (chart) => {
-          // Purple vertical line showing interactive music progress sync
-          if (isPlaying && playbackTime >= 0) {
-            const chartCtx = chart.ctx;
-            const xAxis = chart.scales.x;
-            const yAxis = chart.scales.y;
-            const xPixel = xAxis.getPixelForValue(playbackTime + 1);
-            
-            if (xPixel !== undefined && xPixel >= xAxis.left && xPixel <= xAxis.right) {
-              chartCtx.save();
-              chartCtx.beginPath();
-              chartCtx.strokeStyle = '#bf5af2'; // Purple progress line
-              chartCtx.lineWidth = 2.5;
-              if (isPlaying) {
-                chartCtx.setLineDash([]); // Solid line when playing
-              } else {
-                chartCtx.setLineDash([4, 4]); // Dashed when paused
-              }
-              chartCtx.moveTo(xPixel, yAxis.top);
-              chartCtx.lineTo(xPixel, yAxis.bottom);
-              chartCtx.stroke();
-              
-              // Draw marker pointer
-              chartCtx.fillStyle = '#bf5af2';
-              chartCtx.beginPath();
-              chartCtx.arc(xPixel, yAxis.top, 5, 0, 2 * Math.PI);
-              chartCtx.fill();
-              
-              chartCtx.font = 'bold 10px monospace';
-              chartCtx.fillStyle = '#bf5af2';
-              chartCtx.textAlign = 'center';
-              chartCtx.fillText(`Sync ${playbackTime}s`, xPixel, yAxis.top - 8);
-              chartCtx.restore();
-            }
           }
         }
       }
@@ -1477,29 +1423,7 @@ function triggerConfetti() {
 }
 
 // ==========================================
-// 💡 Interactive Mock Audio Player & Sync Logic
-// ==========================================
-function initMockPlayer() {
-  // Audio playback is completely disabled by user request
-}
 
-function playMockAudio() {
-  // Audio playback is completely disabled by user request
-}
-
-function pauseMockAudio() {
-  // Audio playback is completely disabled by user request
-}
-
-function stopMockAudio() {
-  // Audio playback is completely disabled by user request
-}
-
-function updatePlayerUI() {
-  // Audio playback is completely disabled by user request
-}
-
-// ==========================================
 // 💡 Multi-user Comparison Toggle & Chart Renderer
 // ==========================================
 function initDashboardTabs() {
@@ -1512,8 +1436,7 @@ function initDashboardTabs() {
     comparativePanel.style.display = 'none';
     currentDashboardView = 'personal';
     
-    // Clean player on toggle
-    stopMockAudio();
+
   });
 
   btnViewComparative.addEventListener('click', () => {
@@ -1523,7 +1446,7 @@ function initDashboardTabs() {
     comparativePanel.style.display = 'flex';
     currentDashboardView = 'comparative';
     
-    stopMockAudio();
+
     renderCompareChart();
   });
 
@@ -1577,9 +1500,6 @@ function renderCompareChart() {
     }
   });
 
-  // Adjust maximum playback limit to match this song's raw timeline length
-  playbackMax = labels.length > 0 ? labels.length - 1 : 30;
-
   compareChartInstance = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets },
@@ -1599,45 +1519,7 @@ function renderCompareChart() {
         y: { min: 0, max: 1, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
       }
     },
-    plugins: [{
-      id: 'playbackSyncLine',
-      afterDraw: (chart) => {
-        // Red vertical line showing interactive music progress sync
-        if (isPlaying && playbackTime >= 0) {
-          const chartCtx = chart.ctx;
-          const xAxis = chart.scales.x;
-          const yAxis = chart.scales.y;
-          const xPixel = xAxis.getPixelForValue(playbackTime + 1);
-          
-          if (xPixel !== undefined && xPixel >= xAxis.left && xPixel <= xAxis.right) {
-            chartCtx.save();
-            chartCtx.beginPath();
-            chartCtx.strokeStyle = '#ff375f'; // Neon Red
-            chartCtx.lineWidth = 2;
-            if (isPlaying) {
-              chartCtx.setLineDash([]); // Solid line when playing
-            } else {
-              chartCtx.setLineDash([4, 4]); // Dashed when paused
-            }
-            chartCtx.moveTo(xPixel, yAxis.top);
-            chartCtx.lineTo(xPixel, yAxis.bottom);
-            chartCtx.stroke();
-            
-            // Draw marker pointer
-            chartCtx.fillStyle = '#ff375f';
-            chartCtx.beginPath();
-            chartCtx.arc(xPixel, yAxis.top, 5, 0, 2 * Math.PI);
-            chartCtx.fill();
-            
-            chartCtx.font = 'bold 10px monospace';
-            chartCtx.fillStyle = '#ff375f';
-            chartCtx.textAlign = 'center';
-            chartCtx.fillText(`Sync ${playbackTime}s`, xPixel, yAxis.top - 8);
-            chartCtx.restore();
-          }
-        }
-      }
-    }]
+    plugins: []
   });
 }
 
@@ -2352,9 +2234,6 @@ const teamScreen = document.getElementById('teamScreen');
 const uploaderScreen = document.getElementById('uploaderScreen');
 
 function switchScreen(screenId) {
-  // Ensure music stops playing when navigating between screens
-  stopMockAudio();
-
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
   
