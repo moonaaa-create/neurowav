@@ -20,12 +20,13 @@ let userData = [];
 let lineChartInstance = null;
 let compareChartInstance = null;
 let currentDashboardView = 'personal';
+let currentComparisonMode = 'average';
 
 // Audio Context
 const globalAudio = new Audio();
 
 // DOM Element References
-let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, mockAudioPlayer, playerPlayBtn, playerStopBtn, playerProgressContainer, playerProgressBar, playerTime, playerEq, lineChartTitle, compareMetricSelect;
+let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, mockAudioPlayer, playerPlayBtn, playerStopBtn, playerProgressContainer, playerProgressBar, playerTime, playerEq, lineChartTitle, compareMetricSelect, compareSongModeSelect;
 
 // Hardcoded Team Members
 const MEMBERS = {
@@ -263,15 +264,25 @@ app.innerHTML = `
             <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
               📊 13-Track Team Averages & Leaderboard
             </h3>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">Select Metric:</span>
-              <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                <option value="engagement">몰입도 (Engagement)</option>
-                <option value="interest">흥미도 (Interest)</option>
-                <option value="excitement">활성도 (Excitement)</option>
-                <option value="stress">스트레스 (Stress)</option>
-                <option value="relaxation">이완도 (Relaxation)</option>
-              </select>
+            <div style="display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">분석 기준:</span>
+                <select id="compareSongModeSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #ffd700; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5); font-weight: 700;">
+                  <option value="average">📊 팀 평균 감정 수치</option>
+                  <option value="peak">⚡ 크리티컬 최고 자극치</option>
+                  <option value="volatility">🎢 감정 롤러코스터 변동폭</option>
+                </select>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">대상 감정:</span>
+                <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                  <option value="engagement">몰입도 (Engagement)</option>
+                  <option value="interest">흥미도 (Interest)</option>
+                  <option value="excitement">활성도 (Excitement)</option>
+                  <option value="stress">스트레스 (Stress)</option>
+                  <option value="relaxation">이완도 (Relaxation)</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="ranking-flex-container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; width: 100%; align-items: start; flex-wrap: wrap;">
@@ -510,6 +521,7 @@ playerTime = document.getElementById('playerTime');
 playerEq = document.getElementById('playerEq');
 lineChartTitle = document.getElementById('lineChartTitle');
 compareMetricSelect = document.getElementById('compareMetricSelect');
+compareSongModeSelect = document.getElementById('compareSongModeSelect');
 
 if (userSelect) {
   userSelect.addEventListener('change', (e) => {
@@ -1785,6 +1797,15 @@ function loadSongAnalysis() {
         render13TracksTeamAverageChart(e.target.value);
       });
     }
+
+    const selectMode = document.getElementById('compareSongModeSelect');
+    if (selectMode) {
+      selectMode.addEventListener('change', (e) => {
+        currentComparisonMode = e.target.value;
+        const currentMetric = selectMetric ? selectMetric.value : 'engagement';
+        render13TracksTeamAverageChart(currentMetric);
+      });
+    }
     
     isSongAnalysisInitialized = true;
   }
@@ -1995,7 +2016,7 @@ function render13TracksTeamAverageChart(metric) {
   const ctx = canvas.getContext('2d');
   const memberList = ['member2', 'member1', 'member3', 'member4'];
 
-  // Calculate team averages for all 13 songs
+  // Calculate team averages/peaks/volatility for all 13 songs
   const songAverages = SONG_METADATA.map((song, songIdx) => {
     let sum = 0;
     let count = 0;
@@ -2005,19 +2026,31 @@ function render13TracksTeamAverageChart(metric) {
       if (savedData) {
         const memberData = JSON.parse(savedData);
         const songData = memberData[songIdx];
-        if (songData) {
-          sum += songData.averages[metric];
-          count++;
+        if (songData && songData.rawData && songData.rawData[metric]) {
+          const rawVals = songData.rawData[metric];
+          if (rawVals.length > 0) {
+            if (currentComparisonMode === 'peak') {
+              // Peak Critical Value: the maximum stimulus achieved during the track
+              sum += Math.max(...rawVals);
+            } else if (currentComparisonMode === 'volatility') {
+              // Volatility / Rollercoaster index: Peak minus Valley (range)
+              sum += (Math.max(...rawVals) - Math.min(...rawVals));
+            } else {
+              // Standard Average
+              sum += songData.averages[metric];
+            }
+            count++;
+          }
         }
       }
     });
 
-    const avgVal = count > 0 ? (sum / count) : 0;
+    const val = count > 0 ? (sum / count) : 0;
     return {
       index: songIdx,
       title: song.title,
       cover: song.cover || '🎵',
-      value: avgVal
+      value: val
     };
   });
 
@@ -2044,12 +2077,22 @@ function render13TracksTeamAverageChart(metric) {
 
   const metricKo = LABELS_KO[TARGET_COLUMNS.indexOf(metric)];
 
+  let modeLabel = '평균치';
+  let tooltipPrefix = '평균';
+  if (currentComparisonMode === 'peak') {
+    modeLabel = '크리티컬 최고 자극치';
+    tooltipPrefix = '최고치';
+  } else if (currentComparisonMode === 'volatility') {
+    modeLabel = '롤러코스터 변동폭';
+    tooltipPrefix = '변동폭';
+  }
+
   songTeamAverageChartInstance = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: labels,
       datasets: [{
-        label: `👥 4인 합산 평균 (${metricKo})`,
+        label: `👥 4인 ${modeLabel} (${metricKo})`,
         data: dataVals,
         backgroundColor: bgColors,
         borderColor: borderColors,
@@ -2099,7 +2142,7 @@ function render13TracksTeamAverageChart(metric) {
           callbacks: {
             label: function(context) {
               const val = context.raw;
-              return ` 👥 조원 평균 ${metricKo}: ${Math.round(val * 100)}%`;
+              return ` 👥 조원 ${tooltipPrefix} ${metricKo}: ${(val * 100).toFixed(1)}%`;
             }
           }
         }
