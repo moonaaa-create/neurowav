@@ -11,7 +11,7 @@ Object.keys(preloadedData).forEach(key => {
 });
 
 // Global State & DOM Element References
-let currentUserId = 'member2'; // Default to 김용석 (아드레날린 락커)
+let currentUserId = 'member3'; // Default to 문경수 (AI 집중 마스터)
 let activeSongIndex = 0;
 let isPlaying = false;
 let playbackTime = 0;
@@ -1480,95 +1480,23 @@ function triggerConfetti() {
 // 💡 Interactive Mock Audio Player & Sync Logic
 // ==========================================
 function initMockPlayer() {
-  if (!playerPlayBtn || !playerStopBtn || !playerProgressContainer) return;
-
-  playerPlayBtn.addEventListener('click', () => {
-    if (isPlaying) {
-      pauseMockAudio();
-    } else {
-      playMockAudio();
-    }
-  });
-
-  playerStopBtn.addEventListener('click', () => {
-    stopMockAudio();
-  });
-
-  playerProgressContainer.addEventListener('click', (e) => {
-    const rect = playerProgressContainer.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const width = rect.width;
-    const percentage = clickX / width;
-    
-    playbackTime = Math.floor(percentage * playbackMax);
-    globalAudio.currentTime = playbackTime;
-    updatePlayerUI();
-    
-    // Sync chart lines instantly
-    if (lineChartInstance) lineChartInstance.update('none');
-    if (compareChartInstance) compareChartInstance.update('none');
-  });
-
-  // HTML5 audio time sync listeners
-  globalAudio.addEventListener('timeupdate', () => {
-    if (isPlaying) {
-      playbackTime = Math.floor(globalAudio.currentTime);
-      if (playbackTime > playbackMax) {
-        stopMockAudio();
-      } else {
-        updatePlayerUI();
-        if (lineChartInstance) lineChartInstance.update('none');
-        if (compareChartInstance) compareChartInstance.update('none');
-      }
-    }
-  });
-
-  globalAudio.addEventListener('ended', () => {
-    stopMockAudio();
-  });
+  // Audio playback is completely disabled by user request
 }
 
 function playMockAudio() {
-  if (!globalAudio.src) {
-    selectSong(0);
-  }
-  isPlaying = true;
-  if (playerPlayBtn) playerPlayBtn.textContent = '⏸ Pause';
-  if (albumArt) albumArt.classList.add('playing');
-  if (playerEq) playerEq.classList.add('active');
-  globalAudio.play().catch(err => {
-    console.error("Playback failed (possibly waiting for user interaction):", err);
-  });
+  // Audio playback is completely disabled by user request
 }
 
 function pauseMockAudio() {
-  isPlaying = false;
-  if (playerPlayBtn) playerPlayBtn.textContent = '▶ Play';
-  if (albumArt) albumArt.classList.remove('playing');
-  if (playerEq) playerEq.classList.remove('active');
-  globalAudio.pause();
+  // Audio playback is completely disabled by user request
 }
 
 function stopMockAudio() {
-  isPlaying = false;
-  playbackTime = 0;
-  if (playerPlayBtn) playerPlayBtn.textContent = '▶ Play';
-  if (albumArt) albumArt.classList.remove('playing');
-  if (playerEq) playerEq.classList.remove('active');
-  globalAudio.pause();
-  globalAudio.currentTime = 0;
-  updatePlayerUI();
-  
-  if (lineChartInstance) lineChartInstance.update('none');
-  if (compareChartInstance) compareChartInstance.update('none');
+  // Audio playback is completely disabled by user request
 }
 
 function updatePlayerUI() {
-  const percent = playbackMax > 0 ? (playbackTime / playbackMax) * 100 : 0;
-  if (playerProgressBar) playerProgressBar.style.width = `${percent}%`;
-  
-  const secStr = String(playbackTime).padStart(2, '0');
-  if (playerTime) playerTime.textContent = `00:${secStr}`;
+  // Audio playback is completely disabled by user request
 }
 
 // ==========================================
@@ -2446,6 +2374,7 @@ function switchScreen(screenId) {
   if (screenId === 'seePerson') {
     navSeePerson.classList.add('active');
     dashboardScreen.classList.add('active');
+    currentUserId = 'member3'; // Set default to 문경수 when entering personal dashboard
     loadDashboard();
   }
   if (screenId === 'nbti') {
