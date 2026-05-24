@@ -10,6 +10,23 @@ Object.keys(preloadedData).forEach(key => {
   localStorage.setItem(`brainwaveData_${key}`, JSON.stringify(preloadedData[key]));
 });
 
+// Global State & DOM Element References
+let currentUserId = 'member3'; // Default to 문경수 (AI 집중 마스터)
+let activeSongIndex = 0;
+let isPlaying = false;
+let playbackTime = 0;
+let playbackMax = 30;
+let userData = [];
+let lineChartInstance = null;
+let compareChartInstance = null;
+let currentDashboardView = 'personal';
+
+// Audio Context
+const globalAudio = new Audio();
+
+// DOM Element References
+let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, mockAudioPlayer, playerPlayBtn, playerStopBtn, playerProgressContainer, playerProgressBar, playerTime, playerEq, lineChartTitle, compareMetricSelect;
+
 // Hardcoded Team Members
 const MEMBERS = {
   member1: "김한주",
@@ -241,10 +258,10 @@ app.innerHTML = `
         </div>
 
         <!-- 13-Track Team Averages Ranking Panel -->
-        <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+        <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; width: 100%;">
           <div class="compare-header-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem;">
             <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-              📊 13-Track Team Averages Ranking
+              📊 13-Track Team Averages & Leaderboard
             </h3>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
               <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">Select Metric:</span>
@@ -257,8 +274,18 @@ app.innerHTML = `
               </select>
             </div>
           </div>
-          <div style="position: relative; height: 380px; width: 100%;">
-            <canvas id="songTeamAverageChart"></canvas>
+          <div class="ranking-flex-container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; width: 100%; align-items: start; flex-wrap: wrap;">
+            <div style="position: relative; height: 420px; width: 100%; min-width: 300px;">
+              <canvas id="songTeamAverageChart"></canvas>
+            </div>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; max-height: 420px; overflow-y: auto; min-width: 300px;">
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffd700; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.25rem;">
+                🏆 뇌파 감정 반응 전체 순위 (1위 ~ 13위)
+              </h4>
+              <div id="songTeamAverageLeaderboard" style="display: flex; flex-direction: column; gap: 0.4rem;">
+                <!-- Leaderboard rows injected here via JS -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -329,22 +356,6 @@ app.innerHTML = `
                   Listen on Spotify
                 </a>
               </div>
-
-              <!-- Interactive Real Audio Player -->
-              <div class="mock-player" id="mockAudioPlayer" style="display: none;">
-                <button id="playerPlayBtn" class="player-btn">▶ Play</button>
-                <button id="playerStopBtn" class="player-btn">■ Stop</button>
-                <div class="player-progress-container" id="playerProgressContainer">
-                  <div class="player-progress-bar" id="playerProgressBar"></div>
-                </div>
-                <span class="player-time" id="playerTime">00:00</span>
-                <!-- Equalizer visualizer -->
-                <div class="eq-container" id="playerEq">
-                  <div class="eq-bar"></div>
-                  <div class="eq-bar"></div>
-                  <div class="eq-bar"></div>
-                  <div class="eq-bar"></div>
-                </div>
               </div>
             </div>
           </div>
@@ -480,10 +491,32 @@ app.innerHTML = `
   </div>
 `;
 
-userSelect.addEventListener('change', (e) => {
-  currentUserId = e.target.value;
-  loadDashboard();
-});
+// Initialize DOM References
+userSelect = document.getElementById('userSelect');
+btnViewPersonal = document.getElementById('btnViewPersonal');
+btnViewComparative = document.getElementById('btnViewComparative');
+personalRadarPanel = document.getElementById('personalRadarPanel');
+comparativePanel = document.getElementById('comparativePanel');
+radarGrid = document.getElementById('radarGrid');
+albumArt = document.getElementById('albumArt');
+songTitle = document.getElementById('songTitle');
+songArtist = document.getElementById('songArtist');
+mockAudioPlayer = document.getElementById('mockAudioPlayer');
+playerPlayBtn = document.getElementById('playerPlayBtn');
+playerStopBtn = document.getElementById('playerStopBtn');
+playerProgressContainer = document.getElementById('playerProgressContainer');
+playerProgressBar = document.getElementById('playerProgressBar');
+playerTime = document.getElementById('playerTime');
+playerEq = document.getElementById('playerEq');
+lineChartTitle = document.getElementById('lineChartTitle');
+compareMetricSelect = document.getElementById('compareMetricSelect');
+
+if (userSelect) {
+  userSelect.addEventListener('change', (e) => {
+    currentUserId = e.target.value;
+    loadDashboard();
+  });
+}
 
 function normalizeKey(key) {
   return typeof key === 'string' ? key.toLowerCase().trim() : '';
@@ -602,6 +635,12 @@ function loadDashboard() {
       headerProfileImg.src = detail.img;
       headerMemberInfo.textContent = detail.info;
     }
+  }
+
+  // Sync the userSelect dropdown value to currentUserId
+  const userSelectEl = document.getElementById('userSelect');
+  if (userSelectEl) {
+    userSelectEl.value = currentUserId;
   }
   
   renderRadarGrid();
@@ -808,7 +847,7 @@ function renderLineChart(song) {
         id: 'playbackSyncLine',
         afterDraw: (chart) => {
           // Purple vertical line showing interactive music progress sync
-          if (playbackTime >= 0) {
+          if (isPlaying && playbackTime >= 0) {
             const chartCtx = chart.ctx;
             const xAxis = chart.scales.x;
             const yAxis = chart.scales.y;
@@ -1500,9 +1539,9 @@ function playMockAudio() {
     selectSong(0);
   }
   isPlaying = true;
-  playerPlayBtn.textContent = '⏸ Pause';
-  albumArt.classList.add('playing');
-  playerEq.classList.add('active');
+  if (playerPlayBtn) playerPlayBtn.textContent = '⏸ Pause';
+  if (albumArt) albumArt.classList.add('playing');
+  if (playerEq) playerEq.classList.add('active');
   globalAudio.play().catch(err => {
     console.error("Playback failed (possibly waiting for user interaction):", err);
   });
@@ -1510,18 +1549,18 @@ function playMockAudio() {
 
 function pauseMockAudio() {
   isPlaying = false;
-  playerPlayBtn.textContent = '▶ Play';
-  albumArt.classList.remove('playing');
-  playerEq.classList.remove('active');
+  if (playerPlayBtn) playerPlayBtn.textContent = '▶ Play';
+  if (albumArt) albumArt.classList.remove('playing');
+  if (playerEq) playerEq.classList.remove('active');
   globalAudio.pause();
 }
 
 function stopMockAudio() {
   isPlaying = false;
   playbackTime = 0;
-  playerPlayBtn.textContent = '▶ Play';
-  albumArt.classList.remove('playing');
-  playerEq.classList.remove('active');
+  if (playerPlayBtn) playerPlayBtn.textContent = '▶ Play';
+  if (albumArt) albumArt.classList.remove('playing');
+  if (playerEq) playerEq.classList.remove('active');
   globalAudio.pause();
   globalAudio.currentTime = 0;
   updatePlayerUI();
@@ -1532,10 +1571,10 @@ function stopMockAudio() {
 
 function updatePlayerUI() {
   const percent = playbackMax > 0 ? (playbackTime / playbackMax) * 100 : 0;
-  playerProgressBar.style.width = `${percent}%`;
+  if (playerProgressBar) playerProgressBar.style.width = `${percent}%`;
   
   const secStr = String(playbackTime).padStart(2, '0');
-  playerTime.textContent = `00:${secStr}`;
+  if (playerTime) playerTime.textContent = `00:${secStr}`;
 }
 
 // ==========================================
@@ -1642,7 +1681,7 @@ function renderCompareChart() {
       id: 'playbackSyncLine',
       afterDraw: (chart) => {
         // Red vertical line showing interactive music progress sync
-        if (playbackTime >= 0) {
+        if (isPlaying && playbackTime >= 0) {
           const chartCtx = chart.ctx;
           const xAxis = chart.scales.x;
           const yAxis = chart.scales.y;
@@ -2067,6 +2106,48 @@ function render13TracksTeamAverageChart(metric) {
       }
     }
   });
+
+  // Populate the text leaderboard list
+  const leaderboardEl = document.getElementById('songTeamAverageLeaderboard');
+  if (leaderboardEl) {
+    leaderboardEl.innerHTML = '';
+    songAverages.forEach((item, idx) => {
+      const rank = idx + 1;
+      let badge = '';
+      if (rank === 1) badge = '🥇 ';
+      else if (rank === 2) badge = '🥈 ';
+      else if (rank === 3) badge = '🥉 ';
+      else badge = `<span style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.08); color: var(--text-secondary); text-align: center; font-size: 0.75rem; line-height: 20px; font-weight: bold; margin-right: 4px;">${rank}</span>`;
+
+      const isActive = item.index === currentSongAnalysisIndex;
+      const rowBg = isActive ? 'rgba(255, 215, 0, 0.12)' : 'rgba(255,255,255,0.02)';
+      const rowBorder = isActive ? '1px solid #ffd700' : '1px solid rgba(255,255,255,0.04)';
+      const textColor = isActive ? '#ffd700' : '#fff';
+      
+      const rowDiv = document.createElement('div');
+      rowDiv.style.display = 'flex';
+      rowDiv.style.justifyContent = 'space-between';
+      rowDiv.style.alignItems = 'center';
+      rowDiv.style.padding = '0.5rem 0.75rem';
+      rowDiv.style.background = rowBg;
+      rowDiv.style.border = rowBorder;
+      rowDiv.style.borderRadius = '8px';
+      rowDiv.style.fontSize = '0.85rem';
+      rowDiv.style.cursor = 'pointer';
+      rowDiv.style.transition = 'all 0.2s';
+      rowDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+          ${badge}
+          <span style="font-weight: 700; color: ${textColor}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.cover} ${item.title}</span>
+        </div>
+        <strong style="color: ${isActive ? '#ffd700' : 'var(--accent-color)'}; font-family: monospace; font-size: 0.9rem;">${(item.value * 100).toFixed(1)}%</strong>
+      `;
+      rowDiv.addEventListener('click', () => {
+        selectSongForAnalysis(item.index);
+      });
+      leaderboardEl.appendChild(rowDiv);
+    });
+  }
 }
 
 function renderAIEmotionInsights(songIndex) {
