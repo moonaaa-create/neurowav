@@ -1050,10 +1050,10 @@ function loadTeamComparison(type) {
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">문경수 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">휴먼AI공학전공 | 21학번</span>
             <div style="background: rgba(191, 90, 242, 0.15); color: #bf5af2; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(191, 90, 242, 0.3);">
-              🧠 초집중 AI 마스터 (A.I.F.C)
+              🧠 도파민 광전사 (A.I.F.C)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
-              인공지능 연구원다운 탄탄한 뇌지컬! 강렬하고 빠른 곡에서도 뇌파의 흔들림 없이 극도의 몰입도를 유지하는 '인간 AI'의 면모를 보여줍니다. 몰입 최고조 시 뇌 효율성 극대화!
+              전체 평균 흥미도(0.530)와 활성도(0.422) 압도적 팀 내 1위! 음악을 들을 때 뇌가 고도의 인지 활성과 아드레날린 분출 반응을 보이는 정열적이고 폭발적인 리액션의 대명사입니다.
             </p>
           </div>
           
@@ -1063,10 +1063,10 @@ function loadTeamComparison(type) {
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">김한주 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">음악학과 작곡과 | 21학번</span>
             <div style="background: rgba(10, 132, 255, 0.15); color: #0a84ff; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(10, 132, 255, 0.3);">
-              🧘‍♂️ 만사태평 감성 음유시인 (Z.E.N.S)
+              🧘‍♂️ 개념 치유사 (Z.E.N.S)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
-              음악학과 대표 작곡가답게 어떤 복잡한 멜로디가 나와도 스트레스 반응 최소화! 음악 속에서 가장 편안하고 스트레스 지수가 낮아지는 완벽한 이완도 끝판왕, 걸어 다니는 명상 숲 수준입니다.
+              전체 평균 스트레스 최저(0.355) 및 이완도 최고(0.426)! 음악 감상 시 뇌가 가장 극단적인 평온과 안정적 심신 상태를 단단히 유도해 내며, 선율 속에서 자극 없이 명상적 치유를 이룹니다.
             </p>
           </div>
           
@@ -1076,10 +1076,10 @@ function loadTeamComparison(type) {
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">김용석 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">자유전공학부 인문 | 26학번</span>
             <div style="background: rgba(255, 69, 58, 0.15); color: #ff453a; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(255, 69, 58, 0.3);">
-              🔥 아드레날린 활성 폭발러 (E.X.C.I)
+              🔥 예민한 분석가 (E.X.C.I)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
-              지적인 인문학도 뒤에 감춰진 폭발적인 내적 댄스 본능! 웅장한 록 멜로디가 시작되면 뇌파 활성도가 성층권을 뚫고 날아갑니다. 열정적이며 창의적인 에너지를 내면에 품고 있습니다.
+              전체 평균 스트레스 최고(0.404)이면서도 큰 곡별 반응 편차! 매 멜로디의 사소한 신호와 악기 배음 하나까지도 뇌가 기민하고 섬세하게 감지하여 다방면으로 지각하는 예민한 탐색형입니다.
             </p>
           </div>
           
@@ -1089,10 +1089,10 @@ function loadTeamComparison(type) {
             <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem;">홍수민 님</h3>
             <span style="font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.6rem;">조형예술학과 | 25학번</span>
             <div style="background: rgba(48, 209, 88, 0.15); color: #30d158; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.8rem; border: 1px solid rgba(48, 209, 88, 0.3);">
-              👀 예술적 호기심 탐험가 (I.N.T.R)
+              👀 강철의 포커페이스 (I.N.T.R)
             </div>
             <p style="font-size: 0.8rem; color: #b0c4de; line-height: 1.5; text-align: justify; text-justify: inter-character; margin: 0;">
-              시각 예술가다운 고도의 관찰력 and 호기심! 신선한 멜로디나 특이한 음역대가 노출될 때마다 흥미도가 수직으로 상승합니다. 사소한 사운드의 디테일까지 기가 막히게 캐치해 냅니다.
+              전체 평균 활성도 극저치(0.222) 수호자! 웬만한 사운드 자극이나 소음 변화에도 뇌가 결코 동요하지 않으며, 단단한 멘탈 통제력을 통해 명상에 수렴하는 부동의 포커페이스를 보여줍니다.
             </p>
           </div>
           
@@ -2646,39 +2646,39 @@ function loadNbtiScreen(mId) {
   const PROFILE_DB = {
     member1: {
       nbti: "Z.E.N.S (Zen & Emotional Serene)",
-      title: "🧘‍♂️ 만사태평 감성 음유시인 (The Composer)",
+      title: "🧘‍♂️ 개념 치유사 (The Composer)",
       bg: "rgba(10, 132, 255, 0.03)",
       border: "#0a84ff",
       glow: "rgba(10, 132, 255, 0.3)",
-      description: "음악학과 대표 작곡가답게 어떤 복잡하고 자극적인 소리나 장르의 변화가 일어나도 스트레스 반응을 매우 낮게 통제합니다. 소리에 대해 불안해하지 않고, 오히려 음계의 변화에 몰입하면서 심신을 완전히 정돈하는 '마인드 컨트롤 클래스'의 모습을 보입니다. 뇌파 전체 지표 중에서 이완도가 최고치에 가닿으며, 거의 걸어 다니는 명상 숲 수준으로 멜로디를 수용하는 가장 평온하고 감성적인 인물입니다.",
-      quote: "Lemon Tree에서 이완도 최고 0.857을 기록하며 음악과 완전한 물아일체에 도달했습니다. 🎧"
+      description: "음악학과 작곡 전공자다운 평정심의 수호자입니다. 전체 평균 스트레스가 0.355로 팀 내에서 가장 낮고, 이완도는 0.426으로 가장 높아 음악을 들을 때 뇌가 가장 편안하고 안정적인 상태를 유지합니다. 어떤 주파수 변화도 평안하게 수용하는 힐러와 같은 신경 아키텍처를 가졌습니다.",
+      quote: "전체 평균 스트레스 최저(0.355), 이완도 최고(0.426). 특히 5번 곡에서 몰입도 평균 0.596, 이완도 최고 0.857을 기록하며 음악과 완전한 물아일체에 도달했습니다. 🎧"
     },
     member3: {
       nbti: "A.I.F.C (AI Focused chipset)",
-      title: "🧠 초집중 AI 마스터 (The AI Wizard)",
+      title: "🧠 도파민 광전사 (Dopamine Berserker)",
       bg: "rgba(191, 90, 242, 0.03)",
       border: "#bf5af2",
       glow: "rgba(191, 90, 242, 0.3)",
-      description: "인공지능 연구원다운 엄청난 집중형 뇌지컬! 강렬하고 변칙적인 리듬감이나 빠른 스케일의 테크노 음악이 재생될 때도 뇌의 흔들림 없이 극도로 높은 수준의 몰입도(Engagement)를 안정적으로 쭉 이어나갑니다. 복잡한 사운드 트랙을 분석하듯 들으며 고도의 신경 흐름을 장시간 유지하여, 뇌의 인지 기능 효율성을 극대화시키는 완벽한 이성적 몰입형 아키텍처를 보여줍니다.",
-      quote: "진격의 거인 OST와 같은 웅장한 곡에서도 감정을 이성으로 수렴하여 전율을 몰입으로 치환시켰습니다. ⚔️"
+      description: "음악을 들을 때 뇌파가 격렬하게 춤을 추는 뇌 리액션의 끝판왕입니다! 전체 평균 흥미도(0.530)와 활성도(0.422)가 압도적인 팀 내 1위를 차지하여, 고도의 인지 연산 능력과 아드레날린 분출이 결합된 파괴적이고 다이내믹한 뇌지컬 집중 반응을 여과 없이 보입니다.",
+      quote: "전체 평균 흥미도(0.530) 및 활성도(0.422) 압도적 팀 내 1위! 특히 13번 곡에서 활성도 평균 0.673, 스트레스 최고 0.918, 이완도 최고 0.977이라는 파괴적인 수치를 폭발시켰습니다. ⚡"
     },
     member2: {
       nbti: "E.X.C.I (Excitement Catalyst Intellect)",
-      title: "🔥 아드레날린 락커 (The Adrenaline Rocker)",
+      title: "🔥 예민한 분석가 (The Analyzer)",
       bg: "rgba(255, 69, 58, 0.03)",
       border: "#ff453a",
       glow: "rgba(255, 69, 58, 0.3)",
-      description: "지적이고 냉철한 인문학적 학도 뒤에 깊숙이 감춰져 있던 폭발적인 록스피릿 본능! 헤비메탈이나 강력한 록 계열 드럼 비트, 웅장한 스케일의 클래식 속주 멜로디가 귓가에 닿는 순간, 뇌파의 활성도(Excitement)가 성층권을 뚫고 날아갑니다. 감정에 따라 피드백이 가장 빠르게 변하며 지루할 틈 없이 음악을 온몸의 세포 단위로 격렬하게 반겨주는 가장 에너지틱하고 매력적인 탐험가입니다.",
-      quote: "Pentakill - Lost Chapter에서 활성도가 최대치로 분출되며 귓가에 내적 록 콘서트를 개장하였습니다! 🎸"
+      description: "자극에 대해 매우 섬세하고 직관적으로 반응하는 지성적 탐구자입니다. 전체 평균 스트레스가 0.404로 가장 높으면서도 곡에 따라 반응 편차가 큽니다. 매 사운드트랙마다 미세한 신호마저 놓치지 않고 예민하게 받아들여 고도의 분석적 흐름을 타는 양상을 보입니다.",
+      quote: "전체 평균 스트레스 최고(0.404) 및 높은 곡별 편차. 6번 곡에서 활성도(0.447)와 스트레스(0.451)가 동시에 솟구치는 등 매 음악을 극도로 기민하고 디테일하게 지각했습니다. 🎸"
     },
     member4: {
       nbti: "I.N.T.R (Interactive Neuro receptor)",
-      title: "👀 예술적 호기심 탐험가 (The Art Curator)",
+      title: "👀 강철의 포커페이스 (Iron Wall)",
       bg: "rgba(48, 209, 88, 0.03)",
       border: "#30d158",
       glow: "rgba(48, 209, 88, 0.3)",
-      description: "조형 예술가다운 극도로 섬세하고 정밀한 사운드 텍스처 감상력! 악기의 작은 배음 변화나 처음 듣는 아방가르드한 프렌치 팝 멜로디라인이 노출될 때마다 흥미도(Interest) 반응이 번개처럼 민감하고 빠르게 치솟습니다. 귀로 들어오는 소리의 시각적 입체감과 미장센을 머릿속 캔버스에 즉시 그려내는 듯한 특별하고 경이로운 예술 감수성을 지닌 호기심 대장입니다.",
-      quote: "Peligrosa와 같은 감각적인 트랙에서 흥미 반응이 팀원 중 가장 기민하게 반응하여 예술적 본능을 인증했습니다. 🎨"
+      description: "조형예술 전공자다운 흔들림 없는 부동의 미학적 마인드를 지녔습니다. 전체 평균 활성도가 0.222로 극도로 낮아, 웬만큼 강한 음악 자극이나 소음 유발에도 뇌파가 전혀 동요하지 않고 명상에 가까운 깊고 단단한 심신 안정을 드러냅니다.",
+      quote: "전체 평균 활성도 극저치(0.222). 웬만한 음악적 자극에는 뇌가 미동도 하지 않으며, 특히 3번 곡에서는 활성도 최고치마저 0.188에 그치며 명상 수준의 평안함을 지켜냈습니다. 🎨"
     }
   };
 
