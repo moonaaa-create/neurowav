@@ -223,6 +223,8 @@ app.innerHTML = `
               <button id="btnSongChartRadar" class="mini-toggle-btn active">🕸️ Radar Overlap</button>
               <button id="btnSongChartBar" class="mini-toggle-btn">📊 Grouped Bar</button>
             </div>
+            
+            <button id="btnExportCurrentSongRaw" class="neo-select" style="background: rgba(48, 209, 88, 0.15); border: 1px solid rgba(48, 209, 88, 0.4); color: #30d158; border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;">📥 이 곡 원본 엑셀</button>
           </div>
         </div>
 
@@ -262,6 +264,7 @@ app.innerHTML = `
           📊 13-Track Team Averages & Leaderboard
         </h3>
         <div style="display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;">
+          <button id="btnExportAllAverages" class="neo-select" style="background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.4); color: #ffd700; border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;">📊 13곡 평균 엑셀 다운</button>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">분석 기준:</span>
             <select id="compareSongModeSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #ffd700; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5); font-weight: 700;">
@@ -384,6 +387,7 @@ app.innerHTML = `
           </select>
           <select id="comparePanelSongSelect" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer;">
           </select>
+          <button id="btnExportComparativeRaw" class="neo-select" style="background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.4); color: #0a84ff; border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;">📥 비교 데이터 엑셀</button>
         </div>
         <div style="position: relative; height: 350px; width: 100%;">
           <canvas id="compareChart"></canvas>
@@ -2999,6 +3003,152 @@ loadDashboard = function() {
 initMockPlayer();
 initDashboardTabs();
 initUploaderListeners();
+initExportButtons();
 
 // Initially show Stage 1 Intro
 switchScreen('introScreen');
+
+// ==========================================
+// 📥 Client-Side Excel Export for Tableau
+// ==========================================
+function initExportButtons() {
+  const btnExportCurrentSongRaw = document.getElementById('btnExportCurrentSongRaw');
+  if (btnExportCurrentSongRaw) {
+    btnExportCurrentSongRaw.addEventListener('click', () => {
+      const idx = currentSongAnalysisIndex;
+      const songMeta = SONG_METADATA[idx];
+      const currentSongNum = idx + 1;
+      
+      const rows = [];
+      const memberKeys = ['member2', 'member1', 'member3', 'member4'];
+      const genres = ["멜로딕 테크노", "K-POP 댄스", "버블검 팝", "뮤지컬 락", "어쿠스틱 인디 팝", "라틴 재즈 피아노", "J-POP", "프렌치 인디 팝", "헤비 메탈", "오케스트라 에픽", "정통 클래식 피아노", "인디 기타 인스트루멘탈", "디스토션 트랩/힙합"];
+      const songGenre = genres[idx] || "기타";
+      
+      memberKeys.forEach(mKey => {
+        const saved = localStorage.getItem(`brainwaveData_${mKey}`);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          const songData = parsed.find(s => s.songNumber === currentSongNum);
+          if (songData && songData.rawData) {
+            const raw = songData.rawData;
+            const maxLen = Math.max(
+              raw.engagement ? raw.engagement.length : 0,
+              raw.interest ? raw.interest.length : 0,
+              raw.excitement ? raw.excitement.length : 0,
+              raw.stress ? raw.stress.length : 0,
+              raw.relaxation ? raw.relaxation.length : 0
+            );
+            
+            for (let t = 0; t < maxLen; t++) {
+              rows.push({
+                "시간(초)": t + 1,
+                "조원 이름": MEMBERS[mKey],
+                "곡 제목": songMeta.title,
+                "장르": songGenre,
+                "몰입도 (Engagement)": raw.engagement && raw.engagement[t] !== undefined ? parseFloat(raw.engagement[t].toFixed(4)) : null,
+                "흥미도 (Interest)": raw.interest && raw.interest[t] !== undefined ? parseFloat(raw.interest[t].toFixed(4)) : null,
+                "활성도 (Excitement)": raw.excitement && raw.excitement[t] !== undefined ? parseFloat(raw.excitement[t].toFixed(4)) : null,
+                "스트레스 (Stress)": raw.stress && raw.stress[t] !== undefined ? parseFloat(raw.stress[t].toFixed(4)) : null,
+                "이완도 (Relaxation)": raw.relaxation && raw.relaxation[t] !== undefined ? parseFloat(raw.relaxation[t].toFixed(4)) : null
+              });
+            }
+          }
+        }
+      });
+      
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      XLSX.utils.book_append_sheet(wb, ws, "Raw_Time_Series");
+      XLSX.writeFile(wb, `neurowav_track_${currentSongNum}_raw_data.xlsx`);
+    });
+  }
+
+  const btnExportAllAverages = document.getElementById('btnExportAllAverages');
+  if (btnExportAllAverages) {
+    btnExportAllAverages.addEventListener('click', () => {
+      const averagesData = [];
+      const memberKeys = ['member2', 'member1', 'member3', 'member4'];
+      const memberDetails = {
+        member1: { nbti: "Z.E.N.S (Zen & Emotional Serene)", title: "개념 치유사 (The Composer)" },
+        member2: { nbti: "E.X.C.I (Excitement Catalyst Intellect)", title: "아드레날린 락커 (The Rocker)" },
+        member3: { nbti: "A.I.F.C (AI Focused chipset)", title: "AI 집중 마스터 (The AI Expert)" },
+        member4: { nbti: "I.N.T.R (Interactive Neuro receptor)", title: "호기심 미술가 (The Artist)" }
+      };
+      const genres = ["멜로딕 테크노", "K-POP 댄스", "버블검 팝", "뮤지컬 락", "어쿠스틱 인디 팝", "라틴 재즈 피아노", "J-POP", "프렌치 인디 팝", "헤비 메탈", "오케스트라 에픽", "정통 클래식 피아노", "인디 기타 인스트루멘탈", "디스토션 트랩/힙합"];
+
+      memberKeys.forEach(mKey => {
+        const saved = localStorage.getItem(`brainwaveData_${mKey}`);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          parsed.forEach((song, idx) => {
+            const meta = SONG_METADATA[idx];
+            averagesData.push({
+              "조원 이름": MEMBERS[mKey],
+              "N-BTI 유형": memberDetails[mKey].nbti,
+              "고유 타이틀": memberDetails[mKey].title,
+              "트랙 번호": song.songNumber,
+              "곡 제목": meta.title,
+              "아티스트": meta.artist,
+              "장르": genres[idx] || "기타",
+              "몰입도 (Engagement)": parseFloat(song.averages.engagement.toFixed(4)),
+              "흥미도 (Interest)": parseFloat(song.averages.interest.toFixed(4)),
+              "활성도 (Excitement)": parseFloat(song.averages.excitement.toFixed(4)),
+              "스트레스 (Stress)": parseFloat(song.averages.stress.toFixed(4)),
+              "이완도 (Relaxation)": parseFloat(song.averages.relaxation.toFixed(4))
+            });
+          });
+        }
+      });
+      
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(averagesData);
+      XLSX.utils.book_append_sheet(wb, ws, "Song_Averages");
+      XLSX.writeFile(wb, "neurowav_13_tracks_averages.xlsx");
+    });
+  }
+
+  const btnExportComparativeRaw = document.getElementById('btnExportComparativeRaw');
+  if (btnExportComparativeRaw) {
+    btnExportComparativeRaw.addEventListener('click', () => {
+      const idx = activeSongIndex;
+      const songMeta = SONG_METADATA[idx];
+      const currentSongNum = idx + 1;
+      const metric = compareMetricSelect.value;
+      const metricLabel = {
+        engagement: '몰입도(Engagement)',
+        interest: '흥미도(Interest)',
+        excitement: '활성도(Excitement)',
+        stress: '스트레스(Stress)',
+        relaxation: '이완도(Relaxation)'
+      }[metric];
+
+      const rows = [];
+      const memberKeys = ['member2', 'member1', 'member3', 'member4'];
+
+      memberKeys.forEach(mKey => {
+        const saved = localStorage.getItem(`brainwaveData_${mKey}`);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          const songData = parsed.find(s => s.songNumber === currentSongNum);
+          if (songData && songData.rawData && songData.rawData[metric]) {
+            const rawVals = songData.rawData[metric];
+            rawVals.forEach((val, t) => {
+              rows.push({
+                "시간(초)": t + 1,
+                "조원 이름": MEMBERS[mKey],
+                "곡 제목": songMeta.title,
+                "비교 대상 감정": metricLabel,
+                "감정 지표 수치": parseFloat(val.toFixed(4))
+              });
+            });
+          }
+        }
+      });
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      XLSX.utils.book_append_sheet(wb, ws, "Comparative_Data");
+      XLSX.writeFile(wb, `neurowav_track_${currentSongNum}_${metric}_comparative.xlsx`);
+    });
+  }
+}
