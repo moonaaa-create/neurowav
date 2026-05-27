@@ -18,6 +18,7 @@ let lineChartInstance = null;
 let compareChartInstance = null;
 let currentDashboardView = 'personal';
 let currentComparisonMode = 'average';
+let showRadarValues = true;
 
 // DOM Element References
 let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, lineChartTitle, compareMetricSelect, compareSongModeSelect;
@@ -330,7 +331,8 @@ app.innerHTML = `
         </div>
       </header>
       
-      <div class="toggle-switch-container">
+      <div class="toggle-switch-container" style="display: flex; gap: 0.5rem; align-items: center;">
+        <button id="btnToggleRadarValues" class="toggle-btn" style="background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.4); color: #ffd700;">🏷️ 수치 ON</button>
         <button id="btnViewPersonal" class="toggle-btn active">👤 개인 분석</button>
         <button id="btnViewComparative" class="toggle-btn">👥 조원 비교</button>
       </div>
@@ -687,6 +689,52 @@ function renderRadarGrid() {
     ];
     const colorSet = emotionColors[maxValIdx];
     
+    const radarPlugins = [];
+    if (showRadarValues) {
+      radarPlugins.push({
+        id: 'showValues',
+        afterDatasetsDraw: (chart) => {
+          const { ctx, scales: { r } } = chart;
+          ctx.save();
+          ctx.font = 'bold 9px sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+
+          chart.data.datasets.forEach((dataset, datasetIndex) => {
+            const meta = chart.getDatasetMeta(datasetIndex);
+            meta.data.forEach((point, index) => {
+              const val = dataset.data[index];
+              if (val === undefined || val === null) return;
+              
+              const center = { x: r.xCenter, y: r.yCenter };
+              const dx = point.x - center.x;
+              const dy = point.y - center.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              
+              let xText = point.x;
+              let yText = point.y;
+              if (dist > 0) {
+                const offset = 12; // offset in pixels
+                xText += (dx / dist) * offset;
+                yText += (dy / dist) * offset;
+              }
+              
+              // Draw a small background for readability
+              ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+              const textWidth = ctx.measureText(val.toFixed(2)).width;
+              ctx.fillRect(xText - textWidth/2 - 2, yText - 6, textWidth + 4, 12);
+              
+              // Draw the text
+              ctx.fillStyle = '#ffd700'; // gold color
+              ctx.fillText(val.toFixed(2), xText, yText);
+            });
+          });
+          ctx.restore();
+        }
+      });
+    }
+
     new Chart(ctx, {
       type: 'radar',
       data: {
@@ -712,7 +760,8 @@ function renderRadarGrid() {
             ticks: { display: false }
           }
         }
-      }
+      },
+      plugins: radarPlugins
     });
   });
 }
@@ -1436,6 +1485,24 @@ function triggerConfetti() {
 // ==========================================
 function initDashboardTabs() {
   if (!btnViewPersonal || !btnViewComparative) return;
+
+  const btnToggleRadarValues = document.getElementById('btnToggleRadarValues');
+  if (btnToggleRadarValues) {
+    btnToggleRadarValues.addEventListener('click', () => {
+      showRadarValues = !showRadarValues;
+      btnToggleRadarValues.textContent = showRadarValues ? '🏷️ 수치 ON' : '🏷️ 수치 OFF';
+      if (showRadarValues) {
+        btnToggleRadarValues.style.background = 'rgba(255, 215, 0, 0.15)';
+        btnToggleRadarValues.style.borderColor = 'rgba(255, 215, 0, 0.4)';
+        btnToggleRadarValues.style.color = '#ffd700';
+      } else {
+        btnToggleRadarValues.style.background = 'rgba(255, 255, 255, 0.05)';
+        btnToggleRadarValues.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        btnToggleRadarValues.style.color = 'var(--text-secondary)';
+      }
+      renderRadarGrid();
+    });
+  }
 
   btnViewPersonal.addEventListener('click', () => {
     btnViewPersonal.classList.add('active');
