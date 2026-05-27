@@ -2598,6 +2598,14 @@ function loadNbtiScreen(mId) {
     member4: '/profile4.png'
   };
   const avatarUrl = avatarMap[mId] || '/profile1.png';
+  
+  const spriteMap = {
+    member1: '/sprite2.png',
+    member2: '/sprite3.png',
+    member3: '/sprite1.png',
+    member4: '/sprite4.png'
+  };
+  const spriteUrl = spriteMap[mId] || '/sprite1.png';
 
   // Inner helper function to render beautiful horizontal MBTI dimension bars
   const renderMbtiBar = (leftName, leftScore, rightName, rightScore, labelTitle) => {
@@ -2652,7 +2660,8 @@ function loadNbtiScreen(mId) {
             ${profile.title.split('(')[0].replace(/[\u2300-\u23FF\u2600-\u27BF]/g, '').trim()}
           </h3>
           
-          <img src="${avatarUrl}" style="width: 120px; height: 120px; border-radius: 20px; border: 3px solid #fff; box-shadow: 0 0 20px rgba(${hexToRgb(profile.border)}, 0.4); z-index: 2; object-fit: cover; background: #fff; transform: translateY(-3px);">
+          <!-- Full-Body Pixel Character Sprite (16Personalities style) -->
+          <img src="${spriteUrl}" class="pixelated" style="height: 140px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(${hexToRgb(profile.border)}, 0.5)); z-index: 2; transform: translateY(-3px); animation: characterFloat 3s ease-in-out infinite;">
           
           <span style="font-size: 1.25rem; font-weight: 800; color: ${profile.border}; letter-spacing: 2px; text-shadow: 0 0 8px rgba(${hexToRgb(profile.border)}, 0.3); z-index: 2; margin: 0; font-family: monospace;">
             ${profile.nbti.split(' ')[0]}-T
@@ -2875,6 +2884,14 @@ function loadAchievementsScreen(mId) {
   };
 
   const ach = ACHIEVEMENTS_DB[mId] || ACHIEVEMENTS_DB.member3;
+  
+  const spriteMap = {
+    member1: '/sprite2.png',
+    member2: '/sprite3.png',
+    member3: '/sprite1.png',
+    member4: '/sprite4.png'
+  };
+  const spriteUrl = spriteMap[mId] || '/sprite1.png';
 
   let listHtml = '';
   ach.list.forEach(item => {
@@ -2889,7 +2906,10 @@ function loadAchievementsScreen(mId) {
   grid.innerHTML = `
     <div style="background: rgba(28,28,30,0.75); border: 2.5px solid ${ach.border}; border-radius: var(--radius-lg); padding: 2.5rem; display: flex; flex-direction: column; gap: 2.5rem; text-align: center; box-shadow: 0 0 25px rgba(${hexToRgb(ach.border)}, 0.15); animation: fadeIn 0.5s ease-out;">
       <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-        <img src="${ach.avatar}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3.5px solid ${ach.border}; box-shadow: 0 0 20px rgba(${hexToRgb(ach.border)}, 0.4);">
+        <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; flex-wrap: wrap;">
+          <img src="${ach.avatar}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid ${ach.border}; box-shadow: 0 0 15px rgba(${hexToRgb(ach.border)}, 0.3);">
+          <img src="${spriteUrl}" class="pixelated" style="height: 140px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(${hexToRgb(ach.border)}, 0.5)); animation: characterFloat 3s ease-in-out infinite;">
+        </div>
         <h2 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 0;">${MEMBERS[mId]} 님의 최종 전설적 업적</h2>
         <div style="display: flex; align-items: center; gap: 8px; background: rgba(${hexToRgb(ach.border)}, 0.15); color: #fff; padding: 0.4rem 1.2rem; border-radius: 30px; font-size: 0.95rem; font-weight: 700; border: 1px solid ${ach.border};">
           <span>${ach.weaponIcon} 장착 무기: <strong>${ach.weapon}</strong></span>
