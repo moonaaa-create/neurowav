@@ -370,7 +370,7 @@ app.innerHTML = `
 
       <!-- Left Panel (Comparative Mode): Multi-user Line Chart -->
       <div class="panel comparison-panel" id="comparativePanel" style="display: none; grid-column: 1 / 2; grid-row: 1 / 2;">
-        <div class="comparison-selector-panel">
+        <div class="comparison-selector-panel" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
           <span style="font-weight: 600; font-size: 0.95rem;">👥 조원 전체 감정 비교</span>
           <select id="compareMetricSelect">
             <option value="engagement">🧠 몰입도 (Engagement)</option>
@@ -378,6 +378,8 @@ app.innerHTML = `
             <option value="excitement">🔥 활성도 (Excitement)</option>
             <option value="stress">🤯 스트레스 (Stress)</option>
             <option value="relaxation">🧘‍♂️ 이완도 (Relaxation)</option>
+          </select>
+          <select id="comparePanelSongSelect" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer;">
           </select>
         </div>
         <div style="position: relative; height: 350px; width: 100%;">
@@ -744,6 +746,12 @@ function renderRankings() {
 
 function selectSong(index) {
   activeSongIndex = index;
+  
+  const dsSelect = document.getElementById('dashboardSongSelect');
+  if (dsSelect) dsSelect.value = index;
+  
+  const cpSelect = document.getElementById('comparePanelSongSelect');
+  if (cpSelect) cpSelect.value = index;
   
   document.querySelectorAll('.radar-item').forEach(el => el.classList.remove('active'));
   const radarItem = document.getElementById(`radar-item-${index}`);
@@ -2850,19 +2858,35 @@ function loadAchievementsScreen(mId) {
 // ==========================================
 function initDashboardSongSelect() {
   const songSelect = document.getElementById('dashboardSongSelect');
+  const compareSelect = document.getElementById('comparePanelSongSelect');
   if (!songSelect) return;
 
   songSelect.innerHTML = '';
+  if (compareSelect) compareSelect.innerHTML = '';
+  
   SONG_METADATA.forEach((song, idx) => {
     const opt = document.createElement('option');
     opt.value = idx;
     opt.textContent = `${idx + 1}. ${song.title} - ${song.artist} (${song.cover})`;
     songSelect.appendChild(opt);
+    
+    if (compareSelect) {
+      const opt2 = document.createElement('option');
+      opt2.value = idx;
+      opt2.textContent = `${idx + 1}. ${song.title} - ${song.artist} (${song.cover})`;
+      compareSelect.appendChild(opt2);
+    }
   });
 
   songSelect.addEventListener('change', (e) => {
     selectSong(parseInt(e.target.value));
   });
+  
+  if (compareSelect) {
+    compareSelect.addEventListener('change', (e) => {
+      selectSong(parseInt(e.target.value));
+    });
+  }
 }
 
 // Overwrite loadDashboard to add Launchpad & Song Select initializers
@@ -2876,6 +2900,10 @@ loadDashboard = function() {
   const songSelect = document.getElementById('dashboardSongSelect');
   if (songSelect) {
     songSelect.value = activeSongIndex;
+  }
+  const compareSelect = document.getElementById('comparePanelSongSelect');
+  if (compareSelect) {
+    compareSelect.value = activeSongIndex;
   }
 };
 
