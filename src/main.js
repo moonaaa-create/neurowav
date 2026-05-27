@@ -154,25 +154,25 @@ app.innerHTML = `
     <!-- Big flow graphic -->
     <div class="panel" style="padding: 2.5rem; text-align: center; gap: 1.5rem;">
       <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff;">⚙️ NeuroWav Data Flow Pipeline</h3>
-      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+      <div class="pipeline-container" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
           <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🎧</span>
           <strong style="color: #64d2ff;">Emotiv EPOC</strong>
           <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">Raw EEG Stream</span>
         </div>
-        <div style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
           <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">📊</span>
           <strong style="color: #ff9f0a;">XLSX / CSV Logs</strong>
           <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">5 Emotions (30s)</span>
         </div>
-        <div style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
           <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🤖</span>
           <strong style="color: #30d158;">AI & Node Engine</strong>
           <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">Data Cleaning & Scale</span>
         </div>
-        <div style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
         <div style="background: rgba(10,132,255,0.1); border: 1px solid var(--accent-color); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px; box-shadow: 0 0 15px rgba(10,132,255,0.2);">
           <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🔮</span>
           <strong style="color: #fff;">NeuroWav SPA</strong>
@@ -192,7 +192,7 @@ app.innerHTML = `
     
     <div class="song-analysis-layout">
       <!-- Left Panel: 13 Songs Selection Card List -->
-      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; height: 100%; min-height: 980px;">
+      <div class="panel song-list-sidebar-panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; height: 100%; min-height: 980px;">
         <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
           💿 Tracks <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">(13 total)</span>
         </h3>
@@ -2652,7 +2652,7 @@ function loadNbtiScreen(mId) {
       </div>
 
       <!-- [TOP BLOCK] 16Personalities style MBTI Illustration Card -->
-      <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem; align-items: stretch;">
+      <div class="nbti-grid-1" style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem; align-items: stretch;">
         
         <!-- Left Panel: Character illustration card -->
         <div style="background: linear-gradient(135deg, rgba(${hexToRgb(profile.border)}, 0.15) 0%, rgba(18, 18, 24, 0.75) 100%); border-radius: 20px; padding: 2rem; border: 1.5px solid rgba(${hexToRgb(profile.border)}, 0.35); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 340px; box-shadow: inset 0 0 20px rgba(${hexToRgb(profile.border)}, 0.15);">
@@ -2684,7 +2684,7 @@ function loadNbtiScreen(mId) {
       </div>
 
       <!-- [BOTTOM BLOCK] Detailed Brainwave Analysis & canvas radar chart -->
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: stretch;">
+      <div class="nbti-grid-2" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: stretch;">
         
         <!-- Left Panel: Narrative interpretation & Quote -->
         <div style="background: rgba(18, 18, 24, 0.5); border-radius: 20px; padding: 1.8rem; border: 1.5px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 1.2rem; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
@@ -2925,7 +2925,7 @@ function loadAchievementsScreen(mId) {
       </div>
 
       <!-- Stress Track Summary -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
+      <div class="stress-summary-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
         <div style="background: rgba(255, 69, 58, 0.05); border: 1px dashed rgba(255, 69, 58, 0.3); border-radius: 16px; padding: 1.5rem; text-align: left;">
           <h4 style="font-size: 1rem; color: #ff453a; font-weight: 700; margin-bottom: 0.5rem;">🤯 뇌에 부담을 준 기피 트랙 (Max Stress)</h4>
           <span style="font-size: 1.15rem; color: #fff; font-weight: 700;">${maxStressSong}</span>

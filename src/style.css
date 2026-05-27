@@ -939,3 +939,220 @@ input[type="checkbox"]:checked + .neon-switch-slider::before {
   100% { transform: translateY(0px); }
 }
 
+/* ==========================================
+   📱 Mobile Responsiveness & Premium UI
+   ========================================== */
+@media (max-width: 768px) {
+  /* 1. Global Page Settings */
+  #app {
+    padding: 1rem !important;
+  }
+
+  /* 2. Navigation Styling (Premium horizontal scroll tabs) */
+  .main-nav {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 0.8rem 1.2rem !important;
+    gap: 0.75rem !important;
+  }
+  .nav-logo {
+    font-size: 1.15rem !important;
+  }
+  .nav-links {
+    display: flex !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+    gap: 0.3rem !important;
+    padding-bottom: 6px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none !important; /* Hide scrollbar for premium native slider feel */
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none !important; /* Hide scrollbar in Safari/Chrome */
+  }
+  .nav-links button {
+    margin-left: 0 !important;
+    margin-right: 0.4rem !important;
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.8rem !important;
+    flex-shrink: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  /* 3. Stage 1 Player Select cards scaling */
+  .profile-card {
+    width: calc(50% - 0.75rem) !important;
+    padding: 1rem !important;
+  }
+  .profile-card img {
+    width: 70px !important;
+    height: 70px !important;
+  }
+  .hero-section h1 {
+    font-size: 2.8rem !important;
+  }
+  .hero-section p.subtitle {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* 3.1 Stage 2 Data Flow Pipeline stacking */
+  .pipeline-container {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    align-items: center !important;
+  }
+  .pipeline-arrow {
+    transform: rotate(90deg) !important; /* Rotate horizontal arrow ➡️ to look down ⬇️ */
+    margin: 0.25rem 0 !important;
+    display: block !important;
+  }
+
+  /* 4. Stage 3 See Music Layout scaling */
+  .song-analysis-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  .song-list-sidebar-panel {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 0.8rem !important;
+  }
+  .song-card-list {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    max-height: unset !important;
+    height: auto !important;
+    width: 100% !important;
+    gap: 0.8rem !important;
+    padding: 0.5rem 0.2rem !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none !important; /* Hide scrollbar for clean track swiping */
+  }
+  .song-card-list::-webkit-scrollbar {
+    display: none !important;
+  }
+  .song-card {
+    flex-shrink: 0 !important;
+    width: 210px !important;
+    padding: 0.6rem !important;
+    gap: 0.6rem !important;
+    margin-bottom: 0 !important;
+  }
+  .song-card-cover {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1.1rem !important;
+  }
+  .song-card-title {
+    font-size: 0.85rem !important;
+  }
+  .song-card-artist {
+    font-size: 0.7rem !important;
+  }
+  .song-analysis-main {
+    gap: 1rem !important;
+  }
+  .insight-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .insight-card:last-child {
+    grid-column: span 2 !important; /* Center the odd 5th card */
+  }
+  .ranking-flex-container {
+    grid-template-columns: 1fr !important;
+  }
+  .ranking-flex-container > div:first-child {
+    height: 320px !important; /* Set proper height on mobile to prevent empty black void */
+  }
+  #songTeamAverageChart {
+    max-height: 320px !important;
+  }
+
+  /* 5. Stage 5 Personal Dashboard Layout scaling */
+  .dashboard-layout {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    gap: 1rem !important;
+  }
+  .radar-grid-panel {
+    grid-column: 1 / 2 !important;
+    grid-row: auto !important;
+  }
+  .line-chart-panel {
+    grid-column: 1 / 2 !important;
+    grid-row: auto !important;
+    min-height: 320px !important;
+  }
+  .ranking-panel {
+    grid-column: 1 / 2 !important;
+    grid-row: auto !important;
+    min-height: auto !important;
+    max-height: 380px !important;
+  }
+  .radar-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; /* Clear 3 columns for radars */
+  }
+  .song-info-inline {
+    grid-column: 1 / -1 !important; /* Full width row on mobile to display description perfectly */
+    flex-direction: column !important;
+    text-align: center !important;
+    align-items: center !important;
+    gap: 0.8rem !important;
+    padding: 1rem !important;
+  }
+  .album-art {
+    width: 64px !important;
+    height: 64px !important;
+    font-size: 2rem !important;
+  }
+
+  /* 6. MIDI Neural Launchpad (Keep 4x5 but compress grid) */
+  .launchpad-grid {
+    gap: 0.3rem !important;
+  }
+  .launchpad-btn {
+    padding: 0.4rem 0.2rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  /* 7. Stage 4 N-BTI Diagnostic Report scaling */
+  #pdf-report-container {
+    padding: 1.2rem !important;
+    gap: 1.5rem !important;
+  }
+  .nbti-grid-1, .nbti-grid-2 {
+    grid-template-columns: 1fr !important; /* Stack columns vertically */
+    gap: 1.2rem !important;
+  }
+  #pdf-report-container > div:nth-child(2) > div {
+    min-height: auto !important;
+  }
+
+  /* 8. Stage 6 Achievements screen scaling */
+  .team-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #teamGrid > div {
+    padding: 1.2rem !important;
+    gap: 1.5rem !important;
+  }
+  .stress-summary-grid {
+    grid-template-columns: 1fr !important; /* Stack stress summary cards elegantly */
+    gap: 1rem !important;
+  }
+
+  /* Uploader screen scaling */
+  #uploaderScreen > div {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  /* Generic panel padding adjustments */
+  .panel {
+    padding: 1rem !important;
+  }
+}
+
