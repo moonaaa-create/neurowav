@@ -1924,7 +1924,7 @@ function render13TracksTeamAverageChart(metric) {
   // Sort descending by value (Ranking style)
   songAverages.sort((a, b) => b.value - a.value);
 
-  const labels = songAverages.map(item => `${item.cover} ${item.title}`);
+  const labels = songAverages.map(item => `${String(item.index + 1).padStart(2, '0')}. ${item.cover} ${item.title}`);
   const dataVals = songAverages.map(item => item.value);
 
   // We will highlight the currently active song in the rankings with a golden glow!
@@ -2048,7 +2048,7 @@ function render13TracksTeamAverageChart(metric) {
       rowDiv.innerHTML = `
         <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
           ${badge}
-          <span style="font-weight: 700; color: ${textColor}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.cover} ${item.title}</span>
+          <span style="font-weight: 700; color: ${textColor}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${String(item.index + 1).padStart(2, '0')}. ${item.cover} ${item.title}</span>
         </div>
         <strong style="color: ${isActive ? '#ffd700' : 'var(--accent-color)'}; font-family: monospace; font-size: 0.9rem;">${(item.value * 100).toFixed(1)}%</strong>
       `;
