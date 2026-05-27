@@ -192,11 +192,11 @@ app.innerHTML = `
     
     <div class="song-analysis-layout">
       <!-- Left Panel: 13 Songs Selection Card List -->
-      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; max-height: 800px;">
+      <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.2rem; height: 100%; min-height: 980px;">
         <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
           💿 Tracks <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">(13 total)</span>
         </h3>
-        <div class="song-card-list" id="songCardList">
+        <div class="song-card-list" id="songCardList" style="max-height: 900px; flex-grow: 1; overflow-y: auto;">
           <!-- Dynamically populated song cards -->
         </div>
       </div>
@@ -252,50 +252,51 @@ app.innerHTML = `
             <!-- Dynamic insight cards for each 5 metrics -->
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- 13-Track Team Averages Ranking Panel -->
-        <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; width: 100%;">
-          <div class="compare-header-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem;">
-            <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-              📊 13-Track Team Averages & Leaderboard
-            </h3>
-            <div style="display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">분석 기준:</span>
-                <select id="compareSongModeSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #ffd700; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5); font-weight: 700;">
-                  <option value="average">📊 팀 평균 감정 수치</option>
-                  <option value="peak">⚡ 크리티컬 최고 자극치</option>
-                  <option value="volatility">🎢 감정 롤러코스터 변동폭</option>
-                </select>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">대상 감정:</span>
-                <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                  <option value="engagement">몰입도 (Engagement)</option>
-                  <option value="interest">흥미도 (Interest)</option>
-                  <option value="excitement">활성도 (Excitement)</option>
-                  <option value="stress">스트레스 (Stress)</option>
-                  <option value="relaxation">이완도 (Relaxation)</option>
-                </select>
-              </div>
-            </div>
+    <!-- 13-Track Team Averages Ranking Panel -->
+    <div class="panel team-average-compare-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 2rem;">
+      <div class="compare-header-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+          📊 13-Track Team Averages & Leaderboard
+        </h3>
+        <div style="display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">분석 기준:</span>
+            <select id="compareSongModeSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #ffd700; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5); font-weight: 700;">
+              <option value="average">📊 팀 평균 감정 수치</option>
+              <option value="peak">⚡ 크리티컬 최고 자극치</option>
+              <option value="volatility">🎢 감정 롤러코스터 변동폭</option>
+            </select>
           </div>
-          <div class="ranking-flex-container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; width: 100%; align-items: start; flex-wrap: wrap;">
-            <div style="position: relative; height: 420px; width: 100%; min-width: 300px;">
-              <canvas id="songTeamAverageChart"></canvas>
-            </div>
-            <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; max-height: 420px; overflow-y: auto; min-width: 300px;">
-              <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffd700; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.25rem;">
-                🏆 뇌파 감정 반응 전체 순위 (1위 ~ 13위)
-              </h4>
-              <div id="songTeamAverageLeaderboard" style="display: flex; flex-direction: column; gap: 0.4rem;">
-                <!-- Leaderboard rows injected here via JS -->
-              </div>
-            </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">대상 감정:</span>
+            <select id="compareSongMetricSelect" class="neo-select" style="background: rgba(18, 18, 24, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; padding: 0.4rem 0.8rem; font-size: 0.85rem; outline: none; cursor: pointer; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+              <option value="engagement">몰입도 (Engagement)</option>
+              <option value="interest">흥미도 (Interest)</option>
+              <option value="excitement">활성도 (Excitement)</option>
+              <option value="stress">스트레스 (Stress)</option>
+              <option value="relaxation">이완도 (Relaxation)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="ranking-flex-container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; width: 100%; align-items: start; flex-wrap: wrap;">
+        <div style="position: relative; height: 420px; width: 100%; min-width: 300px;">
+          <canvas id="songTeamAverageChart"></canvas>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; max-height: 420px; overflow-y: auto; min-width: 300px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffd700; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.25rem;">
+            🏆 뇌파 감정 반응 전체 순위 (1위 ~ 13위)
+          </h4>
+          <div id="songTeamAverageLeaderboard" style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <!-- Leaderboard rows injected here via JS -->
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- [STAGE 5] SEE PERSON SCREEN (HIGH INTERACTIONS) -->
