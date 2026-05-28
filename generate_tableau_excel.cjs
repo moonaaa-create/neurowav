@@ -135,6 +135,72 @@ const nbtiRows = [
   }
 ];
 
+// ----------------------------------------------------
+// [시트 4] N_BTI_Dimension_Scores (New - Tableau Pivot)
+// ----------------------------------------------------
+console.log("Generating N_BTI_Dimension_Scores Sheet rows...");
+const memberStats = {};
+Object.keys(preloadedData).forEach(mId => {
+  const songList = preloadedData[mId];
+  let sums = { engagement: 0, interest: 0, excitement: 0, stress: 0, relaxation: 0 };
+  let count = 0;
+  
+  songList.forEach(song => {
+    TARGET_COLUMNS.forEach(col => {
+      sums[col] += song.averages[col] || 0;
+    });
+    count++;
+  });
+  
+  memberStats[mId] = {
+    engagement: sums.engagement / count,
+    interest: sums.interest / count,
+    excitement: sums.excitement / count,
+    stress: sums.stress / count,
+    relaxation: sums.relaxation / count
+  };
+});
+
+const nbtiDimensionRows = [];
+Object.keys(preloadedData).forEach(mId => {
+  const member = MEMBERS[mId];
+  const stats = memberStats[mId];
+  
+  const scoreEng = Math.round(stats.engagement * 100);
+  const scoreDiv = 100 - scoreEng;
+  
+  const scoreInt = Math.round(stats.interest * 100);
+  const scoreInd = 100 - scoreInt;
+  
+  const scoreExc = Math.round(stats.excitement * 100);
+  const scoreCalm = 100 - scoreExc;
+  
+  const scoreStr = Math.round(stats.stress * 100);
+  const scoreStab = 100 - scoreStr;
+  
+  const scoreRel = Math.round(stats.relaxation * 100);
+  const scoreTen = 100 - scoreRel;
+  
+  const dimensions = [
+    { name: "정신 (Mind)", left: "몰입형 (Engagement)", leftScore: scoreEng, right: "분산형 (Diversion)", rightScore: scoreDiv },
+    { name: "본성 (Nature)", left: "흥미형 (Interest)", leftScore: scoreInt, right: "무관심형 (Indifference)", rightScore: scoreInd },
+    { name: "에너지 (Energy)", left: "활성형 (Excitement)", leftScore: scoreExc, right: "평온형 (Calmness)", rightScore: scoreCalm },
+    { name: "자아 (Identity)", left: "스트레스형 (Stress)", leftScore: scoreStr, right: "안정형 (Stability)", rightScore: scoreStab },
+    { name: "전술 (Tactics)", left: "이완형 (Relaxation)", leftScore: scoreRel, right: "긴장형 (Tension)", rightScore: scoreTen }
+  ];
+  
+  dimensions.forEach(dim => {
+    nbtiDimensionRows.push({
+      "Person": member.name,
+      "Dimension": dim.name,
+      "Left_Name": dim.left,
+      "Left_Score": dim.leftScore,
+      "Right_Name": dim.right,
+      "Right_Score": dim.rightScore
+    });
+  });
+});
+
 // Create workbook
 console.log("Writing XLSX sheets...");
 const wb = XLSX.utils.book_new();
@@ -147,6 +213,9 @@ XLSX.utils.book_append_sheet(wb, wsGenre, "Genre_Metadata");
 
 const wsNbti = XLSX.utils.json_to_sheet(nbtiRows);
 XLSX.utils.book_append_sheet(wb, wsNbti, "N_BTI_Results");
+
+const wsNbtiDim = XLSX.utils.json_to_sheet(nbtiDimensionRows);
+XLSX.utils.book_append_sheet(wb, wsNbtiDim, "N_BTI_Dimension_Scores");
 
 const outputFilePath = '/Users/a111/Downloads/neurowav_tableau_dashboard_data.xlsx';
 XLSX.writeFile(wb, outputFilePath);

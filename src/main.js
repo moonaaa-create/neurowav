@@ -2572,28 +2572,21 @@ function loadNbtiScreen(mId) {
 
   const profile = PROFILE_DB[mId] || PROFILE_DB.member3;
 
-  // Let's compute some custom ratios for MBTI-style bar chart
-  // Dimension 1: C (Concentration) vs D (Diversion)
-  const scoreC = Math.round(totalStats.engagement * 100);
-  const scoreD = 100 - scoreC;
+  // Compute direct emotion scores (Left-aligned) and their math complements (Right-aligned)
+  const scoreEng = Math.round(totalStats.engagement * 100);
+  const scoreDiv = 100 - scoreEng;
 
-  // Dimension 2: A (Activation) vs R (Relaxation)
-  const sumAR = totalStats.excitement + totalStats.relaxation;
-  const scoreA = Math.round((totalStats.excitement / (sumAR || 1)) * 100);
-  const scoreR = 100 - scoreA;
+  const scoreInt = Math.round(totalStats.interest * 100);
+  const scoreInd = 100 - scoreInt;
 
-  // Dimension 3: P (Passion) vs S (Serene)
-  const sumPS = totalStats.interest + totalStats.stress;
-  const scoreP = Math.round((totalStats.interest / (sumPS || 1)) * 100);
-  const scoreS = 100 - scoreP;
+  const scoreExc = Math.round(totalStats.excitement * 100);
+  const scoreCalm = 100 - scoreExc;
 
-  // Dimension 4: T (Explorative) vs J (Structured)
-  const scoreT = Math.round(totalStats.interest * 100);
-  const scoreJ = 100 - scoreT;
+  const scoreStr = Math.round(totalStats.stress * 100);
+  const scoreStab = 100 - scoreStr;
 
-  // Dimension 5: S (Sensitive) vs C (Confident)
-  const scoreSens = Math.round(totalStats.stress * 100);
-  const scoreConf = 100 - scoreSens;
+  const scoreRel = Math.round(totalStats.relaxation * 100);
+  const scoreTen = 100 - scoreRel;
 
   const avatarMap = {
     member1: '/profile2.png',
@@ -2674,11 +2667,11 @@ function loadNbtiScreen(mId) {
 
         <!-- Right Panel: 5 Dimensions Scales -->
         <div style="background: rgba(10, 10, 15, 0.4); border-radius: 20px; padding: 1.8rem; border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 0.9rem; justify-content: center; min-height: 340px; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
-          ${renderMbtiBar('몰입형 (C)', scoreC, '분산형 (D)', scoreD, '정신 (Mind) - C/D')}
-          ${renderMbtiBar('각성형 (A)', scoreA, '이완형 (R)', scoreR, '에너지 (Energy) - A/R')}
-          ${renderMbtiBar('열정형 (P)', scoreP, '평온형 (S)', scoreS, '본성 (Nature) - P/S')}
-          ${renderMbtiBar('탐색형 (T)', scoreT, '계획형 (J)', scoreJ, '전술 (Tactics) - T/J')}
-          ${renderMbtiBar('민감형 (S)', scoreSens, '확신형 (C)', scoreConf, '자아 (Identity) - S/C')}
+          ${renderMbtiBar('몰입형 (Engagement)', scoreEng, '분산형 (Diversion)', scoreDiv, '정신 (Mind) - 몰입 vs 분산')}
+          ${renderMbtiBar('흥미형 (Interest)', scoreInt, '무관심형 (Indifference)', scoreInd, '본성 (Nature) - 흥미 vs 무관심')}
+          ${renderMbtiBar('활성형 (Excitement)', scoreExc, '평온형 (Calmness)', scoreCalm, '에너지 (Energy) - 활성 vs 평온')}
+          ${renderMbtiBar('스트레스형 (Stress)', scoreStr, '안정형 (Stability)', scoreStab, '자아 (Identity) - 스트레스 vs 안정')}
+          ${renderMbtiBar('이완형 (Relaxation)', scoreRel, '긴장형 (Tension)', scoreTen, '전술 (Tactics) - 이완 vs 긴장')}
         </div>
 
       </div>
