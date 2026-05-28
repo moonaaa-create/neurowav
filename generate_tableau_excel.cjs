@@ -41,12 +41,20 @@ const EMOTION_MAP = {
   relaxation: "이완도 (Relaxation)"
 };
 
+const OPPOSITE_MAP = {
+  engagement: "분산도 (Diversion)",
+  interest: "무관심도 (Indifference)",
+  excitement: "평온도 (Calmness)",
+  stress: "안정도 (Stability)",
+  relaxation: "긴장도 (Tension)"
+};
+
 const TARGET_COLUMNS = ['engagement', 'interest', 'excitement', 'stress', 'relaxation'];
 
 // ----------------------------------------------------
 // [시트 1] EEG_Averages
 // ----------------------------------------------------
-console.log("Generating EEG_Averages Sheet rows...");
+console.log("Generating EEG_Averages Sheet rows with percentages and opposites...");
 const eegAveragesRows = [];
 
 Object.keys(preloadedData).forEach(mId => {
@@ -57,22 +65,39 @@ Object.keys(preloadedData).forEach(mId => {
     const meta = SONG_METADATA[idx];
     
     TARGET_COLUMNS.forEach(col => {
-      const avgVal = parseFloat(song.averages[col].toFixed(4));
+      const avgVal = song.averages[col];
       
-      // Calculate max value from rawData if it exists and has items
+      // Calculate max/min values from rawData
       let maxVal = avgVal;
+      let minVal = avgVal;
       if (song.rawData && song.rawData[col] && song.rawData[col].length > 0) {
-        maxVal = parseFloat(Math.max(...song.rawData[col]).toFixed(4));
+        maxVal = Math.max(...song.rawData[col]);
+        minVal = Math.min(...song.rawData[col]);
       }
       
+      // 1. Core Emotional Metric (Left)
       eegAveragesRows.push({
         "Person": member.name,
         "Track_No": song.songNumber,
         "Title": meta.title,
         "Genre": meta.genre,
         "Emotion": EMOTION_MAP[col],
-        "Avg_Value": avgVal,
-        "Max_Value": maxVal
+        "Avg_Value": Math.round(avgVal * 100) + "%",
+        "Max_Value": Math.round(maxVal * 100) + "%"
+      });
+      
+      // 2. Opposite Metric (Right)
+      const oppAvgVal = 1 - avgVal;
+      const oppMaxVal = 1 - minVal; // max(1 - x) = 1 - min(x)
+      
+      eegAveragesRows.push({
+        "Person": member.name,
+        "Track_No": song.songNumber,
+        "Title": meta.title,
+        "Genre": meta.genre,
+        "Emotion": OPPOSITE_MAP[col],
+        "Avg_Value": Math.round(oppAvgVal * 100) + "%",
+        "Max_Value": Math.round(oppMaxVal * 100) + "%"
       });
     });
   });
@@ -99,9 +124,9 @@ const nbtiRows = [
     "Achievement_1": "최고의 스트레스 돌파!",
     "Achievement_2": "이완의 천재, 냉혈인",
     "Achievement_3": "몰입천재",
-    "Description": "전체 평균 스트레스가 0.355로 팀 내 최저, 이완도는 0.426으로 최고임. 특히 5번 곡에서 몰입도 평균 0.596, 이완도 최고 0.857을 기록하며 음악과 물아일체됨.",
-    "Avg_Stress": 0.3558,
-    "Avg_Relaxation": 0.4267
+    "Description": "전체 평균 스트레스가 36%로 팀 내 최저, 이완도는 43%로 최고임. 특히 5번 곡에서 몰입도 평균 60%, 이완도 최고 86%를 기록하며 음악과 물아일체됨.",
+    "Avg_Stress": "36%",
+    "Avg_Relaxation": "43%"
   },
   {
     "Person": "김용석",
@@ -109,9 +134,9 @@ const nbtiRows = [
     "Achievement_1": "아드레날린 제트 엔진",
     "Achievement_2": "헤비메탈 콘서트 라이더",
     "Achievement_3": "거침없는 데이터 탐색가",
-    "Description": "전체 평균 스트레스 최고(0.404) 및 높은 곡별 편차. 6번 곡에서 활성도(0.447)와 스트레스(0.451)가 동시에 솟구치는 등 매 음악을 극도로 기민하고 디테일하게 지각했습니다.",
-    "Avg_Stress": 0.4043,
-    "Avg_Relaxation": 0.3837
+    "Description": "전체 평균 스트레스 최고(40%) 및 높은 곡별 편차. 6번 곡에서 활성도(45%)와 스트레스(45%)가 동시에 솟구치는 등 매 음악을 극도로 기민하고 디테일하게 지각했습니다.",
+    "Avg_Stress": "40%",
+    "Avg_Relaxation": "38%"
   },
   {
     "Person": "문경수",
@@ -120,8 +145,8 @@ const nbtiRows = [
     "Achievement_2": "뇌파 오버클럭 캡틴",
     "Achievement_3": "진격의 거인 타이탄 크러셔",
     "Description": "외부의 감정적 동요(Stress/Relaxation)에 아랑곳하지 않고, 단 1초의 딜레이도 없이 신경계를 초고속 집중 모드로 기동하는 팀 최고의 인지력 소유자!",
-    "Avg_Stress": 0.4074,
-    "Avg_Relaxation": 0.4078
+    "Avg_Stress": "41%",
+    "Avg_Relaxation": "41%"
   },
   {
     "Person": "홍수민",
@@ -129,14 +154,14 @@ const nbtiRows = [
     "Achievement_1": "예술적 미장센 디텍터",
     "Achievement_2": "극적 뇌파 큐레이션",
     "Achievement_3": "호기심의 찬란한 팔레트",
-    "Description": "조형예술 전공자다운 흔들림 없는 부동의 미학적 마인드를 지녔습니다. 전체 평균 활성도가 0.222로 극도로 낮아, 뇌파가 전혀 동요하지 않고 명상에 가까운 깊고 단단한 안정을 드러냅니다.",
-    "Avg_Stress": 0.3561,
-    "Avg_Relaxation": 0.4081
+    "Description": "조형예술 전공자다운 흔들림 없는 부동의 미학적 마인드를 지녔습니다. 전체 평균 활성도가 22%로 극도로 낮아, 뇌파가 전혀 동요하지 않고 명상에 가까운 깊고 단단한 안정을 드러냅니다.",
+    "Avg_Stress": "36%",
+    "Avg_Relaxation": "41%"
   }
 ];
 
 // ----------------------------------------------------
-// [시트 4] N_BTI_Dimension_Scores (New - Tableau Pivot)
+// [시트 4] N_BTI_Dimension_Scores
 // ----------------------------------------------------
 console.log("Generating N_BTI_Dimension_Scores Sheet rows...");
 const memberStats = {};
@@ -194,15 +219,15 @@ Object.keys(preloadedData).forEach(mId => {
       "Person": member.name,
       "Dimension": dim.name,
       "Left_Name": dim.left,
-      "Left_Score": dim.leftScore,
+      "Left_Score": dim.leftScore + "%",
       "Right_Name": dim.right,
-      "Right_Score": dim.rightScore
+      "Right_Score": dim.rightScore + "%"
     });
   });
 });
 
 // Create workbook
-console.log("Writing XLSX sheets...");
+console.log("Writing XLSX sheets with clean percentages...");
 const wb = XLSX.utils.book_new();
 
 const wsAverages = XLSX.utils.json_to_sheet(eegAveragesRows);
