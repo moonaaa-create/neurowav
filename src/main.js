@@ -168,28 +168,28 @@ app.innerHTML = `
     </div>
     
     <!-- Big flow graphic -->
-    <div class="panel" style="padding: 3rem; text-align: center; gap: 2rem; border-color: rgba(255,255,255,0.1);">
+    <div class="panel" style="padding: 3rem; text-align: center; gap: 2rem; border-color: rgba(255,255,255,0.1); width: 100%;">
       <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff;">⚙️ NeuroWav Data Flow Pipeline</h3>
-      <div class="pipeline-container" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem;">
-        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      <div class="pipeline-container" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: nowrap; gap: 1rem; margin-top: 1.5rem; width: 100%;">
+        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.2rem 1.5rem; border-radius: 16px; min-width: 180px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); flex: 1;">
           <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🎧</span>
           <strong style="color: #64d2ff; font-size: 1.35rem; font-weight: 700;">Emotiv Insight 5ch</strong>
           <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">Raw EEG Stream</span>
         </div>
-        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
-        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold; flex-shrink: 0;">➡️</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.2rem 1.5rem; border-radius: 16px; min-width: 180px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); flex: 1;">
           <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">📊</span>
           <strong style="color: #ff9f0a; font-size: 1.35rem; font-weight: 700;">XLSX / CSV Logs</strong>
           <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">5 Emotions (40min)</span>
         </div>
-        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
-        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold; flex-shrink: 0;">➡️</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.2rem 1.5rem; border-radius: 16px; min-width: 180px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); flex: 1;">
           <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🤖</span>
           <strong style="color: #30d158; font-size: 1.35rem; font-weight: 700;">AI & Node Engine</strong>
           <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">Data Cleaning & Scale</span>
         </div>
-        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
-        <div style="background: rgba(10,132,255,0.15); border: 2px solid var(--accent-color); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 0 25px rgba(10,132,255,0.35);">
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold; flex-shrink: 0;">➡️</div>
+        <div style="background: rgba(10,132,255,0.15); border: 2px solid var(--accent-color); padding: 1.2rem 1.5rem; border-radius: 16px; min-width: 180px; box-shadow: 0 0 25px rgba(10,132,255,0.35); flex: 1;">
           <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🔮</span>
           <strong style="color: #fff; font-size: 1.35rem; font-weight: 700;">NeuroWav SPA</strong>
           <span style="font-size: 1rem; color: #ffd700; display: block; margin-top: 0.4rem; font-weight: 600;">Real-time Dash uploader</span>
