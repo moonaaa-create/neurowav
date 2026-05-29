@@ -127,28 +127,43 @@ app.innerHTML = `
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; width: 100%; margin-bottom: 2rem;">
       <!-- Card 1: Equipment -->
-      <div class="panel" style="padding: 2.5rem; text-align: left; gap: 1.5rem; border-color: rgba(48, 209, 88, 0.3); border-width: 1.5px;">
+      <div class="panel" style="padding: 2.5rem; text-align: left; display: flex; flex-direction: column; gap: 1.5rem; border-color: rgba(48, 209, 88, 0.3); border-width: 1.5px;">
         <div style="font-size: 3.5rem;">🎧</div>
-        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">Quest 1: 준비물 및 검사 방법</h3>
-        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; text-align: justify;">
-          실제 EEG 뇌파를 정밀하게 획득하기 위해 **Emotiv 뇌파 기기**를 머리에 장착한 후, 서로 다른 장르의 대표 음악 **13곡**을 선정하여 각 30초 이상 연속 청취하며 뇌파 피드백 데이터를 스트리밍 및 기록하였습니다.
-        </p>
+        <details class="quest-details">
+          <summary style="font-size: 2.2rem; font-weight: 800; color: #fff; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem; margin-bottom: 1.2rem; -webkit-user-select: none; user-select: none;">
+            <span>Quest 1: 실험 설계 및 노래 선정(13곡)</span>
+            <span class="toggle-icon">▼</span>
+          </summary>
+          <p style="font-size: 1.5rem; color: var(--text-secondary); line-height: 1.8; text-align: justify; margin: 0; padding-top: 0.5rem;">
+            실제 EEG뇌파를 정밀하게 획득하기 위해 **Emotiv Insight 5ch** 장비를 머리에 착용 후, 1분동안의 Baseline 측정, 선정된 13곡 노래를 각각 2분씩 , 총 대략 인당 40분씩 뇌파 측정에 참여했습니다.
+          </p>
+        </details>
       </div>
       <!-- Card 2: Archiving -->
-      <div class="panel" style="padding: 2.5rem; text-align: left; gap: 1.5rem; border-color: rgba(10, 132, 255, 0.3); border-width: 1.5px;">
+      <div class="panel" style="padding: 2.5rem; text-align: left; display: flex; flex-direction: column; gap: 1.5rem; border-color: rgba(10, 132, 255, 0.3); border-width: 1.5px;">
         <div style="font-size: 3.5rem;">🧠</div>
-        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">Quest 2: 5대 감정지표 수집</h3>
-        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; text-align: justify;">
-          EmotivApp을 통해 실시간 검출된 **Engagement(몰입), Excitement(활성), Interest(흥미), Stress(스트레스), Relaxation(이완)**의 5가지 감정 데이터를 시계열 로그 형태인 CSV/XLSX 원본 파일로 안전하게 아카이빙하였습니다.
-        </p>
+        <details class="quest-details">
+          <summary style="font-size: 2.2rem; font-weight: 800; color: #fff; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem; margin-bottom: 1.2rem; -webkit-user-select: none; user-select: none;">
+            <span>Quest 2: 뇌파 수집 SDK 및 분석툴 제작</span>
+            <span class="toggle-icon">▼</span>
+          </summary>
+          <p style="font-size: 1.5rem; color: var(--text-secondary); line-height: 1.8; text-align: justify; margin: 0; padding-top: 0.5rem;">
+            자체 제작한 뇌파 EEG 데이터 수집 SDK 분석툴을 만들어 실시간으로 **Engagement(몰입), Excitement(활성), Interest(흥미), Stress(스트레스), Relaxation(이완)**의 5가지 감정데이터를 시계열 로그 형태인 CSV/XLSX 원본파일로 아카이빙 하였습니다.
+          </p>
+        </details>
       </div>
       <!-- Card 3: Archiving -->
-      <div class="panel" style="padding: 2.5rem; text-align: left; gap: 1.5rem; border-color: rgba(191, 90, 242, 0.3); border-width: 1.5px;">
+      <div class="panel" style="padding: 2.5rem; text-align: left; display: flex; flex-direction: column; gap: 1.5rem; border-color: rgba(191, 90, 242, 0.3); border-width: 1.5px;">
         <div style="font-size: 3.5rem;">🧹</div>
-        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">Quest 3: AI 기반 데이터 클리닝</h3>
-        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; text-align: justify;">
-          기존 데이터가 수동 검사 환경의 편차로 인해 노이즈가 많았기에, **바이브 코딩 및 AI 데이터 정제 솔루션**을 사용해 결측치 처리, 데이터 스케일링(0 ~ 1 범위 정규화), 헤더 컬럼 표준화 등의 **클리닝 작업**을 사전 완료하였습니다.
-        </p>
+        <details class="quest-details">
+          <summary style="font-size: 2.2rem; font-weight: 800; color: #fff; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem; margin-bottom: 1.2rem; -webkit-user-select: none; user-select: none;">
+            <span>Quest 3: AI 기반 데이터 클리닝</span>
+            <span class="toggle-icon">▼</span>
+          </summary>
+          <p style="font-size: 1.5rem; color: var(--text-secondary); line-height: 1.8; text-align: justify; margin: 0; padding-top: 0.5rem;">
+            기존 데이터가 수동 검사 환경의 편차로 인해 노이즈가 많았기에, **바이브 코딩 및 AI 데이터 정제 솔루션**을 사용해 결측치 처리, 데이터 스케일링(0 ~ 1 범위 정규화), 헤더 컬럼 표준화 등의 **클리닝 작업**을 사전 완료하였습니다.
+          </p>
+        </details>
       </div>
     </div>
     
@@ -158,14 +173,14 @@ app.innerHTML = `
       <div class="pipeline-container" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem;">
         <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
           <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🎧</span>
-          <strong style="color: #64d2ff; font-size: 1.35rem; font-weight: 700;">Emotiv EPOC</strong>
+          <strong style="color: #64d2ff; font-size: 1.35rem; font-weight: 700;">Emotiv Insight 5ch</strong>
           <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">Raw EEG Stream</span>
         </div>
         <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
         <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
           <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">📊</span>
           <strong style="color: #ff9f0a; font-size: 1.35rem; font-weight: 700;">XLSX / CSV Logs</strong>
-          <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">5 Emotions (30s)</span>
+          <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">5 Emotions (40min)</span>
         </div>
         <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
         <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">

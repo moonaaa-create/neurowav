@@ -939,6 +939,44 @@ input[type="checkbox"]:checked + .neon-switch-slider::before {
   100% { transform: translateY(0px); }
 }
 
+/* --- Stage 2 Quest Collapsible Details --- */
+.quest-details {
+  width: 100%;
+}
+.quest-details summary {
+  list-style: none;
+  outline: none;
+  padding: 0.5rem 0;
+}
+.quest-details summary::-webkit-details-marker {
+  display: none;
+}
+.quest-details summary .toggle-icon {
+  display: inline-block;
+  font-size: 1.4rem;
+  color: #bf5af2;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform: rotate(0deg);
+}
+.quest-details[open] summary .toggle-icon {
+  transform: rotate(180deg);
+  color: #ffd700;
+}
+.quest-details p {
+  animation: slideDown 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ==========================================
    📱 Mobile Responsiveness & Premium UI
    ========================================== */
