@@ -939,6 +939,12 @@ input[type="checkbox"]:checked + .neon-switch-slider::before {
   100% { transform: translateY(0px); }
 }
 
+@keyframes weaponFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(15deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
 /* --- Stage 2 Quest Collapsible Details --- */
 .quest-details {
   width: 100%;

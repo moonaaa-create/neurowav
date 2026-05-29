@@ -2673,7 +2673,10 @@ function loadNbtiScreen(mId) {
       weapon: {
         name: "🎼 음표 힐링 지팡이 (Music Note Healer)",
         desc: "작곡 멜로디와 주파수로 동료들의 정신을 정교하게 치유하는 음표 무기",
-        emoji: "🎼"
+        emoji: "🎼",
+        glow: "rgba(255, 215, 0, 0.85)",
+        bg: "rgba(255, 215, 0, 0.25)",
+        border: "#ffd700"
       }
     },
     member3: {
@@ -2687,7 +2690,10 @@ function loadNbtiScreen(mId) {
       weapon: {
         name: "🎾 테니스 광선검 (Tennis Lightsaber)",
         desc: "고속 스핀 테니스 광선 에너지를 모아 전방에 발사하는 보라색 광전검",
-        emoji: "🎾"
+        emoji: "🎾",
+        glow: "rgba(191, 90, 242, 0.85)",
+        bg: "rgba(191, 90, 242, 0.25)",
+        border: "#bf5af2"
       }
     },
     member2: {
@@ -2701,7 +2707,10 @@ function loadNbtiScreen(mId) {
       weapon: {
         name: "🔥 파이어 스펠 (Fire Attackcaster)",
         desc: "에너지를 응축해 타오르는 고밀도 화염구를 사출하는 강력한 불 공격",
-        emoji: "🔥"
+        emoji: "🔥",
+        glow: "rgba(255, 69, 58, 0.85)",
+        bg: "rgba(255, 69, 58, 0.25)",
+        border: "#ff453a"
       }
     },
     member4: {
@@ -2715,7 +2724,10 @@ function loadNbtiScreen(mId) {
       weapon: {
         name: "🖌️ 붓펜 소드 & 🎨 미술 팔레트 실드",
         desc: "예술적 획을 긋는 대형 붓펜 칼과 모든 감정 동요를 제로화하는 팔레트 방패",
-        emoji: "🖌️"
+        emoji: "🖌️",
+        glow: "rgba(48, 209, 88, 0.85)",
+        bg: "rgba(48, 209, 88, 0.25)",
+        border: "#30d158"
       }
     }
   };
@@ -2807,8 +2819,15 @@ function loadNbtiScreen(mId) {
             ${profile.title.split('(')[0].replace(/[\u2300-\u23FF\u2600-\u27BF]/g, '').trim()}
           </h3>
           
-          <!-- Full-Body Pixel Character Sprite (16Personalities style) -->
-          <img src="${spriteUrl}" class="pixelated" style="height: 140px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(${hexToRgb(profile.border)}, 0.5)); z-index: 2; transform: translateY(-3px); animation: characterFloat 3s ease-in-out infinite;">
+          <div style="position: relative; height: 140px; width: 140px; display: flex; align-items: center; justify-content: center; margin: 0.5rem 0; z-index: 2;">
+            <!-- Full-Body Pixel Character Sprite (16Personalities style) -->
+            <img src="${spriteUrl}" class="pixelated" style="height: 140px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(${hexToRgb(profile.border)}, 0.5)); transform: translateY(-3px); animation: characterFloat 3s ease-in-out infinite;">
+            
+            <!-- Floating Weapon Companion Orb -->
+            <div style="position: absolute; right: -25px; top: 15px; width: 44px; height: 44px; border-radius: 50%; background: ${profile.weapon.bg}; border: 2px solid ${profile.weapon.border}; box-shadow: 0 0 15px ${profile.weapon.glow}; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; animation: weaponFloat 2.6s ease-in-out infinite; cursor: help; z-index: 3;" title="${profile.weapon.name}">
+              ${profile.weapon.emoji}
+            </div>
+          </div>
           
           <span style="font-size: 1.25rem; font-weight: 800; color: ${profile.border}; letter-spacing: 2px; text-shadow: 0 0 8px rgba(${hexToRgb(profile.border)}, 0.3); z-index: 2; margin: 0; font-family: monospace;">
             ${profile.nbti.split(' ')[0]}-T
