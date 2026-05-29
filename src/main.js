@@ -69,7 +69,7 @@ app.innerHTML = `
     <div class="hero-section" style="text-align: center; padding: 3rem 1rem; animation: fadeIn 0.8s ease-out; z-index: 10; position: relative;">
       <div style="font-family: monospace; font-size: 1.6rem; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); margin-bottom: 1rem; letter-spacing: 2px;">STAGE 1: THE BEGINNING</div>
       <h1 style="font-size: 5.5rem; margin-bottom: 2rem; background: linear-gradient(to right, #bf5af2, #0a84ff, #30d158); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 35px rgba(10, 132, 255, 0.35); font-weight: 800; letter-spacing: -2px;">NeuroWav Quest</h1>
-      <p class="subtitle" style="font-size: 1.7rem !important; max-width: 900px !important; margin: 0 auto 4rem auto !important; line-height: 1.8 !important; color: rgba(235, 235, 245, 0.85);">
+      <p class="subtitle" style="font-size: 1.7rem !important; max-width: 900px !important; margin: 0 auto 4rem auto !important; line-height: 1.8 !important; color: rgba(235, 235, 245, 0.85); word-break: keep-all;">
         <strong>"서로 다른 4명이 음악을 듣고 검출된 뇌파 데이터를 통해 서로를 알아가는 N-BTI"</strong><br>
         자료시각화 5조의 레트로 게임 컨셉 뇌파 탐험! 4명의 도트 캐릭터가 각 Stage를 클리어하며<br>
         자신조차 몰랐던 뇌파 속 진짜 취향과 최종 뇌비티아이(N-BTI)를 파헤칩니다.
@@ -80,32 +80,32 @@ app.innerHTML = `
           <h3 style="color: var(--text-secondary); margin-bottom: 2rem; font-weight: 700; letter-spacing: 1px; font-size: 2rem;">🎮 플레이어 캐릭터 선택 (Player Select)</h3>
           <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
             <!-- 김용석 -->
-            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 69, 58, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(255, 69, 58, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(255, 69, 58, 0.15);">
-              <img src="/profile3.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #ff453a;">
-              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">김용석 님</span>
-              <span style="font-size: 1.05rem; color: #ff453a; font-weight: 700; margin-top: 0.4rem;">🔥 아드레날린 락커</span>
-              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">자유전공 인문<br>26학번</span>
+            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 69, 58, 0.05); padding: 2rem 1.5rem; border-radius: 24px; border: 2.5px solid rgba(255, 69, 58, 0.4); width: 245px; transition: all 0.3s; box-shadow: 0 0 25px rgba(255, 69, 58, 0.15);">
+              <img src="/profile3.png" style="width: 160px; height: 160px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #ff453a;">
+              <span style="font-size: 1.95rem; font-weight: 800; color: #fff;">김용석 님</span>
+              <span style="font-size: 1.4rem; color: #ff453a; font-weight: 700; margin-top: 0.6rem;">🔥 아드레날린 락커</span>
+              <span style="font-size: 1.18rem; color: var(--text-secondary); margin-top: 0.8rem; text-align: center; line-height: 1.5;">자유전공 인문<br>26학번</span>
             </div>
             <!-- 김한주 -->
-            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(10, 132, 255, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(10, 132, 255, 0.15);">
-              <img src="/profile2.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #0a84ff;">
-              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">김한주 님</span>
-              <span style="font-size: 1.05rem; color: #0a84ff; font-weight: 700; margin-top: 0.4rem;">🧘‍♂️ 감성 음유시인</span>
-              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">음악학과 작곡과<br>21학번</span>
+            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 2rem 1.5rem; border-radius: 24px; border: 2.5px solid rgba(10, 132, 255, 0.4); width: 245px; transition: all 0.3s; box-shadow: 0 0 25px rgba(10, 132, 255, 0.15);">
+              <img src="/profile2.png" style="width: 160px; height: 160px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #0a84ff;">
+              <span style="font-size: 1.95rem; font-weight: 800; color: #fff;">김한주 님</span>
+              <span style="font-size: 1.4rem; color: #0a84ff; font-weight: 700; margin-top: 0.6rem;">🧘‍♂️ 감성 음유시인</span>
+              <span style="font-size: 1.18rem; color: var(--text-secondary); margin-top: 0.8rem; text-align: center; line-height: 1.5;">음악학과 작곡과<br>21학번</span>
             </div>
             <!-- 문경수 -->
-            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(191, 90, 242, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(191, 90, 242, 0.15);">
-              <img src="/profile1.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #bf5af2;">
-              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">문경수 님</span>
-              <span style="font-size: 1.05rem; color: #bf5af2; font-weight: 700; margin-top: 0.4rem;">🧠 AI 집중 마스터</span>
-              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">휴먼AI공학전공<br>21학번</span>
+            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 2rem 1.5rem; border-radius: 24px; border: 2.5px solid rgba(191, 90, 242, 0.4); width: 245px; transition: all 0.3s; box-shadow: 0 0 25px rgba(191, 90, 242, 0.15);">
+              <img src="/profile1.png" style="width: 160px; height: 160px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #bf5af2;">
+              <span style="font-size: 1.95rem; font-weight: 800; color: #fff;">문경수 님</span>
+              <span style="font-size: 1.4rem; color: #bf5af2; font-weight: 700; margin-top: 0.6rem;">🧠 AI 집중 마스터</span>
+              <span style="font-size: 1.18rem; color: var(--text-secondary); margin-top: 0.8rem; text-align: center; line-height: 1.5;">휴먼AI공학전공<br>21학번</span>
             </div>
             <!-- 홍수민 -->
-            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(48, 209, 88, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(48, 209, 88, 0.15);">
-              <img src="/profile4.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #30d158;">
-              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">홍수민 님</span>
-              <span style="font-size: 1.05rem; color: #30d158; font-weight: 700; margin-top: 0.4rem;">🎨 호기심 미술가</span>
-              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">조형예술학과<br>25학번</span>
+            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 2rem 1.5rem; border-radius: 24px; border: 2.5px solid rgba(48, 209, 88, 0.4); width: 245px; transition: all 0.3s; box-shadow: 0 0 25px rgba(48, 209, 88, 0.15);">
+              <img src="/profile4.png" style="width: 160px; height: 160px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #30d158;">
+              <span style="font-size: 1.95rem; font-weight: 800; color: #fff;">홍수민 님</span>
+              <span style="font-size: 1.4rem; color: #30d158; font-weight: 700; margin-top: 0.6rem;">🎨 호기심 미술가</span>
+              <span style="font-size: 1.18rem; color: var(--text-secondary); margin-top: 0.8rem; text-align: center; line-height: 1.5;">조형예술학과<br>25학번</span>
             </div>
           </div>
         </div>
