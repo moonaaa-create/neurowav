@@ -19,6 +19,7 @@ let compareChartInstance = null;
 let currentDashboardView = 'personal';
 let currentComparisonMode = 'average';
 let showRadarValues = true;
+let currentCompareChartType = 'bar';
 
 // DOM Element References
 let userSelect, btnViewPersonal, btnViewComparative, personalRadarPanel, comparativePanel, radarGrid, albumArt, songTitle, songArtist, lineChartTitle, compareMetricSelect, compareSongModeSelect;
@@ -264,6 +265,10 @@ app.innerHTML = `
           📊 13-Track Team Averages & Leaderboard
         </h3>
         <div style="display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;">
+          <div class="mini-toggle-container" style="margin-right: 0.5rem;">
+            <button id="btnCompareChartBar" class="mini-toggle-btn active">📊 Bar Chart</button>
+            <button id="btnCompareChartMap" class="mini-toggle-btn">🗺️ Treemap</button>
+          </div>
           <button id="btnExportAllAverages" class="neo-select" style="background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.4); color: #ffd700; border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;">📊 13곡 평균 엑셀 다운</button>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">분석 기준:</span>
@@ -287,7 +292,11 @@ app.innerHTML = `
       </div>
       <div class="ranking-flex-container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; width: 100%; align-items: start; flex-wrap: wrap;">
         <div style="position: relative; height: 420px; width: 100%; min-width: 300px;">
-          <canvas id="songTeamAverageChart"></canvas>
+          <div id="songTeamAverageChartContainer" style="position: relative; height: 100%; width: 100%;">
+            <canvas id="songTeamAverageChart"></canvas>
+          </div>
+          <div id="songTeamAverageTreemap" style="display: none; position: relative; height: 100%; width: 100%; overflow-y: auto;">
+          </div>
         </div>
         <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; max-height: 420px; overflow-y: auto; min-width: 300px;">
           <h4 style="font-size: 0.95rem; font-weight: 700; color: #ffd700; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; margin-bottom: 0.25rem;">
@@ -1638,6 +1647,26 @@ function loadSongAnalysis() {
     const btnBar = document.getElementById('btnSongChartBar');
     const chkTeamAvg = document.getElementById('chkShowTeamAverage');
     const selectMetric = document.getElementById('compareSongMetricSelect');
+    const btnCompareChartBar = document.getElementById('btnCompareChartBar');
+    const btnCompareChartMap = document.getElementById('btnCompareChartMap');
+    
+    if (btnCompareChartBar && btnCompareChartMap) {
+      btnCompareChartBar.addEventListener('click', () => {
+        btnCompareChartBar.classList.add('active');
+        btnCompareChartMap.classList.remove('active');
+        currentCompareChartType = 'bar';
+        const currentMetric = selectMetric ? selectMetric.value : 'engagement';
+        render13TracksTeamAverageChart(currentMetric);
+      });
+      
+      btnCompareChartMap.addEventListener('click', () => {
+        btnCompareChartMap.classList.add('active');
+        btnCompareChartBar.classList.remove('active');
+        currentCompareChartType = 'map';
+        const currentMetric = selectMetric ? selectMetric.value : 'engagement';
+        render13TracksTeamAverageChart(currentMetric);
+      });
+    }
     
     if (btnRadar && btnBar) {
       btnRadar.addEventListener('click', () => {
@@ -1879,13 +1908,10 @@ function renderSongCompareChart(songIndex, chartType) {
 
 function render13TracksTeamAverageChart(metric) {
   const canvas = document.getElementById('songTeamAverageChart');
-  if (!canvas) return;
+  const chartContainer = document.getElementById('songTeamAverageChartContainer');
+  const treemapEl = document.getElementById('songTeamAverageTreemap');
+  if (!canvas || !chartContainer || !treemapEl) return;
 
-  if (songTeamAverageChartInstance) {
-    songTeamAverageChartInstance.destroy();
-  }
-
-  const ctx = canvas.getContext('2d');
   const memberList = ['member2', 'member1', 'member3', 'member4'];
 
   // Calculate team averages/peaks/volatility for all 13 songs
@@ -1902,13 +1928,10 @@ function render13TracksTeamAverageChart(metric) {
           const rawVals = songData.rawData[metric];
           if (rawVals.length > 0) {
             if (currentComparisonMode === 'peak') {
-              // Peak Critical Value: the maximum stimulus achieved during the track
               sum += Math.max(...rawVals);
             } else if (currentComparisonMode === 'volatility') {
-              // Volatility / Rollercoaster index: Peak minus Valley (range)
               sum += (Math.max(...rawVals) - Math.min(...rawVals));
             } else {
-              // Standard Average
               sum += songData.averages[metric];
             }
             count++;
@@ -1929,26 +1952,7 @@ function render13TracksTeamAverageChart(metric) {
   // Sort descending by value (Ranking style)
   songAverages.sort((a, b) => b.value - a.value);
 
-  const labels = songAverages.map(item => `${String(item.index + 1).padStart(2, '0')}. ${item.cover} ${item.title}`);
-  const dataVals = songAverages.map(item => item.value);
-
-  // We will highlight the currently active song in the rankings with a golden glow!
-  const bgColors = songAverages.map(item => {
-    if (item.index === currentSongAnalysisIndex) {
-      return 'rgba(255, 215, 0, 0.85)'; // Active song: glowing gold
-    }
-    return 'rgba(191, 90, 242, 0.35)'; // Non-active songs: cool violet
-  });
-
-  const borderColors = songAverages.map(item => {
-    if (item.index === currentSongAnalysisIndex) {
-      return '#ffd700'; // Gold border
-    }
-    return '#bf5af2'; // Purple border
-  });
-
   const metricKo = LABELS_KO[TARGET_COLUMNS.indexOf(metric)];
-
   let modeLabel = '평균치';
   let tooltipPrefix = '평균';
   if (currentComparisonMode === 'peak') {
@@ -1959,68 +1963,179 @@ function render13TracksTeamAverageChart(metric) {
     tooltipPrefix = '변동폭';
   }
 
-  songTeamAverageChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: `👥 4인 ${modeLabel} (${metricKo})`,
-        data: dataVals,
-        backgroundColor: bgColors,
-        borderColor: borderColors,
-        borderWidth: 1.5,
-        borderRadius: 4
-      }]
-    },
-    options: {
-      indexAxis: 'y', // Horizontal Bar Chart
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          min: 0,
-          max: 1.0,
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#94a3b8' }
-        },
-        y: {
-          grid: { display: false },
-          ticks: {
-            color: (context) => {
-              const index = context.index;
-              if (songAverages[index] && songAverages[index].index === currentSongAnalysisIndex) {
-                return '#ffd700';
+  if (currentCompareChartType === 'bar') {
+    chartContainer.style.display = 'block';
+    treemapEl.style.display = 'none';
+
+    if (songTeamAverageChartInstance) {
+      songTeamAverageChartInstance.destroy();
+    }
+
+    const ctx = canvas.getContext('2d');
+    const labels = songAverages.map(item => `${String(item.index + 1).padStart(2, '0')}. ${item.cover} ${item.title}`);
+    const dataVals = songAverages.map(item => item.value);
+
+    const bgColors = songAverages.map(item => {
+      if (item.index === currentSongAnalysisIndex) {
+        return 'rgba(255, 215, 0, 0.85)'; // Active song: glowing gold
+      }
+      return 'rgba(191, 90, 242, 0.35)'; // Non-active songs: cool violet
+    });
+
+    const borderColors = songAverages.map(item => {
+      if (item.index === currentSongAnalysisIndex) {
+        return '#ffd700'; // Gold border
+      }
+      return '#bf5af2'; // Purple border
+    });
+
+    songTeamAverageChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: `👥 4인 ${modeLabel} (${metricKo})`,
+          data: dataVals,
+          backgroundColor: bgColors,
+          borderColor: borderColors,
+          borderWidth: 1.5,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y', // Horizontal Bar Chart
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            min: 0,
+            max: 1.0,
+            grid: { color: 'rgba(255,255,255,0.04)' },
+            ticks: { color: '#94a3b8' }
+          },
+          y: {
+            grid: { display: false },
+            ticks: {
+              color: (context) => {
+                const index = context.index;
+                if (songAverages[index] && songAverages[index].index === currentSongAnalysisIndex) {
+                  return '#ffd700';
+                }
+                return '#f8fafc';
+              },
+              font: (context) => {
+                const index = context.index;
+                const isActive = songAverages[index] && songAverages[index].index === currentSongAnalysisIndex;
+                return {
+                  family: '-apple-system',
+                  size: 11,
+                  weight: isActive ? '700' : '500'
+                };
               }
-              return '#f8fafc';
-            },
-            font: (context) => {
-              const index = context.index;
-              const isActive = songAverages[index] && songAverages[index].index === currentSongAnalysisIndex;
-              return {
-                family: '-apple-system',
-                size: 11,
-                weight: isActive ? '700' : '500'
-              };
             }
           }
-        }
-      },
-      plugins: {
-        legend: {
-          display: false
         },
-        tooltip: {
-          enabled: true,
-          callbacks: {
-            label: function(context) {
-              const val = context.raw;
-              return ` 👥 조원 ${tooltipPrefix} ${metricKo}: ${(val * 100).toFixed(1)}%`;
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                const val = context.raw;
+                return ` 👥 조원 ${tooltipPrefix} ${metricKo}: ${(val * 100).toFixed(1)}%`;
+              }
             }
           }
         }
       }
-    }
-  });
+    });
+  } else {
+    chartContainer.style.display = 'none';
+    treemapEl.style.display = 'block';
+    treemapEl.innerHTML = '';
+
+    const maxVal = Math.max(...songAverages.map(s => s.value), 0.01);
+
+    const colors = {
+      engagement: '#bf5af2', // Purple
+      interest: '#0a84ff',   // Blue
+      excitement: '#ff9f0a', // Orange
+      stress: '#ff375f',     // Red
+      relaxation: '#30d158'  // Green
+    };
+    const emotionColor = colors[metric] || '#0a84ff';
+
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.flexWrap = 'wrap';
+    container.style.gap = '8px';
+    container.style.width = '100%';
+    container.style.height = '100%';
+    container.style.minHeight = '380px';
+
+    songAverages.forEach((song, idx) => {
+      const rank = idx + 1;
+      const weight = (song.value / maxVal) * 100;
+      const rgb = hexToRgb(emotionColor);
+      const intensity = 0.15 + (song.value / maxVal) * 0.7;
+      const bgColor = `rgba(${rgb}, ${intensity})`;
+
+      const block = document.createElement('div');
+      block.style.flex = `1 1 calc(${15 + weight * 0.45}% - 8px)`;
+      block.style.background = bgColor;
+      block.style.border = `1.5px solid ${emotionColor}`;
+      block.style.borderRadius = '12px';
+      block.style.padding = '0.8rem 1rem';
+      block.style.display = 'flex';
+      block.style.flexDirection = 'column';
+      block.style.justifyContent = 'space-between';
+      block.style.minWidth = '110px';
+      block.style.minHeight = '100px';
+      block.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+      block.style.cursor = 'pointer';
+      block.style.transition = 'all 0.2s';
+
+      block.addEventListener('mouseenter', () => {
+        block.style.transform = 'translateY(-2px) scale(1.02)';
+        block.style.boxShadow = `0 8px 20px rgba(${rgb}, 0.4)`;
+        block.style.borderColor = '#fff';
+      });
+      block.addEventListener('mouseleave', () => {
+        block.style.transform = 'translateY(0) scale(1)';
+        block.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+        block.style.borderColor = emotionColor;
+      });
+
+      block.addEventListener('click', () => {
+        selectSongForAnalysis(song.index);
+      });
+
+      const isActive = song.index === currentSongAnalysisIndex;
+      if (isActive) {
+        block.style.borderColor = '#ffd700';
+        block.style.boxShadow = '0 0 15px #ffd700';
+      }
+
+      block.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <span style="font-size: 1rem; font-weight: 800; color: #ffd700;">#${rank}</span>
+          ${isActive ? '<span style="font-size: 0.75rem; background: #ffd700; color: #000; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 700;">ACTIVE</span>' : ''}
+        </div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; margin: 0.4rem 0;">
+          ${String(song.index + 1).padStart(2, '0')}. ${song.cover} ${song.title}
+        </div>
+        <div style="font-size: 1.1rem; font-weight: 800; color: #fff; font-family: monospace; font-variant-numeric: tabular-nums;">
+          ${(song.value * 100).toFixed(1)}%
+        </div>
+      `;
+
+      container.appendChild(block);
+    });
+
+    treemapEl.appendChild(container);
+  }
 
   // Populate the text leaderboard list
   const leaderboardEl = document.getElementById('songTeamAverageLeaderboard');
