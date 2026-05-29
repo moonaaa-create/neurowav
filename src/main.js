@@ -2669,7 +2669,12 @@ function loadNbtiScreen(mId) {
       border: "#0a84ff",
       glow: "rgba(10, 132, 255, 0.3)",
       description: "음악학과 작곡 전공자다운 평정심의 수호자입니다. 전체 평균 스트레스가 0.355로 팀 내에서 가장 낮고, 이완도는 0.426으로 가장 높아 음악을 들을 때 뇌가 가장 편안하고 안정적인 상태를 유지합니다. 어떤 주파수 변화도 평안하게 수용하는 힐러와 같은 신경 아키텍처를 가졌습니다.",
-      quote: "전체 평균 스트레스 최저(0.355), 이완도 최고(0.426). 특히 5번 곡에서 몰입도 평균 0.596, 이완도 최고 0.857을 기록하며 음악과 완전한 물아일체에 도달했습니다. 🎧"
+      quote: "전체 평균 스트레스 최저(0.355), 이완도 최고(0.426). 특히 5번 곡에서 몰입도 평균 0.596, 이완도 최고 0.857을 기록하며 음악과 완전한 물아일체에 도달했습니다. 🎧",
+      weapon: {
+        name: "🎼 음표 힐링 지팡이 (Music Note Healer)",
+        desc: "작곡 멜로디와 주파수로 동료들의 정신을 정교하게 치유하는 음표 무기",
+        emoji: "🎼"
+      }
     },
     member3: {
       nbti: "A.I.F.C (AI Focused chipset)",
@@ -2678,7 +2683,12 @@ function loadNbtiScreen(mId) {
       border: "#bf5af2",
       glow: "rgba(191, 90, 242, 0.3)",
       description: "음악을 들을 때 뇌파가 격렬하게 춤을 추는 뇌 리액션의 끝판왕입니다! 전체 평균 흥미도(0.530)와 활성도(0.422)가 압도적인 팀 내 1위를 차지하여, 고도의 인지 연산 능력과 아드레날린 분출이 결합된 파괴적이고 다이내믹한 뇌지컬 집중 반응을 여과 없이 보입니다.",
-      quote: "전체 평균 흥미도(0.530) 및 활성도(0.422) 압도적 팀 내 1위! 특히 13번 곡에서 활성도 평균 0.673, 스트레스 최고 0.918, 이완도 최고 0.977이라는 파괴적인 수치를 폭발시켰습니다. ⚡"
+      quote: "전체 평균 흥미도(0.530) 및 활성도(0.422) 압도적 팀 내 1위! 특히 13번 곡에서 활성도 평균 0.673, 스트레스 최고 0.918, 이완도 최고 0.977이라는 파괴적인 수치를 폭발시켰습니다. ⚡",
+      weapon: {
+        name: "🎾 테니스 광선검 (Tennis Lightsaber)",
+        desc: "고속 스핀 테니스 광선 에너지를 모아 전방에 발사하는 보라색 광전검",
+        emoji: "🎾"
+      }
     },
     member2: {
       nbti: "E.X.C.I (Excitement Catalyst Intellect)",
@@ -2687,7 +2697,12 @@ function loadNbtiScreen(mId) {
       border: "#ff453a",
       glow: "rgba(255, 69, 58, 0.3)",
       description: "자극에 대해 매우 섬세하고 직관적으로 반응하는 지성적 탐구자입니다. 전체 평균 스트레스가 0.404로 가장 높으면서도 곡에 따라 반응 편차가 큽니다. 매 사운드트랙마다 미세한 신호마저 놓치지 않고 예민하게 받아들여 고도의 분석적 흐름을 타는 양상을 보입니다.",
-      quote: "전체 평균 스트레스 최고(0.404) 및 높은 곡별 편차. 6번 곡에서 활성도(0.447)와 스트레스(0.451)가 동시에 솟구치는 등 매 음악을 극도로 기민하고 디테일하게 지각했습니다. 🎸"
+      quote: "전체 평균 스트레스 최고(0.404) 및 높은 곡별 편차. 6번 곡에서 활성도(0.447)와 스트레스(0.451)가 동시에 솟구치는 등 매 음악을 극도로 기민하고 디테일하게 지각했습니다. 🎸",
+      weapon: {
+        name: "🔥 파이어 스펠 (Fire Attackcaster)",
+        desc: "에너지를 응축해 타오르는 고밀도 화염구를 사출하는 강력한 불 공격",
+        emoji: "🔥"
+      }
     },
     member4: {
       nbti: "I.N.T.R (Interactive Neuro receptor)",
@@ -2696,7 +2711,12 @@ function loadNbtiScreen(mId) {
       border: "#30d158",
       glow: "rgba(48, 209, 88, 0.3)",
       description: "조형예술 전공자다운 흔들림 없는 부동의 미학적 마인드를 지녔습니다. 전체 평균 활성도가 0.222로 극도로 낮아, 웬만큼 강한 음악 자극이나 소음 유발에도 뇌파가 전혀 동요하지 않고 명상에 가까운 깊고 단단한 심신 안정을 드러냅니다.",
-      quote: "전체 평균 활성도 극저치(0.222). 웬만한 음악적 자극에는 뇌가 미동도 하지 않으며, 특히 3번 곡에서는 활성도 최고치마저 0.188에 그치며 명상 수준의 평안함을 지켜냈습니다. 🎨"
+      quote: "전체 평균 활성도 극저치(0.222). 웬만한 음악적 자극에는 뇌가 미동도 하지 않으며, 특히 3번 곡에서는 활성도 최고치마저 0.188에 그치며 명상 수준의 평안함을 지켜냈습니다. 🎨",
+      weapon: {
+        name: "🖌️ 붓펜 소드 & 🎨 미술 팔레트 실드",
+        desc: "예술적 획을 긋는 대형 붓펜 칼과 모든 감정 동요를 제로화하는 팔레트 방패",
+        emoji: "🖌️"
+      }
     }
   };
 
@@ -2778,7 +2798,7 @@ function loadNbtiScreen(mId) {
       <div class="nbti-grid-1" style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem; align-items: stretch;">
         
         <!-- Left Panel: Character illustration card -->
-        <div style="background: linear-gradient(135deg, rgba(${hexToRgb(profile.border)}, 0.15) 0%, rgba(18, 18, 24, 0.75) 100%); border-radius: 20px; padding: 2rem; border: 1.5px solid rgba(${hexToRgb(profile.border)}, 0.35); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 340px; box-shadow: inset 0 0 20px rgba(${hexToRgb(profile.border)}, 0.15);">
+        <div style="background: linear-gradient(135deg, rgba(${hexToRgb(profile.border)}, 0.15) 0%, rgba(18, 18, 24, 0.75) 100%); border-radius: 20px; padding: 2rem; border: 1.5px solid rgba(${hexToRgb(profile.border)}, 0.35); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 380px; box-shadow: inset 0 0 20px rgba(${hexToRgb(profile.border)}, 0.15);">
           <!-- Decorative wave pattern backdrop -->
           <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 160px; background: linear-gradient(180deg, transparent 0%, rgba(${hexToRgb(profile.border)}, 0.18) 100%); clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%); z-index: 1;"></div>
           
@@ -2793,6 +2813,16 @@ function loadNbtiScreen(mId) {
           <span style="font-size: 1.25rem; font-weight: 800; color: ${profile.border}; letter-spacing: 2px; text-shadow: 0 0 8px rgba(${hexToRgb(profile.border)}, 0.3); z-index: 2; margin: 0; font-family: monospace;">
             ${profile.nbti.split(' ')[0]}-T
           </span>
+
+          <!-- RPG-style Equipped Weapon slot -->
+          <div style="background: rgba(0, 0, 0, 0.45); border: 1.2px dashed ${profile.border}; border-radius: 12px; padding: 0.7rem 0.9rem; width: 95%; z-index: 2; display: flex; align-items: center; gap: 10px; margin-top: 0.5rem; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.35);">
+            <div style="font-size: 2.2rem; flex-shrink: 0; filter: drop-shadow(0 0 8px ${profile.border}); display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">${profile.weapon.emoji}</div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 0.65rem; text-transform: uppercase; font-weight: 800; color: #ffd700; letter-spacing: 0.8px; margin-bottom: 2px;">⚔️ 장착 장비 (Equipped Weapon)</span>
+              <strong style="font-size: 0.88rem; color: #fff; line-height: 1.2; font-weight: 800;">${profile.weapon.name}</strong>
+              <span style="font-size: 0.72rem; color: rgba(255,255,255,0.6); line-height: 1.35; margin-top: 2px;">${profile.weapon.desc}</span>
+            </div>
+          </div>
         </div>
 
         <!-- Right Panel: 5 Dimensions Scales -->
