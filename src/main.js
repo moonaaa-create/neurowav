@@ -65,52 +65,52 @@ app.innerHTML = `
       <div class="floating-emoji" style="left: 85%; top: 25%;">⚔️</div>
     </div>
     
-    <div class="hero-section" style="text-align: center; padding: 2rem 1rem; animation: fadeIn 0.8s ease-out; z-index: 10; position: relative;">
-      <div style="font-family: monospace; font-size: 1rem; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); margin-bottom: 0.5rem; letter-spacing: 2px;">STAGE 1: THE BEGINNING</div>
-      <h1 style="font-size: 4.5rem; margin-bottom: 1.5rem; background: linear-gradient(to right, #bf5af2, #0a84ff, #30d158); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(10, 132, 255, 0.2);">NeuroWav Quest</h1>
-      <p class="subtitle" style="font-size: 1.25rem; max-width: 750px; margin: 0 auto 3rem auto; line-height: 1.8;">
+    <div class="hero-section" style="text-align: center; padding: 3rem 1rem; animation: fadeIn 0.8s ease-out; z-index: 10; position: relative;">
+      <div style="font-family: monospace; font-size: 1.6rem; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); margin-bottom: 1rem; letter-spacing: 2px;">STAGE 1: THE BEGINNING</div>
+      <h1 style="font-size: 5.5rem; margin-bottom: 2rem; background: linear-gradient(to right, #bf5af2, #0a84ff, #30d158); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 35px rgba(10, 132, 255, 0.35); font-weight: 800; letter-spacing: -2px;">NeuroWav Quest</h1>
+      <p class="subtitle" style="font-size: 1.7rem !important; max-width: 900px !important; margin: 0 auto 4rem auto !important; line-height: 1.8 !important; color: rgba(235, 235, 245, 0.85);">
         <strong>"서로 다른 4명이 음악을 듣고 검출된 뇌파 데이터를 통해 서로를 알아가는 N-BTI"</strong><br>
         자료시각화 5조의 레트로 게임 컨셉 뇌파 탐험! 4명의 도트 캐릭터가 각 Stage를 클리어하며<br>
         자신조차 몰랐던 뇌파 속 진짜 취향과 최종 뇌비티아이(N-BTI)를 파헤칩니다.
       </p>
       
-      <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 3rem; align-items: center;">
         <div>
-          <h3 style="color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 1px;">🎮 플레이어 캐릭터 선택 (Player Select)</h3>
-          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
+          <h3 style="color: var(--text-secondary); margin-bottom: 2rem; font-weight: 700; letter-spacing: 1px; font-size: 2rem;">🎮 플레이어 캐릭터 선택 (Player Select)</h3>
+          <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
             <!-- 김용석 -->
-            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 69, 58, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255, 69, 58, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 69, 58, 0.1);">
-              <img src="/profile3.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #ff453a;">
-              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김용석 님</span>
-              <span style="font-size: 0.75rem; color: #ff453a; font-weight: 600; margin-top: 0.2rem;">🔥 아드레날린 락커</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">자유전공 인문<br>26학번</span>
+            <div id="intro-btn-member2" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(255, 69, 58, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(255, 69, 58, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(255, 69, 58, 0.15);">
+              <img src="/profile3.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #ff453a;">
+              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">김용석 님</span>
+              <span style="font-size: 1.05rem; color: #ff453a; font-weight: 700; margin-top: 0.4rem;">🔥 아드레날린 락커</span>
+              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">자유전공 인문<br>26학번</span>
             </div>
             <!-- 김한주 -->
-            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(10, 132, 255, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(10, 132, 255, 0.1);">
-              <img src="/profile2.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #0a84ff;">
-              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">김한주 님</span>
-              <span style="font-size: 0.75rem; color: #0a84ff; font-weight: 600; margin-top: 0.2rem;">🧘‍♂️ 감성 음유시인</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">음악학과 작곡과<br>21학번</span>
+            <div id="intro-btn-member1" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(10, 132, 255, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(10, 132, 255, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(10, 132, 255, 0.15);">
+              <img src="/profile2.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #0a84ff;">
+              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">김한주 님</span>
+              <span style="font-size: 1.05rem; color: #0a84ff; font-weight: 700; margin-top: 0.4rem;">🧘‍♂️ 감성 음유시인</span>
+              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">음악학과 작곡과<br>21학번</span>
             </div>
             <!-- 문경수 -->
-            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(191, 90, 242, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(191, 90, 242, 0.1);">
-              <img src="/profile1.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #bf5af2;">
-              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">문경수 님</span>
-              <span style="font-size: 0.75rem; color: #bf5af2; font-weight: 600; margin-top: 0.2rem;">🧠 AI 집중 마스터</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">휴먼AI공학전공<br>21학번</span>
+            <div id="intro-btn-member3" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(191, 90, 242, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(191, 90, 242, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(191, 90, 242, 0.15);">
+              <img src="/profile1.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #bf5af2;">
+              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">문경수 님</span>
+              <span style="font-size: 1.05rem; color: #bf5af2; font-weight: 700; margin-top: 0.4rem;">🧠 AI 집중 마스터</span>
+              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">휴먼AI공학전공<br>21학번</span>
             </div>
             <!-- 홍수민 -->
-            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(48, 209, 88, 0.3); width: 160px; transition: all 0.3s; box-shadow: 0 0 20px rgba(48, 209, 88, 0.1);">
-              <img src="/profile4.png" style="width: 100px; height: 100px; border-radius: 16px; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #30d158;">
-              <span style="font-size: 1.05rem; font-weight: 700; color: #fff;">홍수민 님</span>
-              <span style="font-size: 0.75rem; color: #30d158; font-weight: 600; margin-top: 0.2rem;">🎨 호기심 미술가</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; text-align: center;">조형예술학과<br>25학번</span>
+            <div id="intro-btn-member4" class="profile-card" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; background: rgba(48, 209, 88, 0.05); padding: 2rem; border-radius: 24px; border: 2.5px solid rgba(48, 209, 88, 0.4); width: 210px; transition: all 0.3s; box-shadow: 0 0 25px rgba(48, 209, 88, 0.15);">
+              <img src="/profile4.png" style="width: 140px; height: 140px; border-radius: 20px; object-fit: cover; margin-bottom: 1.2rem; border: 3px solid #30d158;">
+              <span style="font-size: 1.4rem; font-weight: 800; color: #fff;">홍수민 님</span>
+              <span style="font-size: 1.05rem; color: #30d158; font-weight: 700; margin-top: 0.4rem;">🎨 호기심 미술가</span>
+              <span style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center; line-height: 1.4;">조형예술학과<br>25학번</span>
             </div>
           </div>
         </div>
         
-        <div style="margin-top: 2rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
-          <button id="intro-start-btn" class="hero-btn" style="background: linear-gradient(135deg, #0a84ff, #bf5af2); font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; box-shadow: 0 0 25px rgba(10, 132, 255, 0.4);">⚔️ QUEST START (탐험 시작)</button>
+        <div style="margin-top: 3rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+          <button id="intro-start-btn" class="hero-btn" style="background: linear-gradient(135deg, #0a84ff, #bf5af2); font-size: 1.8rem; padding: 1.2rem 4rem; border-radius: 16px; font-weight: 800; box-shadow: 0 0 35px rgba(10, 132, 255, 0.55); border: 2px solid rgba(255,255,255,0.25);">⚔️ QUEST START (탐험 시작)</button>
         </div>
       </div>
     </div>
@@ -118,65 +118,65 @@ app.innerHTML = `
 
   <!-- [STAGE 2] HOW WE DID SCREEN -->
   <div id="howWeDidScreen" class="screen">
-    <header class="team-header">
-      <div style="font-family: monospace; font-size: 0.9rem; color: #30d158; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 2: THE DATA JOURNEY</div>
-      <h1 style="color: #30d158;">🛠️ How We DID</h1>
-      <p class="subtitle">프로젝트 준비물부터 데이터 검출, 정제 및 클리닝 과정까지의 개발 과정</p>
+    <header class="team-header" style="text-align: center; margin-bottom: 3rem;">
+      <div style="font-family: monospace; font-size: 1.5rem; color: #30d158; margin-bottom: 0.8rem; letter-spacing: 2px; font-weight: 700;">STAGE 2: THE DATA JOURNEY</div>
+      <h1 style="color: #30d158; font-size: 4rem; font-weight: 800; margin-bottom: 1rem;">🛠️ How We DID</h1>
+      <p class="subtitle" style="font-size: 1.7rem !important; color: var(--text-secondary);">프로젝트 준비물부터 데이터 검출, 정제 및 클리닝 과정까지의 개발 과정</p>
     </header>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; width: 100%; margin-bottom: 2rem;">
       <!-- Card 1: Equipment -->
-      <div class="panel" style="padding: 2rem; text-align: left; gap: 1rem; border-color: rgba(48, 209, 88, 0.2);">
-        <div style="font-size: 2.5rem;">🎧</div>
-        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quest 1: 준비물 및 검사 방법</h3>
-        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+      <div class="panel" style="padding: 2.5rem; text-align: left; gap: 1.5rem; border-color: rgba(48, 209, 88, 0.3); border-width: 1.5px;">
+        <div style="font-size: 3.5rem;">🎧</div>
+        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">Quest 1: 준비물 및 검사 방법</h3>
+        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; text-align: justify;">
           실제 EEG 뇌파를 정밀하게 획득하기 위해 **Emotiv 뇌파 기기**를 머리에 장착한 후, 서로 다른 장르의 대표 음악 **13곡**을 선정하여 각 30초 이상 연속 청취하며 뇌파 피드백 데이터를 스트리밍 및 기록하였습니다.
         </p>
       </div>
       <!-- Card 2: Archiving -->
-      <div class="panel" style="padding: 2rem; text-align: left; gap: 1rem; border-color: rgba(10, 132, 255, 0.2);">
-        <div style="font-size: 2.5rem;">🧠</div>
-        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quest 2: 5대 감정지표 수집</h3>
-        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+      <div class="panel" style="padding: 2.5rem; text-align: left; gap: 1.5rem; border-color: rgba(10, 132, 255, 0.3); border-width: 1.5px;">
+        <div style="font-size: 3.5rem;">🧠</div>
+        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">Quest 2: 5대 감정지표 수집</h3>
+        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; text-align: justify;">
           EmotivApp을 통해 실시간 검출된 **Engagement(몰입), Excitement(활성), Interest(흥미), Stress(스트레스), Relaxation(이완)**의 5가지 감정 데이터를 시계열 로그 형태인 CSV/XLSX 원본 파일로 안전하게 아카이빙하였습니다.
         </p>
       </div>
       <!-- Card 3: Archiving -->
-      <div class="panel" style="padding: 2rem; text-align: left; gap: 1rem; border-color: rgba(191, 90, 242, 0.2);">
-        <div style="font-size: 2.5rem;">🧹</div>
-        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quest 3: AI 기반 데이터 클리닝</h3>
-        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+      <div class="panel" style="padding: 2.5rem; text-align: left; gap: 1.5rem; border-color: rgba(191, 90, 242, 0.3); border-width: 1.5px;">
+        <div style="font-size: 3.5rem;">🧹</div>
+        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">Quest 3: AI 기반 데이터 클리닝</h3>
+        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.7; text-align: justify;">
           기존 데이터가 수동 검사 환경의 편차로 인해 노이즈가 많았기에, **바이브 코딩 및 AI 데이터 정제 솔루션**을 사용해 결측치 처리, 데이터 스케일링(0 ~ 1 범위 정규화), 헤더 컬럼 표준화 등의 **클리닝 작업**을 사전 완료하였습니다.
         </p>
       </div>
     </div>
     
     <!-- Big flow graphic -->
-    <div class="panel" style="padding: 2.5rem; text-align: center; gap: 1.5rem;">
-      <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff;">⚙️ NeuroWav Data Flow Pipeline</h3>
-      <div class="pipeline-container" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
-          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🎧</span>
-          <strong style="color: #64d2ff;">Emotiv EPOC</strong>
-          <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">Raw EEG Stream</span>
+    <div class="panel" style="padding: 3rem; text-align: center; gap: 2rem; border-color: rgba(255,255,255,0.1);">
+      <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff;">⚙️ NeuroWav Data Flow Pipeline</h3>
+      <div class="pipeline-container" style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+          <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🎧</span>
+          <strong style="color: #64d2ff; font-size: 1.35rem; font-weight: 700;">Emotiv EPOC</strong>
+          <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">Raw EEG Stream</span>
         </div>
-        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
-          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">📊</span>
-          <strong style="color: #ff9f0a;">XLSX / CSV Logs</strong>
-          <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">5 Emotions (30s)</span>
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+          <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">📊</span>
+          <strong style="color: #ff9f0a; font-size: 1.35rem; font-weight: 700;">XLSX / CSV Logs</strong>
+          <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">5 Emotions (30s)</span>
         </div>
-        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px;">
-          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🤖</span>
-          <strong style="color: #30d158;">AI & Node Engine</strong>
-          <span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 0.2rem;">Data Cleaning & Scale</span>
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+          <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🤖</span>
+          <strong style="color: #30d158; font-size: 1.35rem; font-weight: 700;">AI & Node Engine</strong>
+          <span style="font-size: 1rem; color: var(--text-secondary); display: block; margin-top: 0.4rem;">Data Cleaning & Scale</span>
         </div>
-        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 1.5rem;">➡️</div>
-        <div style="background: rgba(10,132,255,0.1); border: 1px solid var(--accent-color); padding: 1.2rem 1.8rem; border-radius: 12px; min-width: 160px; box-shadow: 0 0 15px rgba(10,132,255,0.2);">
-          <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🔮</span>
-          <strong style="color: #fff;">NeuroWav SPA</strong>
-          <span style="font-size: 0.75rem; color: #ffd700; display: block; margin-top: 0.2rem;">Real-time Dash uploader</span>
+        <div class="pipeline-arrow" style="color: var(--text-secondary); font-size: 2.5rem; font-weight: bold;">➡️</div>
+        <div style="background: rgba(10,132,255,0.15); border: 2px solid var(--accent-color); padding: 1.5rem 2rem; border-radius: 16px; min-width: 200px; box-shadow: 0 0 25px rgba(10,132,255,0.35);">
+          <span style="font-size: 2.2rem; display: block; margin-bottom: 0.8rem;">🔮</span>
+          <strong style="color: #fff; font-size: 1.35rem; font-weight: 700;">NeuroWav SPA</strong>
+          <span style="font-size: 1rem; color: #ffd700; display: block; margin-top: 0.4rem; font-weight: 600;">Real-time Dash uploader</span>
         </div>
       </div>
     </div>
