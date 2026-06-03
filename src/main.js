@@ -69,10 +69,9 @@ app.innerHTML = `
     <div class="hero-section" style="text-align: center; padding: 3rem 1rem; animation: fadeIn 0.8s ease-out; z-index: 10; position: relative;">
       <div style="font-family: monospace; font-size: 1.6rem; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); margin-bottom: 1rem; letter-spacing: 2px;">STAGE 1: THE BEGINNING</div>
       <h1 style="font-size: 5.5rem; margin-bottom: 2rem; background: linear-gradient(to right, #bf5af2, #0a84ff, #30d158); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 35px rgba(10, 132, 255, 0.35); font-weight: 800; letter-spacing: -2px;">NeuroWav Quest</h1>
-      <p class="subtitle" style="font-size: 1.7rem !important; max-width: 1200px !important; margin: 0 auto 4rem auto !important; line-height: 1.8 !important; color: rgba(235, 235, 245, 0.85); word-break: keep-all;">
-        <strong>"서로 다른 4명이 음악을 듣고 검출된 뇌파 데이터를 통해 서로를 알아가는 N-BTI"</strong><br>
-        자료시각화 5조의 레트로 게임 컨셉 뇌파 탐험! 4명의 도트 캐릭터가 각 Stage를 클리어하며<br>
-        자신조차 몰랐던 뇌파 속 진짜 취향과 최종 뇌비티아이(N-BTI)를 파헤칩니다.
+      <p class="subtitle" style="max-width: 1200px !important; margin: 0 auto 4rem auto !important; line-height: 1.8 !important; color: rgba(235, 235, 245, 0.85); word-break: keep-all;">
+        <span style="font-size: 2.3rem !important; font-weight: 800; display: block; margin-bottom: 1.2rem; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.2);">"서로 다른 4명이 음악을 듣고 검출된 뇌파 데이터를 통해 서로를 알아가는 N-BTI"</span>
+        <span style="font-size: 1.6rem !important; display: block; opacity: 0.85;">자료시각화 5조의 레트로 게임 컨셉 뇌파 탐험! 4명의 도트 캐릭터가 각 Stage를 클리어하며<br>자신조차 몰랐던 뇌파 속 진짜 취향과 최종 뇌비티아이(N-BTI)를 파헤칩니다.</span>
       </p>
       
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: center;">
