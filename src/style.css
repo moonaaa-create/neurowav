@@ -1200,3 +1200,133 @@ input[type="checkbox"]:checked + .neon-switch-slider::before {
   }
 }
 
+/* Stage 6: Best & Worst Track Styles */
+.best-worst-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.best-worst-card {
+  background: rgba(18, 18, 24, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.best-worst-card.best {
+  border: 3.5px solid #30d158;
+  box-shadow: 0 0 30px rgba(48, 209, 88, 0.2);
+}
+.best-worst-card.best:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 0 45px rgba(48, 209, 88, 0.35);
+}
+
+.best-worst-card.worst {
+  border: 3.5px solid #ff453a;
+  box-shadow: 0 0 30px rgba(255, 69, 58, 0.2);
+}
+.best-worst-card.worst:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 0 45px rgba(255, 69, 58, 0.35);
+}
+
+.best-worst-card .glowing-aura {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+  filter: blur(50px);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.15;
+}
+.best-worst-card.best .glowing-aura {
+  background: #30d158;
+}
+.best-worst-card.worst .glowing-aura {
+  background: #ff453a;
+}
+
+.best-worst-badge {
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.best-worst-badge.best {
+  background: rgba(48, 209, 88, 0.15);
+  color: #30d158;
+  border: 1px solid rgba(48, 209, 88, 0.3);
+  box-shadow: 0 0 15px rgba(48, 209, 88, 0.15);
+}
+.best-worst-badge.worst {
+  background: rgba(255, 69, 58, 0.15);
+  color: #ff453a;
+  border: 1px solid rgba(255, 69, 58, 0.3);
+  box-shadow: 0 0 15px rgba(255, 69, 58, 0.15);
+}
+
+.best-worst-emoji {
+  font-size: 5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.best-worst-card:hover .best-worst-emoji {
+  transform: rotate(10deg) scale(1.05);
+}
+
+.best-worst-stress-val {
+  font-size: 4.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.best-worst-card.best .best-worst-stress-val {
+  color: #30d158;
+  text-shadow: 0 0 20px rgba(48, 209, 88, 0.45);
+}
+.best-worst-card.worst .best-worst-stress-val {
+  color: #ff453a;
+  text-shadow: 0 0 20px rgba(255, 69, 58, 0.45);
+}
+
+@media (max-width: 900px) {
+  .best-worst-container {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  .best-worst-card {
+    padding: 1.8rem !important;
+    min-height: auto !important;
+  }
+  .best-worst-stress-val {
+    font-size: 3.8rem !important;
+  }
+}
+
+

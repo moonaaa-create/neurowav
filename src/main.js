@@ -459,16 +459,16 @@ app.innerHTML = `
   <!-- [STAGE 6] AWARDS / ACHIEVEMENTS SCREEN -->
   <div id="teamScreen" class="screen">
     <header class="team-header">
-      <div style="font-family: monospace; font-size: 0.9rem; color: #ff375f; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 6: HALL OF FAME</div>
-      <h1 id="awardsHeaderTitle" style="color: #ff375f;">🏆 NeuroWav Quest Achievements</h1>
-      <p id="awardsHeaderSubtitle" class="subtitle">조원별 뇌파 특성과 결합된 고유 전설적 업적 및 획득 무기 시각화</p>
+      <div style="font-family: monospace; font-size: 0.9rem; color: #ff375f; margin-bottom: 0.5rem; letter-spacing: 1px;">STAGE 6: BEST & WORST</div>
+      <h1 id="awardsHeaderTitle" style="color: #ff375f;">🏆 Stage 6: Best & Worst Track</h1>
+      <p id="awardsHeaderSubtitle" class="subtitle">뇌파 스트레스 지표 분석을 통해 선정한 조원별 최고의 음악(Best)과 최악의 음악(Worst)</p>
     </header>
     
     <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap;">
-      <button id="ach-tab-member2" class="hero-btn active" style="border-color: #ff453a; background: rgba(255, 69, 58, 0.15);">김용석's Achievements</button>
-      <button id="ach-tab-member1" class="hero-btn" style="border-color: #0a84ff;">김한주's Achievements</button>
-      <button id="ach-tab-member3" class="hero-btn" style="border-color: #bf5af2;">문경수's Achievements</button>
-      <button id="ach-tab-member4" class="hero-btn" style="border-color: #30d158;">홍수민's Achievements</button>
+      <button id="ach-tab-member2" class="hero-btn active" style="border-color: #ff453a; background: rgba(255, 69, 58, 0.15);">김용석 님의 트랙</button>
+      <button id="ach-tab-member1" class="hero-btn" style="border-color: #0a84ff;">김한주 님의 트랙</button>
+      <button id="ach-tab-member3" class="hero-btn" style="border-color: #bf5af2;">문경수 님의 트랙</button>
+      <button id="ach-tab-member4" class="hero-btn" style="border-color: #30d158;">홍수민 님의 트랙</button>
     </div>
 
     <div class="team-awards-container" id="teamGrid" style="display: flex; flex-direction: column; gap: 2rem;">
@@ -2991,22 +2991,29 @@ function loadAchievementsScreen(mId) {
 
   // Compute highest and lowest stress songs
   let maxStress = -Infinity;
-  let maxStressSong = "";
+  let maxStressSongIndex = -1;
   let minStress = Infinity;
-  let minStressSong = "";
+  let minStressSongIndex = -1;
 
   parsed.forEach(song => {
     const sIdx = song.songNumber;
-    const meta = SONG_METADATA[sIdx - 1] || { title: `Song ${sIdx}` };
     if (song.averages.stress > maxStress) {
       maxStress = song.averages.stress;
-      maxStressSong = `${sIdx}. ${meta.title}`;
+      maxStressSongIndex = sIdx - 1;
     }
     if (song.averages.stress < minStress) {
       minStress = song.averages.stress;
-      minStressSong = `${sIdx}. ${meta.title}`;
+      minStressSongIndex = sIdx - 1;
     }
   });
+
+  const genres = ["멜로딕 테크노", "K-POP 댄스", "버블검 팝", "뮤지컬 락", "어쿠스틱 인디 팝", "라틴 재즈 피아노", "J-POP", "프렌치 인디 팝", "헤비 메탈", "오케스트라 에픽", "정통 클래식 피아노", "인디 기타 인스트루멘탈", "디스토션 트랩/힙합"];
+
+  const maxStressMeta = SONG_METADATA[maxStressSongIndex] || { title: `Song ${maxStressSongIndex + 1}`, artist: "Unknown", cover: "🎵" };
+  const minStressMeta = SONG_METADATA[minStressSongIndex] || { title: `Song ${minStressSongIndex + 1}`, artist: "Unknown", cover: "🎵" };
+
+  const maxStressGenre = genres[maxStressSongIndex] || "기타";
+  const minStressGenre = genres[minStressSongIndex] || "기타";
 
   const ACHIEVEMENTS_DB = {
     member1: {
@@ -3014,48 +3021,28 @@ function loadAchievementsScreen(mId) {
       weapon: "🎹 Golden Tuning Fork (황금 소리굽쇠)",
       weaponIcon: "🎹",
       border: "#0a84ff",
-      colorName: "blue",
-      list: [
-        { title: "🛡️ 이완의 천재 (Relaxation Deity)", desc: "어떤 변박 사운드나 웅장한 가창곡이 귓가에 들이닥쳐도, 심적 자극 없이 극락의 심리적 이완도 지수를 끝까지 유지하여 숲속 명상 힐러임을 입증함! (이완도 팀원 최고 0.426)" },
-        { title: "🧊 스트레스 최저 브레이커 (Cold-Blooded)", desc: "팀원들이 가장 경악하고 스트레스를 폭발시켰던 디스토션 트랩 'Look at Me!' 구간에서도 팀내 최저 스트레스 반응을 단단히 수호해냄!" },
-        { title: "🎹 물아일체 사운드 융합 (Lyrical Fusion)", desc: "Lemon Tree 감상 중 몰입도 0.596 돌파와 최고 이완도 0.857을 달성하며 선율과 신경세포가 완전히 한 덩어리로 어우러지는 기적을 보여줌." }
-      ]
+      colorName: "blue"
     },
     member3: {
       avatar: "/profile1.png",
       weapon: "⚡ Neural Beam Cannon (신경 광선 포)",
       weaponIcon: "⚡",
       border: "#bf5af2",
-      colorName: "purple",
-      list: [
-        { title: "🧠 초집중 인공 신경망 (Neural Processor)", desc: "외부의 감정적 동요(Stress/Relaxation)에 아랑곳하지 않고, 단 1초의 딜레이도 없이 신경계를 초고속 집중 모드로 기동하는 팀 최고의 인지력 소유자!" },
-        { title: "🚀 뇌파 오버클럭 캡틴 (Synapse Accelerator)", desc: "테크노 및 빠른 오토튠 음악 청취 시 시냅스의 연산 반응이 실시간으로 급증하며 고속 비트에 초정밀 응답하는 성향을 보여줌." },
-        { title: "⚔️ 진격의 거인 타이탄 크러셔 (Titan Slayer)", desc: "Sawano Hiroyuki의 웅장한 진격의 거인 에픽 사운드가 귓가에 도달할 때, 뇌의 전 영역이 압도적인 전투 몰입도로 똘똘 뭉침." }
-      ]
+      colorName: "purple"
     },
     member2: {
       avatar: "/profile3.png",
       weapon: "🎸 Overdrive Distortion Guitar (지옥의 일렉기타)",
       weaponIcon: "🎸",
       border: "#ff453a",
-      colorName: "red",
-      list: [
-        { title: "🔥 아드레날린 제트 엔진 (Adrenaline Overdrive)", desc: "메탈 기타 리프나 강렬한 록 사운드를 접할 때, 뇌가 즉각적으로 성층권을 뚫는 강력한 초활성(Excitement)과 내적 분출 상태를 감행함!" },
-        { title: "🤘 헤비메탈 콘서트 라이더 (Metal Core Headbanger)", desc: "Pentakill의 묵직한 디스토션 멜로디가 전개될 때, 내면에 잠자던 전사의 투지와 내적 헤드뱅잉 본능이 뇌파에 폭발적으로 매핑됨." },
-        { title: "💥 거침없는 데이터 탐색가 (Fearless Explorer)", desc: "어려운 변박 재즈 음악 속에서도 뇌가 당황(Stress)하지 않고 끊임없이 소리를 탐색하고 흥미를 느끼는 진취성을 입증함." }
-      ]
+      colorName: "red"
     },
     member4: {
       avatar: "/profile4.png",
       weapon: "🎨 Prismatic Spectrum Staff (예술의 프리즘 요술봉)",
       weaponIcon: "🎨",
       border: "#30d158",
-      colorName: "green",
-      list: [
-        { title: "👀 예술적 미장센 디텍터 (Aesthetic Receptor)", desc: "악기의 주파수 질감 변화 and 처음 들어보는 이색적 프렌치 인디 팝에 흥미도 지표가 실시간 번개처럼 예민하게 반응하여 최고 미학 감각 증명!" },
-        { title: "🎭 극적 뇌파 큐레이션 (Dramatic Mind)", desc: "Sie ergibt sich nicht와 같이 드라마틱한 가창과 가사가 풍부한 뮤지컬 락 장르에서 뇌파 감정이 한 편의 서사시처럼 기민하게 춤을 춤." },
-        { title: "✨ 호기심의 찬란한 팔레트 (Curious Palette)", desc: "곡의 인트로 구간이 재생될 때마다 '이것은 무슨 악기인가?'라는 경이로운 호기심 감수성을 팀내에서 가장 크게 터트림." }
-      ]
+      colorName: "green"
     }
   };
 
@@ -3069,49 +3056,95 @@ function loadAchievementsScreen(mId) {
   };
   const spriteUrl = spriteMap[mId] || '/sprite1.png';
 
-  let listHtml = '';
-  ach.list.forEach(item => {
-    listHtml += `
-      <div style="background: rgba(0, 0, 0, 0.35); border-left: 5px solid ${ach.border}; border-radius: 12px; padding: 1.5rem; text-align: left; display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid rgba(255,255,255,0.04); border-left: 5px solid ${ach.border}; transition: transform 0.2s;">
-        <h4 style="font-size: 1.15rem; font-weight: 700; color: #fff;">${item.title}</h4>
-        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">${item.desc}</p>
-      </div>
-    `;
-  });
-
   grid.innerHTML = `
     <div style="background: rgba(28,28,30,0.75); border: 2.5px solid ${ach.border}; border-radius: var(--radius-lg); padding: 2.5rem; display: flex; flex-direction: column; gap: 2.5rem; text-align: center; box-shadow: 0 0 25px rgba(${hexToRgb(ach.border)}, 0.15); animation: fadeIn 0.5s ease-out;">
+      <!-- Profile Header Summary -->
       <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
         <div style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; flex-wrap: wrap;">
           <img src="${ach.avatar}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid ${ach.border}; box-shadow: 0 0 15px rgba(${hexToRgb(ach.border)}, 0.3);">
           <img src="${spriteUrl}" class="pixelated" style="height: 140px; object-fit: contain; filter: drop-shadow(0 0 15px rgba(${hexToRgb(ach.border)}, 0.5)); animation: characterFloat 3s ease-in-out infinite;">
         </div>
-        <h2 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 0;">${MEMBERS[mId]} 님의 최종 전설적 업적</h2>
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin: 0;">${MEMBERS[mId]} 님의 Best & Worst Track</h2>
         <div style="display: flex; align-items: center; gap: 8px; background: rgba(${hexToRgb(ach.border)}, 0.15); color: #fff; padding: 0.4rem 1.2rem; border-radius: 30px; font-size: 0.95rem; font-weight: 700; border: 1px solid ${ach.border};">
           <span>${ach.weaponIcon} 장착 무기: <strong>${ach.weapon}</strong></span>
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%; margin-top: 1rem;">
-        ${listHtml}
-      </div>
+      <!-- Best & Worst Cards Container -->
+      <div class="best-worst-container">
+        
+        <!-- BEST TRACK CARD (Lowest Stress) -->
+        <div class="best-worst-card best">
+          <div class="glowing-aura"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+              <span class="best-worst-badge best">🍀 BEST TRACK</span>
+              <span style="font-size: 1.15rem; color: rgba(255,255,255,0.4); font-weight: 700; font-family: monospace;">Min Stress</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1.8rem; margin-bottom: 2rem; flex-wrap: wrap;">
+              <div class="best-worst-emoji">${minStressMeta.cover}</div>
+              <div style="text-align: left;">
+                <div style="font-size: 1.2rem; color: #30d158; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem;">
+                  Track ${minStressSongIndex + 1} • ${minStressGenre}
+                </div>
+                <h3 style="font-size: 2.3rem; font-weight: 900; color: #fff; margin: 0; line-height: 1.2; word-break: keep-all;">
+                  ${minStressMeta.title}
+                </h3>
+                <p style="font-size: 1.45rem; color: rgba(255,255,255,0.65); margin: 0.4rem 0 0 0; font-weight: 600;">
+                  ${minStressMeta.artist}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; text-align: left;">
+            <div style="display: flex; align-items: baseline; gap: 0.8rem; margin-bottom: 0.6rem; flex-wrap: wrap;">
+              <span class="best-worst-stress-val">${(minStress * 100).toFixed(1)}%</span>
+              <span style="font-size: 1.2rem; color: rgba(255,255,255,0.5); font-weight: 700;">평균 스트레스 지표</span>
+            </div>
+            <p style="font-size: 1.2rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; word-break: keep-all; font-weight: 400;">
+              이 음악을 감상할 때 측정된 뇌파 스트레스 반응이 최저치인 <strong>${(minStress * 100).toFixed(1)}%</strong>로 감소하여, 뇌 세포가 안정되고 편안한 심신 이완 상태에 도달했습니다.
+            </p>
+          </div>
+        </div>
 
-      <!-- Stress Track Summary -->
-      <div class="stress-summary-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
-        <div style="background: rgba(255, 69, 58, 0.05); border: 1px dashed rgba(255, 69, 58, 0.3); border-radius: 16px; padding: 1.5rem; text-align: left;">
-          <h4 style="font-size: 1rem; color: #ff453a; font-weight: 700; margin-bottom: 0.5rem;">🤯 뇌에 부담을 준 기피 트랙 (Max Stress)</h4>
-          <span style="font-size: 1.15rem; color: #fff; font-weight: 700;">${maxStressSong}</span>
-          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.4;">
-            이 트랙 청취 시 스트레스 지표가 최고조인 <strong>${(maxStress * 100).toFixed(1)}%</strong>에 수렴하여 뇌가 본능적으로 기피하는 반응을 나타냈습니다.
-          </p>
+        <!-- WORST TRACK CARD (Highest Stress) -->
+        <div class="best-worst-card worst">
+          <div class="glowing-aura"></div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+              <span class="best-worst-badge worst">🔥 WORST TRACK</span>
+              <span style="font-size: 1.15rem; color: rgba(255,255,255,0.4); font-weight: 700; font-family: monospace;">Max Stress</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1.8rem; margin-bottom: 2rem; flex-wrap: wrap;">
+              <div class="best-worst-emoji">${maxStressMeta.cover}</div>
+              <div style="text-align: left;">
+                <div style="font-size: 1.2rem; color: #ff453a; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem;">
+                  Track ${maxStressSongIndex + 1} • ${maxStressGenre}
+                </div>
+                <h3 style="font-size: 2.3rem; font-weight: 900; color: #fff; margin: 0; line-height: 1.2; word-break: keep-all;">
+                  ${maxStressMeta.title}
+                </h3>
+                <p style="font-size: 1.45rem; color: rgba(255,255,255,0.65); margin: 0.4rem 0 0 0; font-weight: 600;">
+                  ${maxStressMeta.artist}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; text-align: left;">
+            <div style="display: flex; align-items: baseline; gap: 0.8rem; margin-bottom: 0.6rem; flex-wrap: wrap;">
+              <span class="best-worst-stress-val">${(maxStress * 100).toFixed(1)}%</span>
+              <span style="font-size: 1.2rem; color: rgba(255,255,255,0.5); font-weight: 700;">평균 스트레스 지표</span>
+            </div>
+            <p style="font-size: 1.2rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; word-break: keep-all; font-weight: 400;">
+              이 음악을 감상할 때 측정된 뇌파 스트레스 반응이 최고치인 <strong>${(maxStress * 100).toFixed(1)}%</strong>로 치솟았으며, 뇌가 본능적으로 높은 인지적 부담과 강한 자극을 받았습니다.
+            </p>
+          </div>
         </div>
-        <div style="background: rgba(48, 209, 88, 0.05); border: 1px dashed rgba(48, 209, 88, 0.3); border-radius: 16px; padding: 1.5rem; text-align: left;">
-          <h4 style="font-size: 1rem; color: #30d158; font-weight: 700; margin-bottom: 0.5rem;">🧘‍♂️ 뇌를 평온하게 한 치유 트랙 (Min Stress)</h4>
-          <span style="font-size: 1.15rem; color: #fff; font-weight: 700;">${minStressSong}</span>
-          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.4;">
-            이 트랙 청취 시 스트레스 지표가 최저치인 <strong>${(minStress * 100).toFixed(1)}%</strong>로 감소하여 뇌 세포가 극도로 평안하고 안정적인 상태에 이완되었습니다.
-          </p>
-        </div>
+
       </div>
     </div>
   `;
